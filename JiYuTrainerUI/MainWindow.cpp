@@ -188,7 +188,7 @@ sciter::value MainWindow::exitClick()
 	return sciter::value::null();
 }
 sciter::value MainWindow::toGithub() {
-	SysHlp::OpenUrl(L"https://github.com/imengyu/JiYuTrainer");
+	SysHlp::OpenUrl(L"https://github.com/zsyn666/JiYuTrainer_Next");
 	return sciter::value::null();
 }
 
