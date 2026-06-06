@@ -1,4 +1,4 @@
-/** \mainpage Terra Informatica Sciter engine.
+﻿/** \mainpage Terra Informatica Sciter engine.
  *
  * \section legal_sec In legalese
  *

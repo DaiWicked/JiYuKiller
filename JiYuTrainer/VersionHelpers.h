@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Windows.h>
 
 #ifndef _versionhelpers_H_INCLUDED_

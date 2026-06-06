@@ -1,4 +1,4 @@
-/* This source code was modified by Martin Hedenfalk <mhe@stacken.kth.se> for
+﻿/* This source code was modified by Martin Hedenfalk <mhe@stacken.kth.se> for
  * use in Curl. His latest changes were done 2000-09-18.
  *
  * It has since been patched and modified a lot by Daniel Stenberg
@@ -7,7 +7,7 @@
  * rewrite to work around the paragraph 2 in the BSD licenses as explained
  * below.
  *
- * Copyright (c) 1998, 1999 Kungliga Tekniska H�gskolan
+ * Copyright (c) 1998, 1999 Kungliga Tekniska H鰃skolan
  * (Royal Institute of Technology, Stockholm, Sweden).
  *
  * Copyright (C) 2001 - 2015, Daniel Stenberg, <daniel@haxx.se>, et al.

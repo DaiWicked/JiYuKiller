@@ -1,4 +1,4 @@
-#ifndef __CURL_SYSTEM_H
+﻿#ifndef __CURL_SYSTEM_H
 #define __CURL_SYSTEM_H
 /***************************************************************************
  *                                  _   _ ____  _

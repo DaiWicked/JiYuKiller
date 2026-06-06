@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This is an OpenSSL-compatible implementation of the RSA Data Security, Inc.
  * MD4 Message-Digest Algorithm (RFC 1320).
  *

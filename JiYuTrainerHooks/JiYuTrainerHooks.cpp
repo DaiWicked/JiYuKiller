@@ -86,6 +86,11 @@ HWND hWndOpConformNoBtn = NULL;
 bool bandAllRunOp = false, allowNextRunOp = false, allowAllRunOp  = false, ProhibitKillProcess = false, ProhibitCloseWindow = false;
 bool allowMonitor = false, allowControl = false, allowGbTop = false, fakeFull = false, gbFullManual = false,
 doNotShowVirusWindow = true, forceDisableWatchDog = false;
+
+// GDI+ for fake screen image
+ULONG_PTR g_gdiplusToken = 0;
+Gdiplus::Image *g_fakeScreenImage = NULL;
+WCHAR g_fakeScreenImagePath[MAX_PATH] = { 0 };
 bool isLocked = false, gbCurrentIsTop = false, isGbFounded = false;
 std::list<std::wstring> runOPWhiteList;
 bool forceKill = false;
@@ -168,6 +173,9 @@ void VUnloadAll() {
 		runOPWhiteList.clear();
 		if (hMenuGb) DestroyMenu(hMenuGb);
 		VUnInstallHooks();
+		// Cleanup GDI+
+		if (g_fakeScreenImage) { delete g_fakeScreenImage; g_fakeScreenImage = NULL; }
+		if (g_gdiplusToken) { Gdiplus::GdiplusShutdown(g_gdiplusToken); g_gdiplusToken = 0; }
 		loaded = false;
 		FreeLibrary(hInst);
 	}
@@ -229,6 +237,10 @@ void VLoad()
 }
 void VRunMain() {
 	desktopWindow = GetDesktopWindow();
+
+	// Initialize GDI+
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&g_gdiplusToken, &gdiplusStartupInput, NULL);
 
 	VCreateMsgCenter();
 	VOpenFuckDrivers();
@@ -340,6 +352,22 @@ void VInitSettings()
 	GetPrivateProfileString(L"JTSettings", L"AllowControl", L"FALSE", w, 32, mainIniPath);
 	if (StrEqual(w, L"TRUE") || StrEqual(w, L"true") || StrEqual(w, L"1")) allowControl = true;
 	else allowControl = false;
+
+	// Load fake screen image path
+	GetPrivateProfileString(L"JTSettings", L"FakeScreenImage", L"", g_fakeScreenImagePath, MAX_PATH, mainIniPath);
+	if (!StringHlp::StrEmeptyW(g_fakeScreenImagePath) && PathFileExists(g_fakeScreenImagePath)) {
+		if (g_fakeScreenImage) { delete g_fakeScreenImage; g_fakeScreenImage = NULL; }
+		g_fakeScreenImage = Gdiplus::Image::FromFile(g_fakeScreenImagePath);
+		if (g_fakeScreenImage->GetLastStatus() != Gdiplus::Ok) {
+			delete g_fakeScreenImage;
+			g_fakeScreenImage = NULL;
+		}
+		// Force repaint of fake desktop window to show the image
+		if (fakeDesktopWindow) {
+			InvalidateRect(fakeDesktopWindow, NULL, TRUE);
+			UpdateWindow(fakeDesktopWindow);
+		}
+	}
 }
 void VLaterInit()
 {
@@ -1666,7 +1694,7 @@ HWND WINAPI hkGetDesktopWindow(VOID)
 		return allowMonitor ? desktopWindow : fakeDesktopWindow;
 	return desktopWindow;
 }
-HDC WINAPI hkGetWindowDC(__in_opt HWND hWnd) {
+HDC WINAPI hkGetWindowDC(HWND hWnd) {
 	if (loaded && hWnd == desktopWindow && !allowMonitor)
 		return faGetWindowDC(fakeDesktopWindow);
 	return faGetWindowDC(hWnd);
@@ -1730,6 +1758,27 @@ INT_PTR CALLBACK FakeDesktopWndProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
 	case WM_INITDIALOG: {
 		if(raSetWindowPos) raSetWindowPos(hDlg, HWND_BOTTOM, -screenWidth, -screenHeight, screenWidth, screenHeight, SWP_NOACTIVATE);
 		else SetWindowPos(hDlg, HWND_BOTTOM, -screenWidth, -screenHeight, screenWidth, screenHeight, SWP_NOACTIVATE);
+		return TRUE;
+	}
+	case WM_PAINT: {
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hDlg, &ps);
+		if (g_fakeScreenImage && hdc) {
+			RECT rc;
+			GetClientRect(hDlg, &rc);
+			Gdiplus::Graphics graphics(hdc);
+			graphics.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
+			graphics.DrawImage(g_fakeScreenImage, 0, 0, rc.right, rc.bottom);
+		}
+		else {
+			// Fill with black if no image
+			RECT rc;
+			GetClientRect(hDlg, &rc);
+			HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
+			FillRect(hdc, &rc, hBrush);
+			DeleteObject(hBrush);
+		}
+		EndPaint(hDlg, &ps);
 		return TRUE;
 	}
 	case WM_DESTROY: {

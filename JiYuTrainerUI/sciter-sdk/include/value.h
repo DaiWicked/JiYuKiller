@@ -1,4 +1,4 @@
-#ifndef __value_h__
+﻿#ifndef __value_h__
 #define __value_h__
 
 #include "sciter-x-types.h"

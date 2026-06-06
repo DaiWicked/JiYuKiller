@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "UpdaterWindow.h"
 #include "MainWindow.h"
 #include "resource.h"
@@ -53,7 +53,7 @@ LRESULT UpdaterWindow::onWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	case WM_DESTROY: {
 		KillTimer(hWnd, 12);
-		SetWindowLong(hWnd, GWL_USERDATA, 0);
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
 		PostQuitMessage(0);
 		break;
 	}
@@ -64,7 +64,7 @@ LRESULT UpdaterWindow::onWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	case WM_SHOWWINDOW: {
 		if (firstShow) {
 			firstShow = false;
-			//´°¿Ú¾ÓÖÐ
+			//çª—å£å±…ä¸­
 			RECT rect; GetWindowRect(hWnd, &rect);
 			rect.left = (screenWidth - (rect.right - rect.left)) / 2;
 			rect.top = (screenHeight - (rect.bottom - rect.top)) / 2 - 60;
@@ -93,10 +93,10 @@ LRESULT UpdaterWindow::onWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 void UpdaterWindow::OnCancel()
 {
 	if (JUpdater_Updatering()) {
-		if (MessageBox(_hWnd, L"ÕýÔÚÏÂÔØ¸üÐÂ£¬ÄúÊÇ·ñÈ·¶¨ÒªÈ¡ÏûÉý¼¶£¿", L"ÌáÊ¾", MB_ICONINFORMATION | MB_YESNO) == IDYES)
+		if (MessageBox(_hWnd, L"æ­£åœ¨ä¸‹è½½æ›´æ–°ï¼Œæ‚¨æ˜¯å¦ç¡®å®šè¦å–æ¶ˆå‡çº§ï¼Ÿ", L"æç¤º", MB_ICONINFORMATION | MB_YESNO) == IDYES)
 		{
 			if (JUpdater_CancelDownLoadUpdateFile())
-				MessageBox(_hWnd, L"¸üÐÂÒÑÈ¡Ïû", L"ÌáÊ¾", MB_ICONINFORMATION);
+				MessageBox(_hWnd, L"æ›´æ–°å·²å–æ¶ˆ", L"æç¤º", MB_ICONINFORMATION);
 			Close();
 		}
 	}
@@ -116,24 +116,24 @@ void UpdaterWindow::UpdateDownloadCallback(LPCWSTR precent, LPARAM lParam, int s
 void UpdaterWindow::OnUpdateDownloadCallback(LPCWSTR precent, int status)
 {
 	if (status == UPDATE_STATUS_COULD_NOT_CONNECT) {
-		progress_text.set_text(L"¸üÐÂÏÂÔØÊ§°Ü£¡");
-		MessageBox(_hWnd, L"ÎÞ·¨Á¬½ÓÖÁ¸üÐÂ·þÎñÆ÷", L"JiYuTrainer - ¸üÐÂ´íÎó", MB_ICONEXCLAMATION);
+		progress_text.set_text(L"æ›´æ–°ä¸‹è½½å¤±è´¥ï¼");
+		MessageBox(_hWnd, L"æ— æ³•è¿žæŽ¥è‡³æ›´æ–°æœåŠ¡å™¨", L"JiYuTrainer - æ›´æ–°é”™è¯¯", MB_ICONEXCLAMATION);
 		SendMessage(_hWnd, WM_COMMAND, IDC_UPDATE_CLOSE, NULL);
 	}
 	else if (status == UPDATE_STATUS_COULD_NOT_CREATE_FILE) {
-		progress_text.set_text(L"¸üÐÂ°²×°Ê§°Ü£¡");
-		MessageBox(_hWnd, L"ÎÞ·¨Ð´Èë¸üÐÂÎÄ¼þ£¬Äú¿ÉÒÔ³¢ÊÔÊ¹ÓÃ¹ÜÀíÔ±Éí·ÝÔËÐÐ±¾³ÌÐò", L"JiYuTrainer - ¸üÐÂ´íÎó", MB_ICONEXCLAMATION);
+		progress_text.set_text(L"æ›´æ–°å®‰è£…å¤±è´¥ï¼");
+		MessageBox(_hWnd, L"æ— æ³•å†™å…¥æ›´æ–°æ–‡ä»¶ï¼Œæ‚¨å¯ä»¥å°è¯•ä½¿ç”¨ç®¡ç†å‘˜èº«ä»½è¿è¡Œæœ¬ç¨‹åº", L"JiYuTrainer - æ›´æ–°é”™è¯¯", MB_ICONEXCLAMATION);
 		SendMessage(_hWnd, WM_COMMAND, IDC_UPDATE_CLOSE, NULL);
 	}
 	else if (status == UPDATE_STATUS_DWONLAODING) {
 		if (!setDt1) {
-			progress_text.set_text(L"ÕýÔÚÏÂÔØ¸üÐÂ£º");
+			progress_text.set_text(L"æ­£åœ¨ä¸‹è½½æ›´æ–°ï¼š");
 			setDt1 = true;
 		}
 		updateProgressPrect = precent;
 	}
 	else if (status == UPDATE_STATUS_FINISHED) {
-		progress_text.set_text(L"¸üÐÂÏÂÔØÍê³É£¡");
+		progress_text.set_text(L"æ›´æ–°ä¸‹è½½å®Œæˆï¼");
 		SendMessage(_hWnd, WM_COMMAND, IDC_UPDATE_CLOSE, NULL);
 		if (JUpdater_RunInstallion())
 			SendMessage(currentMainWindow->get_hwnd(), WM_COMMAND, IDC_UPDATE_CLOSE, NULL);

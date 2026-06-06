@@ -1,4 +1,4 @@
-/*
+﻿/*
  * The Sciter Engine of Terra Informatica Software, Inc.
  * http://sciter.com
  *

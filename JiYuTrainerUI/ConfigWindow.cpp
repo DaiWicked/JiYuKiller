@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ConfigWindow.h"
 #include "../JiYuTrainer/AppPublic.h"
 #include "../JiYuTrainer/StringHlp.h"
@@ -168,7 +168,7 @@ void SaveSettings(HWND hDlg) {
 	if(worker) 
 		worker->InitSettings();
 	else 
-		MessageBox(NULL, L"ÉèÖÃ±£´æ³É¹¦£¬ÇëÖØÆôÈí¼ş", L"ÌáÊ¾", MB_OK);
+		MessageBox(NULL, L"è®¾ç½®ä¿å­˜æˆåŠŸï¼Œè¯·é‡å¯è½¯ä»¶", L"æç¤º", MB_OK);
 	EndDialog(hDlg, IDOK);
 }
 void InitSettings(HWND hDlg) {
@@ -249,9 +249,9 @@ void InitTab(HWND hDlg) {
 
 	TC_ITEM tie;
 	tie.mask = TCIF_TEXT;
-	tie.pszText = (LPWSTR)L"¸ß¼¶ÅäÖÃ";
+	tie.pszText = (LPWSTR)L"é«˜çº§é…ç½®";
 	TabCtrl_InsertItem(hTab, 0, &tie);
-	tie.pszText = (LPWSTR)L"µ÷ÊÔÅäÖÃ";
+	tie.pszText = (LPWSTR)L"è°ƒè¯•é…ç½®";
 	TabCtrl_InsertItem(hTab, 1, &tie);
 }
 

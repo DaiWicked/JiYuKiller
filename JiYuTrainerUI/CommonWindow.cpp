@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "CommonWindow.h"
 #include "ScanIPWindow.h"
 #include "resource.h"
@@ -33,7 +33,7 @@ CommonWindow::~CommonWindow()
 	_hWnd = nullptr;
 }
 
-//π´π≤∑Ω∑®
+//ÂÖ¨ÂÖ±ÊñπÊ≥ï
 
 int CommonWindow::RunLoop()
 {
@@ -74,7 +74,7 @@ void CommonWindow::Hide()
 	ShowWindow(_hWnd, SW_HIDE);
 }
 
-//¥∞ø⁄¥¶¿Ì∫Ø ˝
+//Á™óÂè£Â§ÑÁêÜÂáΩÊï∞
 
 CommonWindow* CommonWindow::ptr(HWND hwnd)
 {
@@ -138,7 +138,7 @@ LRESULT CommonWindow::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 		break;
 	}
 	case WM_SHOWWINDOW: {
-		//¥∞ø⁄æ”÷–
+		//Á™óÂè£Â±Ö‰∏≠
 		RECT rect; GetWindowRect(hWnd, &rect);
 		rect.left = (screenWidth - (rect.right - rect.left)) / 2;
 		rect.top = (screenHeight - (rect.bottom - rect.top)) / 2 - 60;
@@ -171,7 +171,7 @@ bool CommonWindow::init()
 	return result;
 }
 void CommonWindow::destroy() {
-	SetWindowLong(_hWnd, GWL_USERDATA, 0);
+	SetWindowLongPtr(_hWnd, GWLP_USERDATA, 0);
 	PostMessage(_parentHWnd, WM_MY_WND_CLOSE, (WPARAM)this, 0);
 }
 

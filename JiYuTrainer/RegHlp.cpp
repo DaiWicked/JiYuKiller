@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "RegHlp.h"
 #include "AppPublic.h"
 #include "PathHelper.h"
@@ -8,7 +8,7 @@
 extern JTApp * currentApp;
 extern LoggerInternal * currentLogger;
 
-//É¾³ı×¢²á±í¼üÒÔ¼°×Ó¼ü
+//åˆ é™¤æ³¨å†Œè¡¨é”®ä»¥åŠå­é”®
 BOOL MRegDeleteKey(HKEY hRootKey, LPWSTR path) {
 
 	DWORD lastErr = SHDeleteKey(hRootKey, path);

@@ -924,6 +924,15 @@
                         <input type="checkbox" id="check_allow_monitor" />
                         <label for="check_allow_monitor">允许教师监视你的电脑</label>
                     </div>
+                    <div class="form-item" style="width: 280px; margin-top: 4px;" title="Custom image to replace screen captures">
+                        <label style="font-size: 12px; color: #888;">Screenshot replacement:</label>
+                        <div style="display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                            <a href="#" id="link_choose_fakescreen" class="cfg-link text-info" style="font-size: 12px; white-space: nowrap;">Choose image...</a>
+                            <span id="text_fakescreen_path" style="font-size: 11px; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px;"></span>
+                            <a href="#" id="link_clear_fakescreen" class="cfg-link text-danger" style="font-size: 11px; display: none;">Clear</a>
+                        </div>
+                    </div>
+
                     <div class="form-check" style="width: 140px;" title="是否允许教师通过极域关闭您电脑上的窗口，默认不允许。 ">
                         <input type="checkbox" id="check_probit_close_window" />
                         <label for="check_probit_close_window">禁止极域关闭窗口</label>

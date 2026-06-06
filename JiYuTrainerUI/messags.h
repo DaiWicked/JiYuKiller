@@ -1,3 +1,3 @@
-#pragma once
+﻿#pragma once
 #define WM_MY_WND_CLOSE WM_USER+201
 #define WM_MY_FORCE_HIDE WM_USER+202

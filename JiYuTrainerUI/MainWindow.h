@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stdafx.h"
 
 #define MAIN_WND_CLS_NAME L"JiYuTrainerWindow"
@@ -88,6 +88,7 @@ private:
 	bool setBandAllRunOp = false;
 	bool setDoNotShowTrayIcon = false;
 	bool setAutoUpdate = true;
+	std::wstring setFakeScreenImage;
 
 	int setCkInterval = 3100;
 
@@ -133,6 +134,10 @@ private:
 	sciter::dom::element check_allow_monitor;
 	sciter::dom::element check_auto_update;
 	sciter::dom::element check_allow_top;
+
+	sciter::dom::element link_choose_fakescreen;
+	sciter::dom::element link_clear_fakescreen;
+	sciter::dom::element text_fakescreen_path;
 
 	sciter::dom::element cmds_message;
 	sciter::dom::element common_message;

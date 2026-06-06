@@ -1,4 +1,4 @@
-#include "KernelUtils.h"
+ï»¿#include "KernelUtils.h"
 #include "KernelUtils.h"
 #include "stdafx.h"
 #include "JiYuTrainer.h"
@@ -24,7 +24,7 @@ BOOL KFShutdown()
 
 		return rs;
 	}
-	else currentLogger->LogWarn(L"Çı¶¯Î´¼ÓÔØ£¡");
+	else currentLogger->LogWarn(L"é©±åŠ¨æœªåŠ è½½ï¼");
 	return false;
 }
 BOOL KFReboot()
@@ -38,7 +38,7 @@ BOOL KFReboot()
 
 		return rs;
 	}
-	else currentLogger->LogWarn(L"Çı¶¯Î´¼ÓÔØ£¡");
+	else currentLogger->LogWarn(L"é©±åŠ¨æœªåŠ è½½ï¼");
 	return false;
 }
 BOOL KForceKill(DWORD pid, NTSTATUS *pStatus)
@@ -52,12 +52,12 @@ BOOL KForceKill(DWORD pid, NTSTATUS *pStatus)
 		{
 			if (status == STATUS_SUCCESS)
 				return TRUE;
-			else currentLogger->LogError(L"CTL_KILL_PROCESS ´íÎó£º0x08%X", status);
+			else currentLogger->LogError(L"CTL_KILL_PROCESS é”™è¯¯ï¼š0x08%X", status);
 		}
-		else currentLogger->LogError(L"DeviceIoControl CTL_KILL_PROCESS ´íÎó£º%d", GetLastError());
+		else currentLogger->LogError(L"DeviceIoControl CTL_KILL_PROCESS é”™è¯¯ï¼š%d", GetLastError());
 		if (pStatus)*pStatus = status;
 	}
-	else currentLogger->LogWarn(L"Çı¶¯Î´¼ÓÔØ£¡");
+	else currentLogger->LogWarn(L"é©±åŠ¨æœªåŠ è½½ï¼");
 	return false;
 }
 BOOL KFSendDriverinitParam(bool isXp, bool isWin7, ULONG sysBulidVer) {
@@ -71,7 +71,7 @@ BOOL KFSendDriverinitParam(bool isXp, bool isWin7, ULONG sysBulidVer) {
 		pidb.systemVersion = sysBulidVer;
 		if (DeviceIoControl(hKDrv, CTL_INITPARAM, &pidb, sizeof(pidb), NULL, 0, &ReturnLength, NULL))
 			return TRUE;
-		else currentLogger->LogError(L"DeviceIoControl CTL_INITPARAM ´íÎó£º%d", GetLastError());
+		else currentLogger->LogError(L"DeviceIoControl CTL_INITPARAM é”™è¯¯ï¼š%d", GetLastError());
 	}
 	return false;
 }
@@ -82,7 +82,7 @@ BOOL KFBeforeUnInitDriver()
 		DWORD ReturnLength = 0;
 		if (DeviceIoControl(hKDrv, CTL_UNINIT, NULL, NULL, NULL, NULL, &ReturnLength, NULL))
 			return TRUE;
-		else currentLogger->LogError(L"DeviceIoControl CTL_UNINIT ´íÎó£º%d", GetLastError());
+		else currentLogger->LogError(L"DeviceIoControl CTL_UNINIT é”™è¯¯ï¼š%d", GetLastError());
 	}
 	return false;
 }
@@ -94,7 +94,7 @@ BOOL KFInstallSelfProtect()
 		ULONG_PTR pidb = GetCurrentProcessId();
 		if (DeviceIoControl(hKDrv, CTL_INITSELFPROTECT, &pidb, sizeof(pidb), NULL, NULL, &ReturnLength, NULL))
 				return TRUE;
-		else currentLogger->LogError(L"DeviceIoControl CTL_INITSELFPROTECT ´íÎó£º%d", GetLastError());
+		else currentLogger->LogError(L"DeviceIoControl CTL_INITSELFPROTECT é”™è¯¯ï¼š%d", GetLastError());
 	}
 	return false;
 }
@@ -105,7 +105,7 @@ BOOL KFUnInstallSelfProtect()
 		DWORD ReturnLength = 0;
 		if (DeviceIoControl(hKDrv, CTL_CLIENT_QUIT, NULL, NULL, NULL, NULL, &ReturnLength, NULL))
 			return TRUE;
-		else currentLogger->LogError(L"DeviceIoControl CTL_CLIENT_QUIT ´íÎó£º%d", GetLastError());
+		else currentLogger->LogError(L"DeviceIoControl CTL_CLIENT_QUIT é”™è¯¯ï¼š%d", GetLastError());
 	}
 	return false;
 }
@@ -115,7 +115,7 @@ BOOL KFInjectDll(DWORD pid, LPWSTR dllPath) {
 	{
 
 	}
-	else currentLogger->LogWarn(L"Çı¶¯Î´¼ÓÔØ£¡");
+	else currentLogger->LogWarn(L"é©±åŠ¨æœªåŠ è½½ï¼");
 	return false;
 }
 

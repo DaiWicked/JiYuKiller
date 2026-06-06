@@ -1,4 +1,4 @@
-#include "DriverLoader.h"
+ï»¿#include "DriverLoader.h"
 #include "stdafx.h"
 #include "DriverLoader.h"
 #include "JiYuTrainer.h"
@@ -13,10 +13,10 @@ extern LoggerInternal * currentLogger;
 
 HANDLE hKDrv = NULL;
 
-//¼ÓÔØÇý¶¯
-//    lpszDriverName£ºÇý¶¯µÄ·þÎñÃû
-//    driverPath£ºÇý¶¯µÄÍêÕûÂ·¾¶
-//    lpszDisplayName£ºnullptr
+//åŠ è½½é©±åŠ¨
+//    lpszDriverNameï¼šé©±åŠ¨çš„æœåŠ¡å
+//    driverPathï¼šé©±åŠ¨çš„å®Œæ•´è·¯å¾„
+//    lpszDisplayNameï¼šnullptr
 BOOL MLoadKernelDriver(const wchar_t* lpszDriverName, const wchar_t* driverPath, const wchar_t* lpszDisplayName)
 {
 	//MessageBox(0, driverPath, L"driverPath", 0);
@@ -95,14 +95,14 @@ RECREATE:
 		}
 	}
 	bRet = TRUE;
-	//Àë¿ªÇ°¹Ø±Õ¾ä±ú
+	//ç¦»å¼€å‰å…³é—­å¥æŸ„
 BeforeLeave:
 	if (hServiceDDK) CloseServiceHandle(hServiceDDK);
 	if (hServiceMgr) CloseServiceHandle(hServiceMgr);
 	return bRet;
 }
-//Ð¶ÔØÇý¶¯
-//    szSvrName£º·þÎñÃû
+//å¸è½½é©±åŠ¨
+//    szSvrNameï¼šæœåŠ¡å
 BOOL MUnLoadKernelDriver(const wchar_t* szSvrName)
 {
 	if (hKDrv && (wcscmp(szSvrName, L"JiYuTrainerDriver") == 0)) {
@@ -122,7 +122,7 @@ BOOL MUnLoadKernelDriver(const wchar_t* szSvrName)
 		bRet = FALSE;
 		goto BeforeLeave;
 	}
-	//´ò¿ªÇý¶¯Ëù¶ÔÓ¦µÄ·þÎñ
+	//æ‰“å¼€é©±åŠ¨æ‰€å¯¹åº”çš„æœåŠ¡
 	hServiceDDK = OpenService(hServiceMgr, szSvrName, SERVICE_ALL_ACCESS);
 	if (hServiceDDK == NULL)
 	{
@@ -132,11 +132,11 @@ BOOL MUnLoadKernelDriver(const wchar_t* szSvrName)
 		bRet = FALSE;
 		goto BeforeLeave;
 	}
-	//Í£Ö¹Çý¶¯³ÌÐò£¬Èç¹ûÍ£Ö¹Ê§°Ü£¬Ö»ÓÐÖØÐÂÆô¶¯²ÅÄÜ£¬ÔÙ¶¯Ì¬¼ÓÔØ¡£ 
+	//åœæ­¢é©±åŠ¨ç¨‹åºï¼Œå¦‚æžœåœæ­¢å¤±è´¥ï¼Œåªæœ‰é‡æ–°å¯åŠ¨æ‰èƒ½ï¼Œå†åŠ¨æ€åŠ è½½ã€‚ 
 	if (!ControlService(hServiceDDK, SERVICE_CONTROL_STOP, &SvrSta)) {
 		currentLogger->LogError2(L"UnLoad driver error in ControlService : %d", GetLastError());
 	}
-	//¶¯Ì¬Ð¶ÔØÇý¶¯³ÌÐò¡£ 
+	//åŠ¨æ€å¸è½½é©±åŠ¨ç¨‹åºã€‚ 
 	if (!DeleteService(hServiceDDK)) {
 		currentLogger->LogError2(L"UnLoad driver error in DeleteService : %d", GetLastError());
 		bRet = FALSE;
@@ -144,7 +144,7 @@ BOOL MUnLoadKernelDriver(const wchar_t* szSvrName)
 	else bDeleted = TRUE;
 
 BeforeLeave:
-	//Àë¿ªÇ°¹Ø±Õ´ò¿ªµÄ¾ä±ú
+	//ç¦»å¼€å‰å…³é—­æ‰“å¼€çš„å¥æŸ„
 	if (hServiceDDK) CloseServiceHandle(hServiceDDK);
 	if (hServiceMgr) CloseServiceHandle(hServiceMgr);
 
@@ -165,54 +165,54 @@ BOOL MUnLoadDriverServiceWithMessage(const wchar_t* szSvrName)
 	if (hServiceMgr == NULL)
 	{
 		lastErr = GetLastError();
-		FAST_STR_BINDER(str, L"Ð¶ÔØÇý¶¯´íÎó£¬´ò¿ªÇý¶¯¹ÜÀí´íÎó£º%s\nÇë³¢ÊÔÒÔ¹ÜÀíÔ±Éí·ÝÔËÐÐÈí¼þ¡£", 128, SysHlp::ConvertErrorCodeToString(lastErr));
-		MessageBox(NULL, str, L"JiYuTrainer - ´íÎó", MB_ICONERROR);
+		FAST_STR_BINDER(str, L"å¸è½½é©±åŠ¨é”™è¯¯ï¼Œæ‰“å¼€é©±åŠ¨ç®¡ç†é”™è¯¯ï¼š%s\nè¯·å°è¯•ä»¥ç®¡ç†å‘˜èº«ä»½è¿è¡Œè½¯ä»¶ã€‚", 128, SysHlp::ConvertErrorCodeToString(lastErr));
+		MessageBox(NULL, str, L"JiYuTrainer - é”™è¯¯", MB_ICONERROR);
 		bRet = FALSE;
 		goto BeforeLeave;
 	}
-	//´ò¿ªÇý¶¯Ëù¶ÔÓ¦µÄ·þÎñ
+	//æ‰“å¼€é©±åŠ¨æ‰€å¯¹åº”çš„æœåŠ¡
 	hServiceDDK = OpenService(hServiceMgr, szSvrName, SERVICE_ALL_ACCESS);
 	if (hServiceDDK == NULL)
 	{
 		lastErr = GetLastError();
 		if (lastErr == ERROR_SERVICE_DOES_NOT_EXIST) 
-			MessageBox(NULL, L"Çý¶¯ÒÑÐ¶ÔØ²¢É¾³ý£¬Çë²»ÒªÖØ¸´²Ù×÷", L"JiYuTrainer - ÌáÊ¾", MB_ICONEXCLAMATION);
+			MessageBox(NULL, L"é©±åŠ¨å·²å¸è½½å¹¶åˆ é™¤ï¼Œè¯·ä¸è¦é‡å¤æ“ä½œ", L"JiYuTrainer - æç¤º", MB_ICONEXCLAMATION);
 		else if ( lastErr == ERROR_SERVICE_MARKED_FOR_DELETE) 
-			MessageBox(NULL, L"Ã»ÓÐÔÚÕâÌ¨¼ÆËã»úÉÏÕÒµ½ÕÒµ½Çý¶¯£¬¿ÉÄÜÊÇÇý¶¯ÒÑ¾­±»Ð¶ÔØÁË", L"JiYuTrainer - ÌáÊ¾", MB_ICONEXCLAMATION);
+			MessageBox(NULL, L"æ²¡æœ‰åœ¨è¿™å°è®¡ç®—æœºä¸Šæ‰¾åˆ°æ‰¾åˆ°é©±åŠ¨ï¼Œå¯èƒ½æ˜¯é©±åŠ¨å·²ç»è¢«å¸è½½äº†", L"JiYuTrainer - æç¤º", MB_ICONEXCLAMATION);
 		else {
-			FAST_STR_BINDER(str, L"Ð¶ÔØÇý¶¯´íÎó£¬´ò¿ªÇý¶¯´íÎó£º%s", 128, SysHlp::ConvertErrorCodeToString(lastErr));
-			MessageBox(NULL, str, L"JiYuTrainer - ´íÎó", MB_ICONERROR);
+			FAST_STR_BINDER(str, L"å¸è½½é©±åŠ¨é”™è¯¯ï¼Œæ‰“å¼€é©±åŠ¨é”™è¯¯ï¼š%s", 128, SysHlp::ConvertErrorCodeToString(lastErr));
+			MessageBox(NULL, str, L"JiYuTrainer - é”™è¯¯", MB_ICONERROR);
 		}
 		bRet = FALSE;
 		goto BeforeLeave;
 	}
-	//Í£Ö¹Çý¶¯³ÌÐò£¬Èç¹ûÍ£Ö¹Ê§°Ü£¬Ö»ÓÐÖØÐÂÆô¶¯²ÅÄÜ£¬ÔÙ¶¯Ì¬¼ÓÔØ¡£ 
+	//åœæ­¢é©±åŠ¨ç¨‹åºï¼Œå¦‚æžœåœæ­¢å¤±è´¥ï¼Œåªæœ‰é‡æ–°å¯åŠ¨æ‰èƒ½ï¼Œå†åŠ¨æ€åŠ è½½ã€‚ 
 	if (!ControlService(hServiceDDK, SERVICE_CONTROL_STOP, &SvrSta)) {
 		lastErr = GetLastError();
 		if (lastErr == ERROR_SERVICE_MARKED_FOR_DELETE) {
-			MessageBox(NULL, L"Çý¶¯ÒÑÐ¶ÔØ²¢É¾³ý£¬Çë²»ÒªÖØ¸´²Ù×÷", L"JiYuTrainer - ÌáÊ¾", MB_ICONEXCLAMATION);
+			MessageBox(NULL, L"é©±åŠ¨å·²å¸è½½å¹¶åˆ é™¤ï¼Œè¯·ä¸è¦é‡å¤æ“ä½œ", L"JiYuTrainer - æç¤º", MB_ICONEXCLAMATION);
 			bRet = FALSE;
 			goto BeforeLeave;
 		}
 		else {
-			FAST_STR_BINDER(str, L"Ð¶ÔØÇý¶¯´íÎó£¬Í£Ö¹Çý¶¯Ê§°Ü£º%s", 128, SysHlp::ConvertErrorCodeToString(lastErr));
-			MessageBox(NULL, str, L"JiYuTrainer - ´íÎó", MB_ICONERROR);
+			FAST_STR_BINDER(str, L"å¸è½½é©±åŠ¨é”™è¯¯ï¼Œåœæ­¢é©±åŠ¨å¤±è´¥ï¼š%s", 128, SysHlp::ConvertErrorCodeToString(lastErr));
+			MessageBox(NULL, str, L"JiYuTrainer - é”™è¯¯", MB_ICONERROR);
 		}
 	}
-	//¶¯Ì¬Ð¶ÔØÇý¶¯³ÌÐò¡£ 
+	//åŠ¨æ€å¸è½½é©±åŠ¨ç¨‹åºã€‚ 
 	if (!DeleteService(hServiceDDK)) {
 		lastErr = GetLastError();
 		if (lastErr == ERROR_SERVICE_MARKED_FOR_DELETE) 
-			MessageBox(NULL, L"Çý¶¯ÒÑÐ¶ÔØ²¢É¾³ý£¬Çë²»ÒªÖØ¸´²Ù×÷", L"JiYuTrainer - ÌáÊ¾", MB_ICONEXCLAMATION);
+			MessageBox(NULL, L"é©±åŠ¨å·²å¸è½½å¹¶åˆ é™¤ï¼Œè¯·ä¸è¦é‡å¤æ“ä½œ", L"JiYuTrainer - æç¤º", MB_ICONEXCLAMATION);
 		else {
-			FAST_STR_BINDER(str, L"Ð¶ÔØÇý¶¯´íÎó£¬É¾³ýÇý¶¯´íÎó£º%s", 128, SysHlp::ConvertErrorCodeToString(lastErr));
-			MessageBox(NULL, str, L"JiYuTrainer - ´íÎó", MB_ICONERROR);
+			FAST_STR_BINDER(str, L"å¸è½½é©±åŠ¨é”™è¯¯ï¼Œåˆ é™¤é©±åŠ¨é”™è¯¯ï¼š%s", 128, SysHlp::ConvertErrorCodeToString(lastErr));
+			MessageBox(NULL, str, L"JiYuTrainer - é”™è¯¯", MB_ICONERROR);
 			bRet = FALSE;
 		}
 	}
 	else bDeleted = TRUE;
 BeforeLeave:
-	//Àë¿ªÇ°¹Ø±Õ´ò¿ªµÄ¾ä±ú
+	//ç¦»å¼€å‰å…³é—­æ‰“å¼€çš„å¥æŸ„
 	if (hServiceDDK) CloseServiceHandle(hServiceDDK);
 	if (hServiceMgr) CloseServiceHandle(hServiceMgr);
 
@@ -220,7 +220,7 @@ BeforeLeave:
 
 	return bRet;
 }
-//´ò¿ªÇý¶¯
+//æ‰“å¼€é©±åŠ¨
 BOOL XOpenDriver()
 {
 	hKDrv = CreateFile(L"\\\\.\\JKRK",
@@ -247,11 +247,11 @@ BOOL XTestDriverCanUse() {
 	bool isXp = SysHlp::GetSystemVersion() == SystemVersionWindowsXP;
 
 	if (SysHlp::Is64BitOS()) {
-		currentLogger->LogWarn(L"Çý¶¯²»Ö§³Ö 64Î» ÏµÍ³");
+		currentLogger->LogWarn(L"é©±åŠ¨ä¸æ”¯æŒ 64ä½ ç³»ç»Ÿ");
 		return FALSE;
 	}
 	if (!SysHlp::IsRunasAdmin() && !isXp) {
-		currentLogger->LogWarn(L"Òª¼ÓÔØÇý¶¯£¬ÇëÒÔ¹ÜÀíÔ±Éí·ÝÔËÐÐ±¾³ÌÐò");
+		currentLogger->LogWarn(L"è¦åŠ è½½é©±åŠ¨ï¼Œè¯·ä»¥ç®¡ç†å‘˜èº«ä»½è¿è¡Œæœ¬ç¨‹åº");
 		return FALSE;
 	}
 
@@ -275,10 +275,10 @@ BOOL XLoadDriver() {
 			currentLogger->Log(L"Windows Bulid version %d", sysBulidVersion);
 			KFSendDriverinitParam(isXp, isWin7, sysBulidVersion);
 			
-			currentLogger->LogInfo(L"Çý¶¯¼ÓÔØ³É¹¦");
+			currentLogger->LogInfo(L"é©±åŠ¨åŠ è½½æˆåŠŸ");
 			return TRUE;
 		}
-		else currentLogger->LogWarn2(L"Çý¶¯¼ÓÔØ³É¹¦£¬µ«´ò¿ªÇý¶¯Ê§°Ü");
+		else currentLogger->LogWarn2(L"é©±åŠ¨åŠ è½½æˆåŠŸï¼Œä½†æ‰“å¼€é©±åŠ¨å¤±è´¥");
 	}
 
 	return FALSE;

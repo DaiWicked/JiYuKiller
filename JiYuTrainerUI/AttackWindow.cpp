@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "AttackWindow.h"
 #include "ScanIPWindow.h"
 #include "resource.h"
@@ -12,7 +12,7 @@ extern int screenWidth, screenHeight;
 
 AttackWindow::AttackWindow(HWND parentHWnd) : 
 	CommonWindow(parentHWnd, 570, 520, 
-		L"JiYuTrainerAttackWindow", L"¼«Óòµç×Ó½ÌÊÒÊı¾İ°ü(udp)ÖØ·Å¹¥»÷ - by ht0Ruial",
+		L"JiYuTrainerAttackWindow", L"æåŸŸç”µå­æ•™å®¤æ•°æ®åŒ…(udp)é‡æ”¾æ”»å‡» - by ht0Ruial",
 		IDR_HTML_ATTACK)
 {
 	init();
@@ -76,8 +76,8 @@ LRESULT AttackWindow::onWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		return 0;
 	}
 	case WM_MY_GET_SM_TICP_PORT_FINISH: {
-		if (wParam == NOT_FOUND_JY_PORT) MessageBox(hWnd, L"Î´ÕÒµ½¼«ÓòPID£¬ÇëÈ·¶¨¼«ÓòÒÑ¾­ÔËĞĞ¡£", L"ÌáÊ¾", MB_OK);
-		else if(wParam == FAILED_FOUND_JY_PORT) MessageBox(hWnd, L"»ñÈ¡TCP±íÊ§°Ü", L"ÌáÊ¾", MB_OK);
+		if (wParam == NOT_FOUND_JY_PORT) MessageBox(hWnd, L"æœªæ‰¾åˆ°æåŸŸPIDï¼Œè¯·ç¡®å®šæåŸŸå·²ç»è¿è¡Œã€‚", L"æç¤º", MB_OK);
+		else if(wParam == FAILED_FOUND_JY_PORT) MessageBox(hWnd, L"è·å–TCPè¡¨å¤±è´¥", L"æç¤º", MB_OK);
 		else input_target_port.set_value(sciter::value((int)wParam));
 		*handled = TRUE;
 		return 0;
@@ -98,13 +98,13 @@ bool AttackWindow::SendCommonCheck(std::vector<std::wstring> *ips, DWORD *port)
 {
 	std::wstring str = input_target_ip.get_value().get(L"");
 	if (str.empty()) {
-		AddStringToReult(L"ÇëÊäÈëÄ¿±êIPµØÖ·£¡");
+		AddStringToReult(L"è¯·è¾“å…¥ç›®æ ‡IPåœ°å€ï¼");
 		return false;
 	}
 
 	*port = input_target_port.get_value().get(-1);
 	if (*port < 0 || *port > 65535) {
-		AddStringToReult(L"¶Ë¿Ú´íÎó£¬¶Ë¿Ú±ØĞëÊÇ0-65535µÄÊı×Ö");
+		AddStringToReult(L"ç«¯å£é”™è¯¯ï¼Œç«¯å£å¿…é¡»æ˜¯0-65535çš„æ•°å­—");
 		return false;
 	}
 
@@ -114,7 +114,7 @@ bool AttackWindow::SendCommonCheck(std::vector<std::wstring> *ips, DWORD *port)
 		i++;
 		std::wregex express(L"^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
 		if (!std::regex_match(ip.begin(), ip.end(), express)) {
-			AddStringToReult(FormatString(L"µÚ%d¸öIPµØÖ·£¨%s£©¸ñÊ½²»ÕıÈ·£¬±ØĞëÊÇÕıÈ·µÄIPV4µØÖ·", i, ip.c_str()).c_str());
+			AddStringToReult(FormatString(L"ç¬¬%dä¸ªIPåœ°å€ï¼ˆ%sï¼‰æ ¼å¼ä¸æ­£ç¡®ï¼Œå¿…é¡»æ˜¯æ­£ç¡®çš„IPV4åœ°å€", i, ip.c_str()).c_str());
 			return false;
 		}
 	}
@@ -125,11 +125,11 @@ bool AttackWindow::SendCommonCheck(std::vector<std::wstring> *ips, DWORD *port)
 void AttackWindow::SendCmd() {
 	auto cmd = input_send_cmd.get_value().to_string();
 	if (cmd.empty()) {
-		AddStringToReult(L"ÇëÊäÈëÒª·¢ËÍµÄÃüÁî£¡");
+		AddStringToReult(L"è¯·è¾“å…¥è¦å‘é€çš„å‘½ä»¤ï¼");
 		return;
 	}
 	if (cmd.length() > 512) {
-		AddStringToReult(L"ÃüÁîÌ«³¤ÁË£¬ÇëÉ¾µôÒ»Ğ©");
+		AddStringToReult(L"å‘½ä»¤å¤ªé•¿äº†ï¼Œè¯·åˆ æ‰ä¸€äº›");
 		return;
 	}
 	std::vector<std::wstring> ips;
@@ -142,11 +142,11 @@ void AttackWindow::SendCmd() {
 void AttackWindow::SendText() {
 	auto cmd = input_send_message.get_value().to_string();
 	if (cmd.empty()) {
-		AddStringToReult(L"ÇëÊäÈëÒª·¢ËÍµÄÎÄ×Ö£¡");
+		AddStringToReult(L"è¯·è¾“å…¥è¦å‘é€çš„æ–‡å­—ï¼");
 		return;
 	}
 	if (cmd.length() > 100) {
-		AddStringToReult(L"ÎÄ×ÖÌ«³¤ÁË£¬ÇëÉ¾µôÒ»Ğ©");
+		AddStringToReult(L"æ–‡å­—å¤ªé•¿äº†ï¼Œè¯·åˆ æ‰ä¸€äº›");
 		return;
 	}
 	std::vector<std::wstring> ips;
@@ -157,7 +157,7 @@ void AttackWindow::SendText() {
 		JyUdpAttack::currentJyUdpAttack->SendText(ip, port, cmd);
 }
 void AttackWindow::SendShutdown() {
-	if (MessageBox(_hWnd, L"È·ÈÏ·¢ËÍ¸ÃÃüÁî£¿", L"ÌáÊ¾", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) {
+	if (MessageBox(_hWnd, L"ç¡®è®¤å‘é€è¯¥å‘½ä»¤ï¼Ÿ", L"æç¤º", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) {
 
 		std::vector<std::wstring> ips;
 		DWORD port;
@@ -168,7 +168,7 @@ void AttackWindow::SendShutdown() {
 	}
 }
 void AttackWindow::SendReboott() {
-	if (MessageBox(_hWnd, L"È·ÈÏ·¢ËÍ¸ÃÃüÁî£¿", L"ÌáÊ¾", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) {
+	if (MessageBox(_hWnd, L"ç¡®è®¤å‘é€è¯¥å‘½ä»¤ï¼Ÿ", L"æç¤º", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) {
 
 		std::vector<std::wstring> ips;
 		DWORD port;

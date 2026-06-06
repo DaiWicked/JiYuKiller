@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "sciter-x-dom.hpp"
 #include "sciter-x-behavior.h"
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Logger.h"
 #include "SettingHlp.h"
@@ -39,25 +39,25 @@ class JTApp
 public:
 
 	/*
-		Ğ¶ÔØ
+		å¸è½½
 	*/
 	virtual void UnInstall() {}
 
 	/*
-		ÊÍ·ÅÄ£¿é×ÊÔ´µ½ÎÄ¼ş
-		[resModule] ×ÊÔ´ËùÔÚÄ£¿é
-		[resId] ×ÊÔ´id
-		[resType] ×ÊÔ´ÀàĞÍ
-		[extractTo] ÎÄ¼şÂ·¾¶
+		é‡Šæ”¾æ¨¡å—èµ„æºåˆ°æ–‡ä»¶
+		[resModule] èµ„æºæ‰€åœ¨æ¨¡å—
+		[resId] èµ„æºid
+		[resType] èµ„æºç±»å‹
+		[extractTo] æ–‡ä»¶è·¯å¾„
 	*/
 	virtual EXTRACT_RES InstallResFile(HINSTANCE resModule, LPWSTR resId, LPCWSTR resType, LPCWSTR extractTo) { return EXTRACT_RES::ExtractUnknow; }
 
-	//¼ì²âÃüÁîĞĞ²ÎÊıÊÇ·ñ´æÔÚÄ³¸ö²ÎÊı
+	//æ£€æµ‹å‘½ä»¤è¡Œå‚æ•°æ˜¯å¦å­˜åœ¨æŸä¸ªå‚æ•°
 	virtual bool IsCommandExists(LPCWSTR cmd) { return false; }
 
-	//»ñÈ¡ÃüÁîĞĞ²ÎÊıÊı×é
+	//è·å–å‘½ä»¤è¡Œå‚æ•°æ•°ç»„
 	virtual LPWSTR *GetCommandLineArray() { return nullptr; }
-	//»ñÈ¡ÃüÁîĞĞ²ÎÊıÊı×é´óĞ¡
+	//è·å–å‘½ä»¤è¡Œå‚æ•°æ•°ç»„å¤§å°
 	virtual int GetCommandLineArraySize() { return 0; }
 
 	virtual LPCWSTR MakeFromSourceArg(LPCWSTR arg) { return nullptr; }
@@ -67,16 +67,16 @@ public:
 	virtual void LoadDriver() {}
 
 	/*
-		²éÕÒÃüÁîĞĞ²ÎÊıÔÚÊı×éÖĞµÄÎ»ÖÃ
-		[szArgList] ÃüÁîĞĞ²ÎÊıÊı×é
-		[argCount] ÃüÁîĞĞ²ÎÊıÊı×é´óĞ¡
-		[arg] Òª²éÕÒÃüÁîĞĞ²ÎÊı
-		[·µ»Ø] Èç¹ûÕÒµ½£¬·µ»ØË÷Òı£¬·ñÔò·µ»Ø-1
+		æŸ¥æ‰¾å‘½ä»¤è¡Œå‚æ•°åœ¨æ•°ç»„ä¸­çš„ä½ç½®
+		[szArgList] å‘½ä»¤è¡Œå‚æ•°æ•°ç»„
+		[argCount] å‘½ä»¤è¡Œå‚æ•°æ•°ç»„å¤§å°
+		[arg] è¦æŸ¥æ‰¾å‘½ä»¤è¡Œå‚æ•°
+		[è¿”å›] å¦‚æœæ‰¾åˆ°ï¼Œè¿”å›ç´¢å¼•ï¼Œå¦åˆ™è¿”å›-1
 	*/
 	virtual int FindArgInCommandLine(LPWSTR *szArgList, int argCount, const wchar_t * arg) { return 0; }
 
 	/*
-		ÔËĞĞ³ÌĞò
+		è¿è¡Œç¨‹åº
 	*/
 	virtual int Run(int nCmdShow) { return 0; }
 	virtual int GetResult() { return 0; }
@@ -85,19 +85,19 @@ public:
 	virtual LPVOID RunOperation(AppOperation op) { return nullptr; }
 
 	/*
-		»ñÈ¡µ±Ç°³ÌĞò HINSTANCE
+		è·å–å½“å‰ç¨‹åº HINSTANCE
 	*/
 	virtual HINSTANCE GetInstance() { return nullptr; }
 
 	/*
-		»ñÈ¡²¿¼şÍêÕûÎ»ÖÃ
-		[partId] ²¿¼şË÷Òı
+		è·å–éƒ¨ä»¶å®Œæ•´ä½ç½®
+		[partId] éƒ¨ä»¶ç´¢å¼•
 	*/
 	virtual LPCWSTR GetPartFullPath(int partId) { return nullptr; }
 
-	//»ñÈ¡µ±Ç°³ÌĞòÍêÕûÂ·¾¶
+	//è·å–å½“å‰ç¨‹åºå®Œæ•´è·¯å¾„
 	virtual LPCWSTR GetFullPath() { return nullptr; }
-	//»ñÈ¡µ±Ç°³ÌĞòÄ¿Â¼
+	//è·å–å½“å‰ç¨‹åºç›®å½•
 	virtual LPCWSTR GetCurrentDir() { return nullptr; }
 	virtual LPCWSTR GetSourceInstallerPath() { return nullptr; }
 	

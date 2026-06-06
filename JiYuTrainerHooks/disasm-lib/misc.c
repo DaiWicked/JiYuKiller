@@ -1,4 +1,4 @@
-// Copyright (C) 2002, Matt Conover (mconover@gmail.com)
+﻿// Copyright (C) 2002, Matt Conover (mconover@gmail.com)
 #include "misc.h"
 
 BOOL IsHexChar(BYTE ch)

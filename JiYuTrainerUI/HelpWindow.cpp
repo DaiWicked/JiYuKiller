@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "HelpWindow.h"
 #include "resource.h"
 #include "../JiYuTrainer/SysHlp.h"

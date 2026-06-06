@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "nthlp.h"
 #include "StringHlp.h"
 #include "JiYuTrainer.h"

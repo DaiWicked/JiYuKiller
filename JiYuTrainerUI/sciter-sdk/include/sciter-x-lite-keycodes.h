@@ -1,4 +1,4 @@
-#ifndef __sciter_lite_keycodes_h__
+﻿#ifndef __sciter_lite_keycodes_h__
 #define __sciter_lite_keycodes_h__
 
 enum KEYBOARD_CODES {   // table matches GLFW table

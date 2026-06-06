@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "TrainerWorker.h"
 #include "JiYuTrainer.h"
 #include "AppPublic.h"
@@ -59,8 +59,8 @@ void TrainerWorkerInternal::Init()
 	hDesktop = OpenDesktop(L"Default", 0, FALSE, DESKTOP_ENUMERATE);
 	UpdateScreenSize();
 
-	if (LocateStudentMainLocation()) currentLogger->Log(L"ÒÑ¶¨Î»¼«Óòµç×Ó½ÌÊÒÎ»ÖÃ£º %s", _StudentMainPath.c_str());
-	else currentLogger->LogWarn(L"ÎŞ·¨¶¨Î»¼«Óòµç×Ó½ÌÊÒÎ»ÖÃ");
+	if (LocateStudentMainLocation()) currentLogger->Log(L"å·²å®šä½æåŸŸç”µå­æ•™å®¤ä½ç½®ï¼š %s", _StudentMainPath.c_str());
+	else currentLogger->LogWarn(L"æ— æ³•å®šä½æåŸŸç”µå­æ•™å®¤ä½ç½®");
 
 	UpdateState();
 	UpdateStudentMainInfo(false);
@@ -168,7 +168,7 @@ void TrainerWorkerInternal::HandleMessageFromVirus(LPCWSTR buf)
 			else if (arr[1] == L"gbtop") ManualTop(true);
 			else if (arr[1] == L"showhelp" && _Callback) _Callback->OnShowHelp();
 			else if (arr[1] == L"wtf") {
-				//²åÈëÁË´íÎóµÄÄ¿±ê£¬ÏÖÔÚÖØÖÃ×´Ì¬
+				//æ’å…¥äº†é”™è¯¯çš„ç›®æ ‡ï¼Œç°åœ¨é‡ç½®çŠ¶æ€
 				DWORD pid = _wtol(arr[2].c_str());
 				AddFilterdPid(pid);
 
@@ -176,7 +176,7 @@ void TrainerWorkerInternal::HandleMessageFromVirus(LPCWSTR buf)
 					_StudentMainFileLocated = false;
 				_StudentMainPid = 0;
 
-				currentLogger->Log(L"²åÈëÁËÆæ¹ÖµÄ StudentMain.exe");
+				currentLogger->Log(L"æ’å…¥äº†å¥‡æ€ªçš„ StudentMain.exe");
 
 				UpdateState();
 				UpdateStudentMainInfo(false);
@@ -207,7 +207,7 @@ void TrainerWorkerInternal::SendMessageToVirus(LPCWSTR buf)
 bool TrainerWorkerInternal::Kill(bool autoWork)
 {
 	if (_StudentMainPid <= 4) {
-		currentLogger->LogError(L"Î´ÕÒµ½¼«ÓòÖ÷½ø³Ì");
+		currentLogger->LogError(L"æœªæ‰¾åˆ°æåŸŸä¸»è¿›ç¨‹");
 		return false;
 	}
 	if (_StudentMainControlled){
@@ -215,8 +215,8 @@ bool TrainerWorkerInternal::Kill(bool autoWork)
 		if(!vkill){
 			MSGBOXPARAMSW mbp = { 0 };
 			mbp.hwndOwner = hWndMain;
-			mbp.lpszCaption = L"JiYuTrainer - ÌáÊ¾";
-			mbp.lpszText = L"ÄúÊÇ·ñÏ£ÍûÊ¹ÓÃ²¡¶¾½øĞĞ±¬ÆÆ£¿";
+			mbp.lpszCaption = L"JiYuTrainer - æç¤º";
+			mbp.lpszText = L"æ‚¨æ˜¯å¦å¸Œæœ›ä½¿ç”¨ç—…æ¯’è¿›è¡Œçˆ†ç ´ï¼Ÿ";
 			mbp.cbSize = sizeof(MSGBOXPARAMSW);
 			mbp.dwStyle = MB_ICONEXCLAMATION | MB_TOPMOST | MB_YESNOCANCEL;
 			int drs = MessageBoxIndirect(&mbp);
@@ -241,7 +241,7 @@ bool TrainerWorkerInternal::Kill(bool autoWork)
 			return true;
 		}
 		else {
-			currentLogger->LogError(L"´ò¿ª½ø³Ì´íÎó£º0x%08X£¬ÇëÊÖ¶¯½áÊø", status);
+			currentLogger->LogError(L"æ‰“å¼€è¿›ç¨‹é”™è¯¯ï¼š0x%08Xï¼Œè¯·æ‰‹åŠ¨ç»“æŸ", status);
 			return false;
 		}
 	}
@@ -257,9 +257,9 @@ bool TrainerWorkerInternal::Kill(bool autoWork)
 	else {
 		if (status == STATUS_ACCESS_DENIED) goto FORCEKILL;
 		else if (status != STATUS_INVALID_CID && status != STATUS_INVALID_HANDLE) {
-			currentLogger->LogError(L"½áÊø½ø³Ì´íÎó£º0x%08X£¬ÇëÊÖ¶¯½áÊø", status);
+			currentLogger->LogError(L"ç»“æŸè¿›ç¨‹é”™è¯¯ï¼š0x%08Xï¼Œè¯·æ‰‹åŠ¨ç»“æŸ", status);
 			if (!autoWork)
-				MessageBox(hWndMain, L"ÎŞ·¨½áÊø¼«Óòµç×Ó½ÌÊÒ£¬ÄúĞèÒªÊ¹ÓÃÆäËû¹¤¾ßÊÖ¶¯½áÊø", L"JiYuTrainer - ´íÎó", MB_ICONERROR);;
+				MessageBox(hWndMain, L"æ— æ³•ç»“æŸæåŸŸç”µå­æ•™å®¤ï¼Œæ‚¨éœ€è¦ä½¿ç”¨å…¶ä»–å·¥å…·æ‰‹åŠ¨ç»“æŸ", L"JiYuTrainer - é”™è¯¯", MB_ICONERROR);;
 			CloseHandle(hProcess);
 			return false;
 		}
@@ -274,7 +274,7 @@ bool TrainerWorkerInternal::Kill(bool autoWork)
 	}
 
 FORCEKILL:
-	if (XDriverLoaded() && MessageBox(hWndMain, L"ÆÕÍ¨ÎŞ·¨½áÊø¼«Óò£¬ÊÇ·ñµ÷ÓÃÇı¶¯½áÊø¼«Óò£¿\n£¨Çı¶¯¿ÉÄÜ²»ÎÈ¶¨£¬ÇëÉ÷ÓÃ¡£ÄúÒ²¿ÉÒÔÊ¹ÓÃ PCHunter µÈ°²È«Èí¼ş½øĞĞÇ¿É±£©", L"JiYuTrainer - ÌáÊ¾", MB_ICONEXCLAMATION | MB_YESNO | MB_TOPMOST) == IDYES)
+	if (XDriverLoaded() && MessageBox(hWndMain, L"æ™®é€šæ— æ³•ç»“æŸæåŸŸï¼Œæ˜¯å¦è°ƒç”¨é©±åŠ¨ç»“æŸæåŸŸï¼Ÿ\nï¼ˆé©±åŠ¨å¯èƒ½ä¸ç¨³å®šï¼Œè¯·æ…ç”¨ã€‚æ‚¨ä¹Ÿå¯ä»¥ä½¿ç”¨ PCHunter ç­‰å®‰å…¨è½¯ä»¶è¿›è¡Œå¼ºæ€ï¼‰", L"JiYuTrainer - æç¤º", MB_ICONEXCLAMATION | MB_YESNO | MB_TOPMOST) == IDYES)
 	{
 		if (KForceKill(_StudentMainPid, &status)) {
 			_StudentMainPid = 0;
@@ -284,7 +284,7 @@ FORCEKILL:
 			CloseHandle(hProcess);
 			return true;
 		}
-		else if(!autoWork) MessageBox(hWndMain, L"Çı¶¯Ò²ÎŞ·¨½áÊø£¬ÇëÊ¹ÓÃ PCHunter ½áÊøËü°É£¡", L"´íÎó", MB_ICONEXCLAMATION);
+		else if(!autoWork) MessageBox(hWndMain, L"é©±åŠ¨ä¹Ÿæ— æ³•ç»“æŸï¼Œè¯·ä½¿ç”¨ PCHunter ç»“æŸå®ƒå§ï¼", L"é”™è¯¯", MB_ICONEXCLAMATION);
 	}
 	CloseHandle(hProcess);
 	return false;
@@ -299,9 +299,9 @@ bool TrainerWorkerInternal::KillStAuto()
 bool TrainerWorkerInternal::Rerun(bool autoWork)
 {
 	if (!_StudentMainFileLocated) {
-		currentLogger->LogWarn(L"Î´ÕÒµ½¼«Óòµç×Ó½ÌÊÒ");
+		currentLogger->LogWarn(L"æœªæ‰¾åˆ°æåŸŸç”µå­æ•™å®¤");
 		if (!autoWork && _Callback)
-			_Callback->OnSimpleMessageCallback(L"<h5>ÎÒÃÇÎŞ·¨ÔÚ´Ë¼ÆËã»úÉÏÕÒµ½¼«Óòµç×Ó½ÌÊÒ£¬ÄúĞèÒªÊÖ¶¯Æô¶¯</h5>");
+			_Callback->OnSimpleMessageCallback(L"<h5>æˆ‘ä»¬æ— æ³•åœ¨æ­¤è®¡ç®—æœºä¸Šæ‰¾åˆ°æåŸŸç”µå­æ•™å®¤ï¼Œæ‚¨éœ€è¦æ‰‹åŠ¨å¯åŠ¨</h5>");
 		return false;
 	}
 	return  SysHlp::RunApplication(_StudentMainPath.c_str(), NULL);
@@ -374,7 +374,7 @@ void TrainerWorkerInternal::RunResetPid()
 
 	//Find jiyu main process
 	DWORD newPid = 0;
-	if (LocateStudentMain(&newPid)) { //ÕÒµ½¼«Óò
+	if (LocateStudentMain(&newPid)) { //æ‰¾åˆ°æåŸŸ
 
 		if (_StudentMainPid != newPid)
 		{
@@ -384,23 +384,23 @@ void TrainerWorkerInternal::RunResetPid()
 				_VirusInstalled = true;
 				_NextLoopGetCkStat = true;
 
-				currentLogger->Log(L"Ïò StudentMain.exe [%d] ×¢ÈëDLL³É¹¦", newPid);
+				currentLogger->Log(L"å‘ StudentMain.exe [%d] æ³¨å…¥DLLæˆåŠŸ", newPid);
 			}
-			else  currentLogger->LogError(L"Ïò StudentMain.exe [%d] ×¢ÈëDLLÊ§°Ü", newPid);
+			else  currentLogger->LogError(L"å‘ StudentMain.exe [%d] æ³¨å…¥DLLå¤±è´¥", newPid);
 
-			currentLogger->Log(L"ÒÑËø¶¨ StudentMain.exe [%d]", newPid);
+			currentLogger->Log(L"å·²é”å®š StudentMain.exe [%d]", newPid);
 
 			UpdateState();
 			UpdateStudentMainInfo(false);
 		}
 	}
-	else { //Ã»ÓĞÕÒµ½
+	else { //æ²¡æœ‰æ‰¾åˆ°
 
 		if (_StudentMainPid != 0)
 		{
 			_StudentMainPid = 0;
 
-			currentLogger->Log(L"¼«ÓòÖ÷½ø³Ì StudentMain.exe ÒÑÍË³ö", newPid);
+			currentLogger->Log(L"æåŸŸä¸»è¿›ç¨‹ StudentMain.exe å·²é€€å‡º", newPid);
 
 			UpdateState();
 			UpdateStudentMainInfo(false);
@@ -414,8 +414,8 @@ void TrainerWorkerInternal::RunResetPid()
 		if (_MasterHelperPid != newPid)
 		{
 			_MasterHelperPid = newPid;
-			if (InstallVirusForMaster()) currentLogger->Log(L"Ïò MasterHelper.exe [%d] ×¢ÈëDLL³É¹¦", newPid);
-			else  currentLogger->LogError(L"Ïò MasterHelper.exe [%d] ×¢ÈëDLLÊ§°Ü", newPid);
+			if (InstallVirusForMaster()) currentLogger->Log(L"å‘ MasterHelper.exe [%d] æ³¨å…¥DLLæˆåŠŸ", newPid);
+			else  currentLogger->LogError(L"å‘ MasterHelper.exe [%d] æ³¨å…¥DLLå¤±è´¥", newPid);
 		}
 	}
 	else {
@@ -459,33 +459,33 @@ bool TrainerWorkerInternal::KillProcess(DWORD pid, bool force)
 	NTSTATUS status = MOpenProcessNt(_StudentMainPid, &hProcess);
 	if (!NT_SUCCESS(status)) {
 		if (status == STATUS_INVALID_CID || status == STATUS_INVALID_HANDLE) {
-			currentLogger->LogError2(L"ÕÒ²»µ½½ø³Ì [%d] ", pid);
+			currentLogger->LogError2(L"æ‰¾ä¸åˆ°è¿›ç¨‹ [%d] ", pid);
 			return true;
 		}
 		else {
-			currentLogger->LogError2(L"´ò¿ª½ø³Ì [%d] ´íÎó£º0x%08X£¬ÇëÊÖ¶¯½áÊø", pid);
+			currentLogger->LogError2(L"æ‰“å¼€è¿›ç¨‹ [%d] é”™è¯¯ï¼š0x%08Xï¼Œè¯·æ‰‹åŠ¨ç»“æŸ", pid);
 			return false;
 		}
 	}
 	status = MTerminateProcessNt(0, hProcess);
 	if (NT_SUCCESS(status)) {
-		currentLogger->Log(L"½ø³Ì [%d] ½áÊø³É¹¦", pid);
+		currentLogger->Log(L"è¿›ç¨‹ [%d] ç»“æŸæˆåŠŸ", pid);
 		CloseHandle(hProcess);
 		return TRUE;
 	}
 	else {
 		if (status == STATUS_ACCESS_DENIED) {
 			if (force) goto FORCEKILL;
-			else currentLogger->LogError2(L"½áÊø½ø³Ì [%d] ´íÎó£º¾Ü¾ø·ÃÎÊ¡£¿É³¢ÊÔÊ¹ÓÃÇı¶¯½áÊø", pid);
+			else currentLogger->LogError2(L"ç»“æŸè¿›ç¨‹ [%d] é”™è¯¯ï¼šæ‹’ç»è®¿é—®ã€‚å¯å°è¯•ä½¿ç”¨é©±åŠ¨ç»“æŸ", pid);
 			CloseHandle(hProcess);
 		}
 		else if (status != STATUS_INVALID_CID && status != STATUS_INVALID_HANDLE) {
-			currentLogger->LogError2(L"½áÊø½ø³Ì [%d] ´íÎó£º0x%08X£¬ÇëÊÖ¶¯½áÊø", pid);
+			currentLogger->LogError2(L"ç»“æŸè¿›ç¨‹ [%d] é”™è¯¯ï¼š0x%08Xï¼Œè¯·æ‰‹åŠ¨ç»“æŸ", pid);
 			CloseHandle(hProcess);
 			return false;
 		}
 		else if (status == STATUS_INVALID_CID || status == STATUS_INVALID_HANDLE) {
-			currentLogger->LogError2(L"ÕÒ²»µ½½ø³Ì [%d] ", pid);
+			currentLogger->LogError2(L"æ‰¾ä¸åˆ°è¿›ç¨‹ [%d] ", pid);
 			CloseHandle(hProcess);
 			return true;
 		}
@@ -494,15 +494,15 @@ FORCEKILL:
 	if (XDriverLoaded())
 	{
 		if (KForceKill(_StudentMainPid, &status)) {
-			currentLogger->Log(L"½ø³Ì [%d] Ç¿ÖÆ½áÊø³É¹¦", pid);
+			currentLogger->Log(L"è¿›ç¨‹ [%d] å¼ºåˆ¶ç»“æŸæˆåŠŸ", pid);
 			CloseHandle(hProcess);
 			return true;
 		}
 		else {
-			currentLogger->LogError2(L"Çı¶¯Ç¿ÖÆ½áÊø½ø³Ì [%d] ´íÎó£º0x%08X", pid);
+			currentLogger->LogError2(L"é©±åŠ¨å¼ºåˆ¶ç»“æŸè¿›ç¨‹ [%d] é”™è¯¯ï¼š0x%08X", pid);
 		}
 	}
-	else currentLogger->Log(L"Çı¶¯Î´¼ÓÔØ£¬ÎŞ·¨Ç¿ÖÆ½áÊø½ø³Ì");
+	else currentLogger->Log(L"é©±åŠ¨æœªåŠ è½½ï¼Œæ— æ³•å¼ºåˆ¶ç»“æŸè¿›ç¨‹");
 	CloseHandle(hProcess);
 	return false;
 }
@@ -514,14 +514,14 @@ bool TrainerWorkerInternal::ReadTopDomanPassword(BOOL forceKnock)
 	LRESULT lastError;
 
 	if (forceKnock) goto READ_EX;
-	//ÆÕÍ¨×¢²á±í¶ÁÈ¡£¬ÊÊÓÃÓÚ4.0°æ±¾
+	//æ™®é€šæ³¨å†Œè¡¨è¯»å–ï¼Œé€‚ç”¨äº4.0ç‰ˆæœ¬
 
 	WCHAR Data[32];
 	if (MRegReadKeyString64And32(HKEY_LOCAL_MACHINE,
 		L"SOFTWARE\\TopDomain\\e-Learning Class Standard\\1.00",
 		L"SOFTWARE\\Wow6432Node\\TopDomain\\e-Learning Class Standard\\1.00", L"UninstallPasswd", Data, 32)) {
 		
-		if (StrEqual(Data, L"Passwd[123456]")) goto READ_EX; //6.0ÒÔºó¶ÁÈ¡²»ÁËÁË£¬¶¼ÏÔÊ¾Passwd[123456]£¬ÓÃĞÂµÄ·½·¨¶ÁÈ¡
+		if (StrEqual(Data, L"Passwd[123456]")) goto READ_EX; //6.0ä»¥åè¯»å–ä¸äº†äº†ï¼Œéƒ½æ˜¾ç¤ºPasswd[123456]ï¼Œç”¨æ–°çš„æ–¹æ³•è¯»å–
 		else {
 			_TopDomainPassword = Data;
 			_TopDomainPassword = _TopDomainPassword.substr(6, _TopDomainPassword.size() - 6);
@@ -572,7 +572,7 @@ bool TrainerWorkerInternal::AppointStudentMainLocation(LPCWSTR fullPath) {
 		_StudentMainFileLocatedByProcess = false;
 
 		currentApp->GetSettings()->SetSettingStr(L"StudentMainPath", fullPath);
-		currentLogger->Log(L"³É¹¦ÊÖ¶¯¶¨Î»¼«Óòµç×Ó½ÌÊÒÎ»ÖÃ£º %s", fullPath);
+		currentLogger->Log(L"æˆåŠŸæ‰‹åŠ¨å®šä½æåŸŸç”µå­æ•™å®¤ä½ç½®ï¼š %s", fullPath);
 
 		UpdateStudentMainInfo(false);
 		return true;
@@ -581,7 +581,7 @@ bool TrainerWorkerInternal::AppointStudentMainLocation(LPCWSTR fullPath) {
 }
 bool TrainerWorkerInternal::LocateStudentMainLocation()
 {
-	//×¢²á±í²éÕÒ ¼«Óò Â·¾¶
+	//æ³¨å†Œè¡¨æŸ¥æ‰¾ æåŸŸ è·¯å¾„
 	WCHAR Data[MAX_PATH];
 	if (MRegReadKeyString64And32(HKEY_LOCAL_MACHINE,
 		L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\e-Learning Class V6.0",
@@ -593,11 +593,11 @@ bool TrainerWorkerInternal::LocateStudentMainLocation()
 			_StudentMainFileLocated = true;
 			return true;
 		}
-		else currentLogger->Log(L"¶ÁÈ¡×¢²á±í [DisplayIcon] »ñµÃÁËÒ»¸öÎŞĞ§µÄ¼«Óòµç×Ó½ÌÊÒÂ·¾¶ : %s", Data);
+		else currentLogger->Log(L"è¯»å–æ³¨å†Œè¡¨ [DisplayIcon] è·å¾—äº†ä¸€ä¸ªæ— æ•ˆçš„æåŸŸç”µå­æ•™å®¤è·¯å¾„ : %s", Data);
 	}
 	else currentLogger->LogWarn2(L"MRegReadKeyString64And32 Failed : %s (%d)", PRINT_LAST_ERROR_STR);
 
-	//¶ÁÈ¡ÓÃ»§Ö¸¶¨µÄÂ·¾¶
+	//è¯»å–ç”¨æˆ·æŒ‡å®šçš„è·¯å¾„
 	wstring appointStudentMainPath  = currentApp->GetSettings()->GetSettingStr(L"StudentMainPath", L"", MAX_PATH);
 	if (!StrEmepty(appointStudentMainPath.c_str()) && Path::Exists(appointStudentMainPath)) {
 		wstring fileName = Path::GetFileName(appointStudentMainPath);
@@ -608,14 +608,14 @@ bool TrainerWorkerInternal::LocateStudentMainLocation()
 		}
 	}
 
-	//Ö±½Ó³¢ÊÔ²éÕÒ
+	//ç›´æ¥å°è¯•æŸ¥æ‰¾
 	LPCWSTR mabeInHere[6] = {
-		L"c:\\Program Files\\Mythware\\¼«Óò¿ÎÌÃ¹ÜÀíÏµÍ³Èí¼şV6.0 2016 ºÀ»ª°æ\\StudentMain.exe",
+		L"c:\\Program Files\\Mythware\\æåŸŸè¯¾å ‚ç®¡ç†ç³»ç»Ÿè½¯ä»¶V6.0 2016 è±ªåç‰ˆ\\StudentMain.exe",
 		L"C:\\Program Files\\Mythware\\e-Learning Class\\StudentMain.exe",
-		L"C:\\Program Files (x86)\\Mythware\\¼«Óò¿ÎÌÃ¹ÜÀíÏµÍ³Èí¼şV6.0 2016 ºÀ»ª°æ\\StudentMain.exe",
+		L"C:\\Program Files (x86)\\Mythware\\æåŸŸè¯¾å ‚ç®¡ç†ç³»ç»Ÿè½¯ä»¶V6.0 2016 è±ªåç‰ˆ\\StudentMain.exe",
 		L"C:\\Program Files (x86)\\Mythware\\e - Learning Class\\StudentMain.exe",
 		L"C:\\e-Learning Class\\StudentMain.exe",
-		L"c:\\¼«Óò¿ÎÌÃ¹ÜÀíÏµÍ³Èí¼şV6.0 2016 ºÀ»ª°æ\\StudentMain.exe",
+		L"c:\\æåŸŸè¯¾å ‚ç®¡ç†ç³»ç»Ÿè½¯ä»¶V6.0 2016 è±ªåç‰ˆ\\StudentMain.exe",
 	};
 	for (int i = 0; i < 6; i++) {
 		if (Path::Exists(mabeInHere[i])) {
@@ -642,18 +642,18 @@ bool TrainerWorkerInternal::LocateStudentMain(DWORD *outFirstPid)
 				if (NT_SUCCESS(MOpenProcessNt((DWORD)p->ProcessId, &hProcess))) {
 					WCHAR buffer[MAX_PATH];
 					if (MGetProcessFullPathEx(hProcess, buffer)) {
-						//¼ì²éexeÏàÍ¬Ä¿Â¼ÏÂÊÇ·ñ´æÔÚ LibTDMaster.dll ²»´æÔÚÔòÅÅ³ı
+						//æ£€æŸ¥exeç›¸åŒç›®å½•ä¸‹æ˜¯å¦å­˜åœ¨ LibTDMaster.dll ä¸å­˜åœ¨åˆ™æ’é™¤
 						PathRemoveFileSpec(buffer);
 						wcscat_s(buffer, L"\\LibTDMaster.dll");
 						if (!PathFileExists(buffer)) {
 							AddFilterdPid((DWORD)p->ProcessId);
-							currentLogger->Log(L"Ææ¹ÖµÄ StudentMain.exe [%d]", (DWORD)p->ProcessId);
+							currentLogger->Log(L"å¥‡æ€ªçš„ StudentMain.exe [%d]", (DWORD)p->ProcessId);
 							continue;
 						}
 
-						//Exe È·¶¨Î»ÖÃ
+						//Exe ç¡®å®šä½ç½®
 						if (!_StudentMainFileLocated) {
-							currentLogger->Log(L"Í¨¹ı½ø³Ì StudentMain.exe [%d] ¶¨Î»µ½Î»ÖÃ£º %s", (DWORD)p->ProcessId, _StudentMainPath);
+							currentLogger->Log(L"é€šè¿‡è¿›ç¨‹ StudentMain.exe [%d] å®šä½åˆ°ä½ç½®ï¼š %s", (DWORD)p->ProcessId, _StudentMainPath);
 							_StudentMainPath = buffer;
 							_StudentMainFileLocated = true;
 							_StudentMainFileLocatedByProcess = true;
@@ -739,53 +739,53 @@ void TrainerWorkerInternal::UpdateState()
 		TrainerWorkerCallback::TrainerStatus status;
 		if (_StudentMainPid > 4) {
 			if (_StudentMainControlled) {
-				_StatusTextMain = L"ÒÑ¿ØÖÆ¼«Óòµç×Ó½ÌÊÒ";
+				_StatusTextMain = L"å·²æ§åˆ¶æåŸŸç”µå­æ•™å®¤";
 
 				if (!_Running) {
-					_StatusTextMain += L" µ«¿ØÖÆÆ÷Î´Æô¶¯";
+					_StatusTextMain += L" ä½†æ§åˆ¶å™¨æœªå¯åŠ¨";
 					status = TrainerWorkerCallback::TrainerStatus::TrainerStatusStopped;
 				}
 				else if (_StudentMainRunningLock)
 				{
-					_StatusTextMore = L"ÒÑÎªÄú½âËø¼«Óòµç×Ó½ÌÊÒ<br/>Äú¿ÉÒÔ·ÅĞÄ¼ÌĞøÄúµÄ¹¤×÷";
+					_StatusTextMore = L"å·²ä¸ºæ‚¨è§£é”æåŸŸç”µå­æ•™å®¤<br/>æ‚¨å¯ä»¥æ”¾å¿ƒç»§ç»­æ‚¨çš„å·¥ä½œ";
 					status = TrainerWorkerCallback::TrainerStatus::TrainerStatusControlledAndUnLocked;
 				}
 				else {
-					_StatusTextMore = L"Äú¿ÉÒÔ·ÅĞÄ¼ÌĞøÄúµÄ¹¤×÷";
+					_StatusTextMore = L"æ‚¨å¯ä»¥æ”¾å¿ƒç»§ç»­æ‚¨çš„å·¥ä½œ";
 					status = TrainerWorkerCallback::TrainerStatus::TrainerStatusControlled;
 				}
 			}
 			else {
-				_StatusTextMain = L"ÎŞ·¨¿ØÖÆ¼«Óòµç×Ó½ÌÊÒ";
+				_StatusTextMain = L"æ— æ³•æ§åˆ¶æåŸŸç”µå­æ•™å®¤";
 				if (!_Running) {
-					_StatusTextMain = L"¿ØÖÆÆ÷Î´Æô¶¯";
-					_StatusTextMore = L"ÄúÒÑÊÖ¶¯Í£Ö¹¿ØÖÆÆ÷<br / >µ±Ç°²»»á¶Ô¼«Óò×öÈÎºÎ²Ù×÷";
+					_StatusTextMain = L"æ§åˆ¶å™¨æœªå¯åŠ¨";
+					_StatusTextMore = L"æ‚¨å·²æ‰‹åŠ¨åœæ­¢æ§åˆ¶å™¨<br / >å½“å‰ä¸ä¼šå¯¹æåŸŸåšä»»ä½•æ“ä½œ";
 					status = TrainerWorkerCallback::TrainerStatus::TrainerStatusStopped;
 				}
 				else if (_VirusInstalled) {
-					_StatusTextMore = L"¶¾ÒÑ²åÈë¼«Óò£¬µ«Î´Õı³£ÔËĞĞ<br / ><span style=\"color:#f41702\">Äú¿ÉÄÜĞèÒªÖØĞÂÆô¶¯¼«Óò</span>";
+					_StatusTextMore = L"æ¯’å·²æ’å…¥æåŸŸï¼Œä½†æœªæ­£å¸¸è¿è¡Œ<br / ><span style=\"color:#f41702\">æ‚¨å¯èƒ½éœ€è¦é‡æ–°å¯åŠ¨æåŸŸ</span>";
 					status = TrainerWorkerCallback::TrainerStatus::TrainerStatusUnknowProblem;
 				}
 				else {
-					_StatusTextMore = L"Ïò¼«Óòµç×Ó½ÌÊÒ²åÈë²¡¶¾Ê§°Ü<br / >´íÎóÏêÇéÇë²é¿´ <a id=\"link_log\">ÈÕÖ¾</a>";
+					_StatusTextMore = L"å‘æåŸŸç”µå­æ•™å®¤æ’å…¥ç—…æ¯’å¤±è´¥<br / >é”™è¯¯è¯¦æƒ…è¯·æŸ¥çœ‹ <a id=\"link_log\">æ—¥å¿—</a>";
 					status = TrainerWorkerCallback::TrainerStatus::TrainerStatusControllFailed;
 				}
 			}
 		}
 		else {
-			_StatusTextMain = L"¼«Óòµç×Ó½ÌÊÒÎ´ÔËĞĞ";
+			_StatusTextMain = L"æåŸŸç”µå­æ•™å®¤æœªè¿è¡Œ";
 			if (!_Running) {
-				_StatusTextMain = L"¼«Óòµç×Ó½ÌÊÒÎ´ÔËĞĞ ²¢ÇÒ¿ØÖÆÆ÷Î´Æô¶¯";
-				_StatusTextMore = L"ÄúÒÑÊÖ¶¯Í£Ö¹¿ØÖÆÆ÷<br / >µ±Ç°²»»á¼ì²â¼«ÓòµÄÔËĞĞ";
+				_StatusTextMain = L"æåŸŸç”µå­æ•™å®¤æœªè¿è¡Œ å¹¶ä¸”æ§åˆ¶å™¨æœªå¯åŠ¨";
+				_StatusTextMore = L"æ‚¨å·²æ‰‹åŠ¨åœæ­¢æ§åˆ¶å™¨<br / >å½“å‰ä¸ä¼šæ£€æµ‹æåŸŸçš„è¿è¡Œ";
 				status = TrainerWorkerCallback::TrainerStatus::TrainerStatusStopped;
 			}
 			else if (_StudentMainFileLocated) {
 				status = TrainerWorkerCallback::TrainerStatus::TrainerStatusNotRunning;
-				_StatusTextMore = L"ÒÑÔÚ´Ë¼ÆËã»úÉÏÕÒµ½¼«Óòµç×Ó½ÌÊÒ<br / >Äã¿ÉÒÔµã»÷ <b>ÏÂ·½°´Å¥</b> ÔËĞĞËü";
+				_StatusTextMore = L"å·²åœ¨æ­¤è®¡ç®—æœºä¸Šæ‰¾åˆ°æåŸŸç”µå­æ•™å®¤<br / >ä½ å¯ä»¥ç‚¹å‡» <b>ä¸‹æ–¹æŒ‰é’®</b> è¿è¡Œå®ƒ";
 			}
 			else {
 				status = TrainerWorkerCallback::TrainerStatus::TrainerStatusNotFound;
-				_StatusTextMore = L"Î´ÔÚ´Ë¼ÆËã»úÉÏÕÒµ½¼«Óòµç×Ó½ÌÊÒ";
+				_StatusTextMore = L"æœªåœ¨æ­¤è®¡ç®—æœºä¸Šæ‰¾åˆ°æåŸŸç”µå­æ•™å®¤";
 			}
 		}
 
@@ -804,35 +804,35 @@ bool TrainerWorkerInternal::InstallVirusForMaster()
 bool TrainerWorkerInternal::InjectDll(DWORD pid, LPCWSTR dllPath)
 {
 	HANDLE hRemoteProcess;
-	//´ò¿ª½ø³Ì
+	//æ‰“å¼€è¿›ç¨‹
 	NTSTATUS ntStatus = MOpenProcessNt(pid, &hRemoteProcess);
 	if (!NT_SUCCESS(ntStatus)) {
-		currentLogger->LogError2(L"×¢Èë²¡¶¾Ê§°Ü£¡´ò¿ª½ø³ÌÊ§°Ü£º0x%08X", ntStatus);
+		currentLogger->LogError2(L"æ³¨å…¥ç—…æ¯’å¤±è´¥ï¼æ‰“å¼€è¿›ç¨‹å¤±è´¥ï¼š0x%08X", ntStatus);
 		return FALSE;
 	}
 
 	wchar_t *pszLibFileRemote;
 
-	//Ê¹ÓÃVirtualAllocExº¯ÊıÔÚÔ¶³Ì½ø³ÌµÄÄÚ´æµØÖ·¿Õ¼ä·ÖÅäDLLÎÄ¼şÃû¿Õ¼ä
+	//ä½¿ç”¨VirtualAllocExå‡½æ•°åœ¨è¿œç¨‹è¿›ç¨‹çš„å†…å­˜åœ°å€ç©ºé—´åˆ†é…DLLæ–‡ä»¶åç©ºé—´
 	pszLibFileRemote = (wchar_t *)VirtualAllocEx(hRemoteProcess, NULL, sizeof(wchar_t) * (lstrlen(dllPath) + 1), MEM_COMMIT, PAGE_READWRITE);
 
-	//Ê¹ÓÃWriteProcessMemoryº¯Êı½«DLLµÄÂ·¾¶ÃûĞ´Èëµ½Ô¶³Ì½ø³ÌµÄÄÚ´æ¿Õ¼ä
+	//ä½¿ç”¨WriteProcessMemoryå‡½æ•°å°†DLLçš„è·¯å¾„åå†™å…¥åˆ°è¿œç¨‹è¿›ç¨‹çš„å†…å­˜ç©ºé—´
 	WriteProcessMemory(hRemoteProcess, pszLibFileRemote, (void *)dllPath, sizeof(wchar_t) * (lstrlen(dllPath) + 1), NULL);
 
 	//##############################################################################
-		//¼ÆËãLoadLibraryAµÄÈë¿ÚµØÖ·
+		//è®¡ç®—LoadLibraryAçš„å…¥å£åœ°å€
 	PTHREAD_START_ROUTINE pfnStartAddr = (PTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandle(TEXT("Kernel32")), "LoadLibraryW");
-	//(¹ØÓÚGetModuleHandleº¯ÊıºÍGetProcAddressº¯Êı)
+	//(å…³äºGetModuleHandleå‡½æ•°å’ŒGetProcAddresså‡½æ•°)
 
-	//Æô¶¯Ô¶³ÌÏß³ÌLoadLibraryW£¬Í¨¹ıÔ¶³ÌÏß³Ìµ÷ÓÃ´´½¨ĞÂµÄÏß³Ì
+	//å¯åŠ¨è¿œç¨‹çº¿ç¨‹LoadLibraryWï¼Œé€šè¿‡è¿œç¨‹çº¿ç¨‹è°ƒç”¨åˆ›å»ºæ–°çš„çº¿ç¨‹
 	HANDLE hRemoteThread;
 	if ((hRemoteThread = CreateRemoteThread(hRemoteProcess, NULL, 0, pfnStartAddr, pszLibFileRemote, 0, NULL)) == NULL)
 	{
-		currentLogger->LogError2(L"×¢ÈëÏß³ÌÊ§°Ü! ´íÎó£ºCreateRemoteThread %d", GetLastError());
+		currentLogger->LogError2(L"æ³¨å…¥çº¿ç¨‹å¤±è´¥! é”™è¯¯ï¼šCreateRemoteThread %d", GetLastError());
 		return FALSE;
 	}
 
-	// ÊÍ·Å¾ä±ú
+	// é‡Šæ”¾å¥æŸ„
 
 	CloseHandle(hRemoteProcess);
 	CloseHandle(hRemoteThread);
@@ -842,17 +842,17 @@ bool TrainerWorkerInternal::InjectDll(DWORD pid, LPCWSTR dllPath)
 bool TrainerWorkerInternal::UnInjectDll(DWORD pid, LPCWSTR moduleName)
 {
 	HANDLE hProcess;
-	//´ò¿ª½ø³Ì
+	//æ‰“å¼€è¿›ç¨‹
 	NTSTATUS ntStatus = MOpenProcessNt(pid, &hProcess);
 	if (!NT_SUCCESS(ntStatus)) {
-		currentLogger->LogError2(L"Ğ¶ÔØ²¡¶¾Ê§°Ü£¡´ò¿ª½ø³ÌÊ§°Ü£º0x%08X", ntStatus);
+		currentLogger->LogError2(L"å¸è½½ç—…æ¯’å¤±è´¥ï¼æ‰“å¼€è¿›ç¨‹å¤±è´¥ï¼š0x%08X", ntStatus);
 		return FALSE;
 	}
 	DWORD pszLibFileRemoteSize = sizeof(wchar_t) * (lstrlen(moduleName) + 1);
 	wchar_t *pszLibFileRemote;
-	//Ê¹ÓÃVirtualAllocExº¯ÊıÔÚÔ¶³Ì½ø³ÌµÄÄÚ´æµØÖ·¿Õ¼ä·ÖÅäDLLÎÄ¼şÃû¿Õ¼ä
+	//ä½¿ç”¨VirtualAllocExå‡½æ•°åœ¨è¿œç¨‹è¿›ç¨‹çš„å†…å­˜åœ°å€ç©ºé—´åˆ†é…DLLæ–‡ä»¶åç©ºé—´
 	pszLibFileRemote = (wchar_t *)VirtualAllocEx(hProcess, NULL, pszLibFileRemoteSize, MEM_COMMIT, PAGE_READWRITE);
-	//Ê¹ÓÃWriteProcessMemoryº¯Êı½«DLLµÄÂ·¾¶ÃûĞ´Èëµ½Ô¶³Ì½ø³ÌµÄÄÚ´æ¿Õ¼ä
+	//ä½¿ç”¨WriteProcessMemoryå‡½æ•°å°†DLLçš„è·¯å¾„åå†™å…¥åˆ°è¿œç¨‹è¿›ç¨‹çš„å†…å­˜ç©ºé—´
 	WriteProcessMemory(hProcess, pszLibFileRemote, (void *)moduleName, pszLibFileRemoteSize, NULL);
 
 	DWORD dwHandle;
@@ -860,26 +860,26 @@ bool TrainerWorkerInternal::UnInjectDll(DWORD pid, LPCWSTR moduleName)
 	LPVOID pFunc = GetProcAddress(GetModuleHandle(TEXT("Kernel32")), "GetModuleHandleW");
 	HANDLE hThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pFunc, pszLibFileRemote, 0, &dwID);
 	if (!hThread) {
-		currentLogger->LogError2(L"Ğ¶ÔØ²¡¶¾Ê§°Ü£¡´´½¨Ô¶³ÌÏß³ÌÊ§°Ü£º%d", GetLastError());
+		currentLogger->LogError2(L"å¸è½½ç—…æ¯’å¤±è´¥ï¼åˆ›å»ºè¿œç¨‹çº¿ç¨‹å¤±è´¥ï¼š%d", GetLastError());
 		return FALSE;
 	}
 
-	// µÈ´ıGetModuleHandleÔËĞĞÍê±Ï
+	// ç­‰å¾…GetModuleHandleè¿è¡Œå®Œæ¯•
 	WaitForSingleObject(hThread, INFINITE);
-	// »ñµÃGetModuleHandleµÄ·µ»ØÖµ
+	// è·å¾—GetModuleHandleçš„è¿”å›å€¼
 	GetExitCodeThread(hThread, &dwHandle);
-	// ÊÍ·ÅÄ¿±ê½ø³ÌÖĞÉêÇëµÄ¿Õ¼ä
+	// é‡Šæ”¾ç›®æ ‡è¿›ç¨‹ä¸­ç”³è¯·çš„ç©ºé—´
 	VirtualFreeEx(hProcess, pszLibFileRemote, pszLibFileRemoteSize, MEM_DECOMMIT);
 	CloseHandle(hThread);
-	// Ê¹Ä¿±ê½ø³Ìµ÷ÓÃFreeLibrary£¬Ğ¶ÔØDLL
+	// ä½¿ç›®æ ‡è¿›ç¨‹è°ƒç”¨FreeLibraryï¼Œå¸è½½DLL
 	pFunc = GetProcAddress(GetModuleHandle(TEXT("Kernel32")), "FreeLibrary"); ;
 	hThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pFunc, (LPVOID)dwHandle, 0, &dwID);
 	if (!hThread) {
-		currentLogger->LogError2(L"Ğ¶ÔØ²¡¶¾Ê§°Ü£¡´´½¨Ô¶³ÌÏß³ÌÊ§°Ü£º%d", GetLastError());
+		currentLogger->LogError2(L"å¸è½½ç—…æ¯’å¤±è´¥ï¼åˆ›å»ºè¿œç¨‹çº¿ç¨‹å¤±è´¥ï¼š%d", GetLastError());
 		return FALSE;
 	}
 	
-	// µÈ´ıFreeLibraryĞ¶ÔØÍê±Ï
+	// ç­‰å¾…FreeLibraryå¸è½½å®Œæ¯•
 	WaitForSingleObject(hThread, INFINITE);
 	CloseHandle(hThread);
 	CloseHandle(hProcess);
@@ -890,12 +890,12 @@ bool TrainerWorkerInternal::UnLoadAllVirus()
 {
 	if (_MasterHelperPid > 4) {
 		if (UnInjectDll(_MasterHelperPid, L"JiYuTrainerHooks.dll"))
-			currentLogger->Log(L"ÒÑÇ¿ÖÆĞ¶ÔØ MasterHelper ²¡¶¾");
+			currentLogger->Log(L"å·²å¼ºåˆ¶å¸è½½ MasterHelper ç—…æ¯’");
 		//KillProcess(_MasterHelperPid, false);
 	}
 	if (_StudentMainPid > 4)
 		if (UnInjectDll(_StudentMainPid, L"JiYuTrainerHooks.dll"))
-			currentLogger->Log(L"ÒÑÇ¿ÖÆĞ¶ÔØ StudentMain ²¡¶¾");
+			currentLogger->Log(L"å·²å¼ºåˆ¶å¸è½½ StudentMain ç—…æ¯’");
 
 	return false;
 }
@@ -936,14 +936,14 @@ void TrainerWorkerInternal::FakeFull(bool fk) {
 
 			}*/
 			_FakeBroadcastFull = true;
-			currentLogger->Log(L"µ÷Õû¹ã²¥´°¿Ú¼Ù×°È«ÆÁ×´Ì¬");
+			currentLogger->Log(L"è°ƒæ•´å¹¿æ’­çª—å£å‡è£…å…¨å±çŠ¶æ€");
 		}
 		else {
 			_FakeBroadcastFull = false;
-			FixWindow(_CurrentBroadcastWnd, (LPWSTR)L"ÆÁÄ»¹ã²¥");
+			FixWindow(_CurrentBroadcastWnd, (LPWSTR)L"å±å¹•å¹¿æ’­");
 			int w = (int)((double)screenWidth * (3.0 / 4.0)), h = (int)((double)screenHeight * (double)(4.0 / 5.0));
 			SetWindowPos(_CurrentBroadcastWnd, 0, (screenWidth - w) / 2, (screenHeight - h) / 2, w, h, SWP_NOZORDER | SWP_SHOWWINDOW);
-			currentLogger->Log(L"È¡Ïû¹ã²¥´°¿Ú¼Ù×°È«ÆÁ×´Ì¬");
+			currentLogger->Log(L"å–æ¶ˆå¹¿æ’­çª—å£å‡è£…å…¨å±çŠ¶æ€");
 		}
 	}
 	if (_CurrentBlackScreenWnd) 
@@ -955,12 +955,12 @@ void TrainerWorkerInternal::FakeFull(bool fk) {
 			SendMessage(_CurrentBlackScreenWnd, WM_SIZE, 0, MAKEWPARAM(screenWidth, screenHeight));
 			SendMessage(_CurrentBlackScreenWnd, WM_SIZE, 0, MAKEWPARAM(screenWidth, screenHeight));
 			_FakeBlackScreenFull = true;
-			currentLogger->Log(L"µ÷ÕûºÚÆÁ´°¿Ú¼Ù×°È«ÆÁ×´Ì¬");
+			currentLogger->Log(L"è°ƒæ•´é»‘å±çª—å£å‡è£…å…¨å±çŠ¶æ€");
 		}
 		else {
 			_FakeBlackScreenFull = false;
 			FixWindow(_CurrentBlackScreenWnd, (LPWSTR)L"BlackScreen Window");
-			currentLogger->Log(L"È¡ÏûºÚÆÁ´°¿Ú¼Ù×°È«ÆÁ×´Ì¬");
+			currentLogger->Log(L"å–æ¶ˆé»‘å±çª—å£å‡è£…å…¨å±çŠ¶æ€");
 		}
 	}
 	if (!fk && !_CurrentBlackScreenWnd && !_CurrentBroadcastWnd && (_FakeBlackScreenFull || _FakeBroadcastFull)) {
@@ -980,7 +980,7 @@ void TrainerWorkerInternal::ManualFull(bool fk)
 			SendMessage(_CurrentBroadcastWnd, WM_SIZE, 0, MAKEWPARAM(screenWidth, screenHeight));
 		}
 		else {
-			FixWindow(_CurrentBroadcastWnd, (LPWSTR)L"ÆÁÄ»¹ã²¥");
+			FixWindow(_CurrentBroadcastWnd, (LPWSTR)L"å±å¹•å¹¿æ’­");
 			int w = (int)((double)screenWidth * (3.0 / 4.0)), h = (int)((double)screenHeight * (double)(4.0 / 5.0));
 			SetWindowPos(_CurrentBroadcastWnd, 0, (screenWidth - w) / 2, (screenHeight - h) / 2, w, h, SWP_NOZORDER | SWP_SHOWWINDOW);
 		}
@@ -1074,9 +1074,9 @@ void TrainerWorkerInternal::FixWindow(HWND hWnd, LPWSTR text)
 	SetWindowPos(hWnd, 0, 0, 0, 0, 0, SWP_NOZORDER | SWP_NOSIZE | SWP_NOMOVE | SWP_DRAWFRAME | SWP_NOACTIVATE);
 }
 bool TrainerWorkerInternal::CheckWindowTextIsGb(const wchar_t* text) {
-	return StringHlp::StrContainsW(text, L"¹ã²¥", nullptr) || StringHlp::StrContainsW(text, L"ÑİÊ¾", nullptr)
-		|| StringHlp::StrContainsW(text, L"¹²Ïí", nullptr)
-		|| StringHlp::StrEqualW(text, L"ÆÁÄ»Ñİ²¥ÊÒ´°¿Ú");
+	return StringHlp::StrContainsW(text, L"å¹¿æ’­", nullptr) || StringHlp::StrContainsW(text, L"æ¼”ç¤º", nullptr)
+		|| StringHlp::StrContainsW(text, L"å…±äº«", nullptr)
+		|| StringHlp::StrEqualW(text, L"å±å¹•æ¼”æ’­å®¤çª—å£");
 }
 
 BOOL CALLBACK TrainerWorkerInternal::EnumWindowsProc(HWND hWnd, LPARAM lParam)
@@ -1121,14 +1121,14 @@ LRESULT CALLBACK TrainerWorkerInternal::CBTProc(int nCode, WPARAM wParam, LPARAM
 	switch (nCode)
 	{
 	case HCBT_ACTIVATE: {
-		// ÏÖÔÚwParamÖĞ¾ÍÊÇmessage boxµÄ¾ä±ú
+		// ç°åœ¨wParamä¸­å°±æ˜¯message boxçš„å¥æŸ„
 		HWND hWnd = (HWND)wParam;
 		HWND hWndOwner = GetWindow(hWnd, GW_OWNER);
 
-		// ÎÒÃÇÒÑ¾­ÓĞÁËmessage boxµÄ¾ä±ú£¬ÔÚÕâÀïÎÒÃÇ¾Í¿ÉÒÔ¶¨ÖÆmessage boxÁË!
+		// æˆ‘ä»¬å·²ç»æœ‰äº†message boxçš„å¥æŸ„ï¼Œåœ¨è¿™é‡Œæˆ‘ä»¬å°±å¯ä»¥å®šåˆ¶message boxäº†!
 		if (hWndOwner && hWndOwner  == currentTrainerWorker->hWndMain)
 		{
-			//´°¿ÚÔÚ¸¸´°¿Ú¾ÓÖĞ
+			//çª—å£åœ¨çˆ¶çª—å£å±…ä¸­
 			RECT rect; GetWindowRect(hWnd, &rect);
 			RECT rectParent; GetWindowRect(hWndOwner, &rectParent);
 			rect.left = ((rectParent.right - rectParent.left) - (rect.right - rect.left)) / 2 + rectParent.left;
@@ -1144,8 +1144,12 @@ LRESULT CALLBACK TrainerWorkerInternal::CBTProc(int nCode, WPARAM wParam, LPARAM
 
 bool UnDecryptJiyuKnock(BYTE* Data, DWORD cbData, WCHAR* ss)
 {
-	//·´±àÒëµÄ´úÂë
+	//åç¼–è¯‘çš„ä»£ç 
+#ifdef __GNUC__
+	try {
+#else
 	__try {
+#endif
 		DWORD v5; // esi
 		DWORD v6; // ecx
 		BYTE *v7; // eax
@@ -1190,8 +1194,15 @@ bool UnDecryptJiyuKnock(BYTE* Data, DWORD cbData, WCHAR* ss)
 
 		for (int i = 0; i < 32; i++) ss[i] = v4[i];
 		return true;
+#ifdef __GNUC__
+	}
+	catch (...) {
+		return false;
+	}
+#else
 	}
 	__except (1) {
 		return false;
 	}
+#endif
 }

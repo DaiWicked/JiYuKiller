@@ -1,4 +1,4 @@
-#ifndef __CURL_URLAPI_H
+﻿#ifndef __CURL_URLAPI_H
 #define __CURL_URLAPI_H
 /***************************************************************************
  *                                  _   _ ____  _

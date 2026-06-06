@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stdafx.h"
 
 #define UPDATE_STATUS_NOT_SUPPORT 0

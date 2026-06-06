@@ -1,4 +1,4 @@
-//Copyright (c) 2007-2008, Marton Anka
+﻿//Copyright (c) 2007-2008, Marton Anka
 //
 //Permission is hereby granted, free of charge, to any person obtaining a 
 //copy of this software and associated documentation files (the "Software"), 
@@ -19,6 +19,9 @@
 //IN THE SOFTWARE.
 
 #include <windows.h>
+#ifndef max
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#endif
 #include <tlhelp32.h>
 #include <stdio.h>
 #include "mhook.h"

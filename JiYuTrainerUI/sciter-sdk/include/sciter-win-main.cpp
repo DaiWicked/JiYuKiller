@@ -1,4 +1,4 @@
-
+﻿
 #include "sciter-x-window.hpp"
 #include "sciter-x-threads.h"
 

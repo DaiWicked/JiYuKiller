@@ -1,4 +1,4 @@
-#ifndef __aux_slice_h__
+﻿#ifndef __aux_slice_h__
 #define __aux_slice_h__
 
 #if defined(__cplusplus) && !defined( PLAIN_API_ONLY )

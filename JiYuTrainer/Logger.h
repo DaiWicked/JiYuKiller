@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stdafx.h"
 #include <stdio.h>
 #include <string>
@@ -34,6 +34,13 @@ public:
 	virtual void LogError2(const wchar_t * str, const char*file, int line, const char*functon, ...) {}
 	virtual void LogInfo2(const wchar_t * str, const char*file, int line, const char*functon, ...) {}
 
+#ifdef __GNUC__
+	virtual void Log2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...) {}
+	virtual void LogWarn2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...) {}
+	virtual void LogError2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...) {}
+	virtual void LogInfo2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...) {}
+#endif
+
 	virtual LogLevel GetLogLevel() { return LogLevel::LogLevelDisabled; }
 	virtual void SetLogLevel(LogLevel level) {}
 	virtual void SetLogOutPut(LogOutPut output) {}
@@ -65,6 +72,13 @@ public:
 	void LogError2(const wchar_t * str, const char*file, int line, const char*functon, ...);
 	void LogInfo2(const wchar_t * str, const char*file, int line, const char*functon, ...);
 
+#ifdef __GNUC__
+	void Log2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...);
+	void LogWarn2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...);
+	void LogError2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...);
+	void LogInfo2Impl(const wchar_t * str, const char*file, int line, const char*functon, ...);
+#endif
+
 	LogLevel GetLogLevel() { return level; }
 	void SetLogLevel(LogLevel level) override;
 	void SetLogOutPut(LogOutPut output) override;
@@ -94,4 +108,15 @@ private:
 #define LogWarn2(str, ...) LogWarn2(str, __FILE__, __LINE__, __FUNCTION__,__VA_ARGS__)
 #define LogInfo2(str, ...) LogInfo2(str, __FILE__, __LINE__, __FUNCTION__,__VA_ARGS__)
 #define Log2(str, ...) Log2(str, __FILE__, __LINE__, __FUNCTION__,__VA_ARGS__)
+
+#ifdef __GNUC__
+#undef LogError2
+#undef LogWarn2
+#undef LogInfo2
+#undef Log2
+#define LogError2(str, ...) LogError2Impl(str, __FILE__, __LINE__, __FUNCTION__ __VA_OPT__(,) __VA_ARGS__)
+#define LogWarn2(str, ...) LogWarn2Impl(str, __FILE__, __LINE__, __FUNCTION__ __VA_OPT__(,) __VA_ARGS__)
+#define LogInfo2(str, ...) LogInfo2Impl(str, __FILE__, __LINE__, __FUNCTION__ __VA_OPT__(,) __VA_ARGS__)
+#define Log2(str, ...) Log2Impl(str, __FILE__, __LINE__, __FUNCTION__ __VA_OPT__(,) __VA_ARGS__)
+#endif
 

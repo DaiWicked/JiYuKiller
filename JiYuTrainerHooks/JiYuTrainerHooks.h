@@ -1,7 +1,20 @@
-#pragma once
+﻿#pragma once
 #include "stdafx.h"
 #include <unknwn.h>
 #include <ShellAPI.h>
+
+#ifdef __GNUC__
+#define __in
+#define __out
+#define __inout
+#define __in_opt
+#define __out_opt
+#define __inout_opt
+#define __reserved
+#define __in_bcount_opt(x)
+#define __out_bcount_part_opt(x,y)
+#define __in_ecount(x)
+#endif
 
 enum VirusMode {
 	VirusModeProtet,
@@ -319,3 +332,16 @@ typedef struct tag_WNDIJJ {
 	HWND wnd;
 	bool canSizeToFull;
 }WNDIJJ,*PWNDIJJ;
+
+#ifdef __GNUC__
+#undef __in
+#undef __out
+#undef __inout
+#undef __in_opt
+#undef __out_opt
+#undef __inout_opt
+#undef __reserved
+#undef __in_bcount_opt
+#undef __out_bcount_part_opt
+#undef __in_ecount
+#endif

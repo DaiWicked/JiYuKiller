@@ -1,6 +1,10 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "MsgCenter.h"
 #include <list>
+#ifdef __GNUC__
+#include <wchar.h>
+#define swprintf swprintf
+#endif
 
 std::list<HWND> jiyuWnds;
 
@@ -36,7 +40,11 @@ void MsgCenterSendHWNDS(HWND fromHWnd)
 	{
 		HWND hWnd = (*testiterator);
 		WCHAR str[65];
+#ifdef __GNUC__
+		swprintf(str, 65, L"hw:%d", (LONG)hWnd);
+#else
 		swprintf_s(str, L"hw:%d", (LONG)hWnd);
+#endif
 		MsgCenterSendToVirus(str, fromHWnd);
 	}
 	jiyuWnds.clear();

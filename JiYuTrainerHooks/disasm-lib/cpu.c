@@ -1,4 +1,4 @@
-// Copyright (C) 2003, Matt Conover (mconover@gmail.com)
+﻿// Copyright (C) 2003, Matt Conover (mconover@gmail.com)
 #include "cpu.h"
 #include <assert.h>
 

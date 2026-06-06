@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stdafx.h"
 
 void MsgCenterSendToVirus(LPCWSTR buff, HWND form);

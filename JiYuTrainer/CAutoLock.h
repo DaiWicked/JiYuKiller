@@ -1,4 +1,4 @@
-#ifndef CAUTO_LOCK_H__
+﻿#ifndef CAUTO_LOCK_H__
 #define CAUTO_LOCK_H__
 
 class CAutoLock

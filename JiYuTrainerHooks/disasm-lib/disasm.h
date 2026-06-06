@@ -1,4 +1,4 @@
-// Copyright (C) 2004, Matt Conover (mconover@gmail.com)
+﻿// Copyright (C) 2004, Matt Conover (mconover@gmail.com)
 //
 // WARNING:
 // I wouldn't recommend changing any flags like OP_*, ITYPE_*, or *_MASK

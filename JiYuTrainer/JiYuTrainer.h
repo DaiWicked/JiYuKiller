@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 EXPORT_CFUNC(LONG) WINAPI AppUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo);
 EXPORT_CFUNC(VOID) ShowAppStartupFail(int rs);

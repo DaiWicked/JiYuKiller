@@ -1,9 +1,37 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "NetUtils.h"
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <Mstcpip.h>
+#ifndef __GNUC__
 #include <Ip2string.h>
+#else
+#include <ws2tcpip.h>
+static int InetPton(int af, const WCHAR* src, void* dst) {
+    struct in_addr addr;
+    char srcA[INET_ADDRSTRLEN];
+    WideCharToMultiByte(CP_ACP, 0, src, -1, srcA, sizeof(srcA), NULL, NULL);
+    addr.s_addr = inet_addr(srcA);
+    if (addr.s_addr == INADDR_NONE && strcmp(srcA, "255.255.255.255") != 0) return 0;
+    memcpy(dst, &addr, sizeof(addr));
+    return 1;
+}
+static const WCHAR* InetNtop(int af, const void* src, WCHAR* dst, int size) {
+    struct in_addr addr;
+    memcpy(&addr, src, sizeof(addr));
+    char* a = inet_ntoa(addr);
+    MultiByteToWideChar(CP_ACP, 0, a, -1, dst, size);
+    return dst;
+}
+static int inet_ntop(int af, const void* src, char* dst, int size) {
+    struct in_addr addr;
+    memcpy(&addr, src, sizeof(addr));
+    char* a = inet_ntoa(addr);
+    strncpy(dst, a, size);
+    dst[size - 1] = '\0';
+    return 1;
+}
+#endif
 
 WCHAR canonname[32];
 

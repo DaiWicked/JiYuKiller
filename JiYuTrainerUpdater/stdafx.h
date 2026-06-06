@@ -16,13 +16,17 @@
 #include <malloc.h>
 #include <memory.h>
 
+#ifdef __GNUC__
+#define UPEXPORT
+#define UPEXPORT_CFUNC(x) extern "C" x
+#else
 #ifdef JTUPDATE_EXPORT
 #define UPEXPORT
 #else
 #define UPEXPORT extern
 #endif
-
-#define UPEXPORT_CFUNC(x) EXTERN_C UPEXPORT x 
+#define UPEXPORT_CFUNC(x) EXTERN_C UPEXPORT x
+#endif
 
 
 // 在此处引用程序需要的其他标头

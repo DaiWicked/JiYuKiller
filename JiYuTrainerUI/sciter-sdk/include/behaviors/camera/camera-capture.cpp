@@ -1,4 +1,4 @@
-
+﻿
 #include "camera-capture.h"
 
 namespace camera {

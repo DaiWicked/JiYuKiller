@@ -1,4 +1,4 @@
-#ifndef __tiscript_streams_hpp__
+﻿#ifndef __tiscript_streams_hpp__
 #define __tiscript_streams_hpp__
 
 #if defined(__cplusplus)

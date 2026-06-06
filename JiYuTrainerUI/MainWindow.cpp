@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "MainWindow.h"
 #include "UpdaterWindow.h"
 #include "ConfigWindow.h"
@@ -159,6 +159,10 @@ sciter::value MainWindow::docunmentComplete()
 	link_read_jiyu_password2 = root.get_element_by_id(L"link_read_jiyu_password2");
 	link_unload_netfilter = root.get_element_by_id(L"link_unload_netfilter");
 
+	link_choose_fakescreen = root.get_element_by_id(L"link_choose_fakescreen");
+	link_clear_fakescreen = root.get_element_by_id(L"link_clear_fakescreen");
+	text_fakescreen_path = root.get_element_by_id(L"text_fakescreen_path");
+
 	cmds_message = root.get_element_by_id(L"cmds_message");
 	common_message = root.get_element_by_id(L"common_message");
 	common_message_title = root.get_element_by_id(L"common_message_title");
@@ -238,7 +242,7 @@ void MainWindow::OnWmDestroy()
 	UnregisterHotKey(_hWnd, hotkeyShowHide);
 	UnregisterHotKey(_hWnd, hotkeySwFull);
 
-	SetWindowLong(_hWnd, GWL_USERDATA, 0);
+	SetWindowLongPtr(_hWnd, GWLP_USERDATA, 0);
 
 	PostQuitMessage(0);
 
@@ -259,7 +263,7 @@ void MainWindow::OnWmHotKey(WPARAM wParam)
 	}
 	if (wParam == hotkeySwFull) {
 		if(!currentWorker->SwitchFakeFull())
-			ShowTrayBaloonTip(L"JiYu Trainer ÌáÊ¾", L"ÄúÒÑÍË³ö¼Ù×°È«ÆÁÄ£Ê½");
+			ShowTrayBaloonTip(L"JiYu Trainer æç¤º", L"æ‚¨å·²é€€å‡ºå‡è£…å…¨å±æ¨¡å¼");
 	}
 }
 void MainWindow::OnWmTimer(WPARAM wParam)
@@ -292,15 +296,15 @@ void MainWindow::OnWmUser(WPARAM wParam, LPARAM lParam)
 	if (lParam == WM_RBUTTONDOWN)
 	{
 		POINT pt;
-		GetCursorPos(&pt);//È¡Êó±ê×ø±ê  
-		SetForegroundWindow(_hWnd);//½â¾öÔÚ²Ëµ¥Íâµ¥»÷×ó¼ü²Ëµ¥²»ÏûÊ§µÄÎÊÌâ  
-		TrackPopupMenu(hMenuTray, TPM_RIGHTBUTTON, pt.x - 177, pt.y, NULL, _hWnd, NULL);//ÏÔÊ¾²Ëµ¥²¢»ñÈ¡Ñ¡ÏîID  
+		GetCursorPos(&pt);//å–é¼ æ ‡åæ ‡  
+		SetForegroundWindow(_hWnd);//è§£å†³åœ¨èœå•å¤–å•å‡»å·¦é”®èœå•ä¸æ¶ˆå¤±çš„é—®é¢˜  
+		TrackPopupMenu(hMenuTray, TPM_RIGHTBUTTON, pt.x - 177, pt.y, NULL, _hWnd, NULL);//æ˜¾ç¤ºèœå•å¹¶è·å–é€‰é¡¹ID  
 	}
 }
 void MainWindow::OnRunCmd(LPCWSTR cmd)
 {
 	wstring cmdx(cmd);
-	if (cmdx == L"") ShowFastTip(L"<h4>ÇëÊäÈëÃüÁî£¡</h4>");
+	if (cmdx == L"") ShowFastTip(L"<h4>è¯·è¾“å…¥å‘½ä»¤ï¼</h4>");
 	else {
 		bool succ = true;
 		vector<wstring> cmds;
@@ -309,11 +313,11 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		wstring cmd = (cmds)[0];
 		if (cmd == L"killst") {
 			if (currentWorker->Kill())
-				currentLogger->Log(L"ÒÑ³É¹¦½áÊø¼«Óò½ø³Ì");
+				currentLogger->Log(L"å·²æˆåŠŸç»“æŸæåŸŸè¿›ç¨‹");
 		}
 		else if (cmd == L"rerunst") {
 			if (currentWorker->Rerun())
-				currentLogger->Log(L"ÒÑ³É¹¦ÔËĞĞ¼«Óò½ø³Ì");
+				currentLogger->Log(L"å·²æˆåŠŸè¿è¡ŒæåŸŸè¿›ç¨‹");
 		}
 		else if (cmd == L"kill") {
 			if (len >= 2) {
@@ -321,20 +325,20 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 				if (len >= 3)  force = ((cmds)[2] == L"true");
 				currentWorker->KillProcess(_wtoi((cmds)[1].c_str()), force);
 			}
-			else currentLogger->LogError(L"È±ÉÙ²ÎÊı (pid)");
+			else currentLogger->LogError(L"ç¼ºå°‘å‚æ•° (pid)");
 		}
 		else if (cmd == L"findps") {
 			if (len >= 2) {
 				DWORD pid = 0;
 				LPCWSTR procName = (cmds)[1].c_str();
-				if (currentWorker->FindProcess(procName, &pid)) currentLogger->LogError(L"½ø³ÌÃûÎª£º%s µÄµÚÒ»¸ö½ø³ÌPID Îª£º%d", procName, pid);
-				else currentLogger->LogError(L"Î´ÕÒµ½½ø³Ì£º%s", procName);
+				if (currentWorker->FindProcess(procName, &pid)) currentLogger->LogError(L"è¿›ç¨‹åä¸ºï¼š%s çš„ç¬¬ä¸€ä¸ªè¿›ç¨‹PID ä¸ºï¼š%d", procName, pid);
+				else currentLogger->LogError(L"æœªæ‰¾åˆ°è¿›ç¨‹ï¼š%s", procName);
 			}
-			else currentLogger->LogError(L"È±ÉÙ²ÎÊı (pid)");
+			else currentLogger->LogError(L"ç¼ºå°‘å‚æ•° (pid)");
 		}
 		else if (cmd == L"ss") { 
 			currentWorker->RunOperation(TrainerWorkerOpVirusBoom);
-			currentLogger->Log(L"ÒÑ·¢ËÍ ss ÃüÁî"); 
+			currentLogger->Log(L"å·²å‘é€ ss å‘½ä»¤"); 
 		}
 		else if (cmd == L"sss") {
 			currentWorker->RunOperation(TrainerWorkerOpVirusQuit);
@@ -352,23 +356,23 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 				if (StrEqual(str, L"-c")) {
 					KillTimer(_hWnd, TIMER_AUTO_SHUT);
 					autoShutSec = 0;
-					currentLogger->Log(L"¹Ø»úÒÑÈ¡Ïû");
+					currentLogger->Log(L"å…³æœºå·²å–æ¶ˆ");
 				}
 				else {
 					autoShutSec = _wtoi(str);
 					SetTimer(_hWnd, TIMER_AUTO_SHUT, 1000, NULL);
-					currentLogger->Log(L"Ô¤¶¨½«ÔÚ %d Ãëºó¹Ø»ú£¬ÊäÈë sst -c È¡Ïû¹Ø»ú", autoShutSec);
+					currentLogger->Log(L"é¢„å®šå°†åœ¨ %d ç§’åå…³æœºï¼Œè¾“å…¥ sst -c å–æ¶ˆå…³æœº", autoShutSec);
 				}
 			}
 			else {
-				currentLogger->Log(L"Ô¤¶¨½«ÔÚ %d Ãëºó¹Ø»ú£¬ÊäÈë sst -c È¡Ïû¹Ø»ú", autoShutSec);
+				currentLogger->Log(L"é¢„å®šå°†åœ¨ %d ç§’åå…³æœºï¼Œè¾“å…¥ sst -c å–æ¶ˆå…³æœº", autoShutSec);
 			}
 		}
 		else if (cmd == L"ssss") currentApp->RunOperation(AppOperationKShutdown);
 		else if (cmd == L"sssr") currentApp->RunOperation(AppOperationKReboot);
 		else if (cmd == L"ckend") { 
 			currentWorker->RunOperation(TrainerWorkerOpVirusQuit); 
-			currentLogger->Log(L"ÒÑÓë¼«Óò·ÖÀë");
+			currentLogger->Log(L"å·²ä¸æåŸŸåˆ†ç¦»");
 		}
 		else if (cmd == L"unloaddrv") {
 			currentApp->RunOperation(AppOperationUnLoadDriver);
@@ -378,11 +382,11 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		}
 		else if (cmd == L"fuljydrv") {
 			currentWorker->RunOperation(TrainerWorkerOp4);
-			currentLogger->LogWarn2(L"´Ë²Ù×÷¹ıÓÚÎ£ÏÕ£¬ÒÑ¾­ÆúÓÃ");
+			currentLogger->LogWarn2(L"æ­¤æ“ä½œè¿‡äºå±é™©ï¼Œå·²ç»å¼ƒç”¨");
 		}
 		else if (cmd == L"inspector") sciter::dom::element(get_root()).call_function("runInspector");
 		else if (cmd == L"whereisi") {
-			currentLogger->Log(L"±¾³ÌĞòÂ·¾¶ÊÇ£º%s", currentApp->GetFullPath());
+			currentLogger->Log(L"æœ¬ç¨‹åºè·¯å¾„æ˜¯ï¼š%s", currentApp->GetFullPath());
 		}
 		else if (cmd == L"testupdate") {
 			UpdaterWindow u(_hWnd);
@@ -390,20 +394,20 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		}	
 		else if (cmd == L"jypasswd") { 
 			LPCWSTR passwd;
-			int res = MessageBox(_hWnd, L"ÄúÊÇ·ñÏ£ÍûÊ¹ÓÃ½âÃÜÄ£Ê½¶ÁÈ¡¼«ÓòÃÜÂë£¿\nÑ¡Ôñ [ÊÇ]  Ê¹ÓÃ½âÃÜÄ£Ê½¶ÁÈ¡¼«ÓòÃÜÂë£¬ÊÊÓÃÓÚ¼«Óò6.0°æ±¾\nÑ¡Ôñ [·ñ]  ÔòÖ±½Ó¶ÁÈ¡¼«Óò×¢²á±íÃÜÂë£¬ÊÊÓÃÓÚ¼«ÓòÀÏ°æ±¾", L"JiYuTrainer - ÌáÊ¾", MB_ICONASTERISK | MB_YESNOCANCEL);
+			int res = MessageBox(_hWnd, L"æ‚¨æ˜¯å¦å¸Œæœ›ä½¿ç”¨è§£å¯†æ¨¡å¼è¯»å–æåŸŸå¯†ç ï¼Ÿ\né€‰æ‹© [æ˜¯]  ä½¿ç”¨è§£å¯†æ¨¡å¼è¯»å–æåŸŸå¯†ç ï¼Œé€‚ç”¨äºæåŸŸ6.0ç‰ˆæœ¬\né€‰æ‹© [å¦]  åˆ™ç›´æ¥è¯»å–æåŸŸæ³¨å†Œè¡¨å¯†ç ï¼Œé€‚ç”¨äºæåŸŸè€ç‰ˆæœ¬", L"JiYuTrainer - æç¤º", MB_ICONASTERISK | MB_YESNOCANCEL);
 			if (res == IDYES) passwd = (LPCWSTR)currentWorker->RunOperation(TrainerWorkerOp3);
 			else if (res == IDNO) passwd = (LPCWSTR)currentWorker->RunOperation(TrainerWorkerOp2);
 			else return;
 			if (passwd) {
 				if (StrEmepty(passwd)) {
-					MessageBox(_hWnd, L"ÒÑ³É¹¦¶ÁÈ¡¼«ÓòÃÜÂë£¬ÃÜÂëÎª¿Õ¡£", L"JiYuTrainer - ÌáÊ¾", MB_ICONINFORMATION);
+					MessageBox(_hWnd, L"å·²æˆåŠŸè¯»å–æåŸŸå¯†ç ï¼Œå¯†ç ä¸ºç©ºã€‚", L"JiYuTrainer - æç¤º", MB_ICONINFORMATION);
 				}
 				else {
-					FAST_STR_BINDER(str, L"ÒÑ³É¹¦¶ÁÈ¡¼«ÓòÃÜÂë£¬\nÃÜÂëÊÇ£º%s", 128, passwd);
-					MessageBox(_hWnd, str, L"JiYuTrainer - ÌáÊ¾", MB_ICONINFORMATION);
+					FAST_STR_BINDER(str, L"å·²æˆåŠŸè¯»å–æåŸŸå¯†ç ï¼Œ\nå¯†ç æ˜¯ï¼š%s", 128, passwd);
+					MessageBox(_hWnd, str, L"JiYuTrainer - æç¤º", MB_ICONINFORMATION);
 				}
 			}
-			else MessageBox(_hWnd, L"¼«Óòµç×Ó½ÌÊÒÃÜÂë¶ÁÈ¡Ê§°Ü£¡»òĞíÄã¿ÉÒÔÓÃ mythware_super_password ÊÔÊÔ", L"JiYuTrainer - ÌáÊ¾", MB_ICONEXCLAMATION);
+			else MessageBox(_hWnd, L"æåŸŸç”µå­æ•™å®¤å¯†ç è¯»å–å¤±è´¥ï¼æˆ–è®¸ä½ å¯ä»¥ç”¨ mythware_super_password è¯•è¯•", L"JiYuTrainer - æç¤º", MB_ICONEXCLAMATION);
 		}
 		else if (cmd == L"attack") {
 			if (currentAttackWindow == nullptr)
@@ -412,41 +416,41 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 				currentAttackWindow->Show();
 		}
 		else if (cmd == L"unload_netfilter") {
-			if (MessageBox(_hWnd, L"ÄúÊÇ·ñÏ£Íû½â³ı¼«ÓòµÄÍøÂç¿ØÖÆ£¿´Ë²Ù×÷»áĞ¶ÔØ¼«ÓòµÄÍøÂç¹ıÂËÇı¶¯£¬Ğ¶ÔØÒÔºóÍøÂç½«²»ÊÜÆä¿ØÖÆ¡£\n" 
-				"Ğ¶ÔØ¹ı³ÌÖĞ¿ÉÄÜ¿¨¶Ù£¬ÇëµÈ´ı³ÌĞòÖ´ĞĞÍê³É¡£\n´Ë²Ù×÷Ö»ĞèÖ´ĞĞÒ»´Î¼´¿É¡£\nÌáÊ¾£ºÔÚĞ¶ÔØÍê³ÉÒÔºó×îºÃÔÚ¡°¿ØÖÆÃæ°å¡±>"
-				"¡°ÍøÂçºÍ¹²ÏíÖĞĞÄ¡±>¡°¸ü¸ÄÊÊÅäÆ÷Ñ¡Ïî¡±£¬Ñ¡±¾µØÁ¬½Ó£¬ÓÒ¼ü½ûÓÃÔÙÆôÓÃ£¬ÕâÑù¿ÉÒÔÖØÆôÍøÂçÊ¹ÉèÖÃÉúĞ§¡£", L"JiYuTrainer - ÌáÊ¾", MB_ICONWARNING | MB_YESNO) == IDYES)
+			if (MessageBox(_hWnd, L"æ‚¨æ˜¯å¦å¸Œæœ›è§£é™¤æåŸŸçš„ç½‘ç»œæ§åˆ¶ï¼Ÿæ­¤æ“ä½œä¼šå¸è½½æåŸŸçš„ç½‘ç»œè¿‡æ»¤é©±åŠ¨ï¼Œå¸è½½ä»¥åç½‘ç»œå°†ä¸å—å…¶æ§åˆ¶ã€‚\n" 
+				"å¸è½½è¿‡ç¨‹ä¸­å¯èƒ½å¡é¡¿ï¼Œè¯·ç­‰å¾…ç¨‹åºæ‰§è¡Œå®Œæˆã€‚\næ­¤æ“ä½œåªéœ€æ‰§è¡Œä¸€æ¬¡å³å¯ã€‚\næç¤ºï¼šåœ¨å¸è½½å®Œæˆä»¥åæœ€å¥½åœ¨â€œæ§åˆ¶é¢æ¿â€>"
+				"â€œç½‘ç»œå’Œå…±äº«ä¸­å¿ƒâ€>â€œæ›´æ”¹é€‚é…å™¨é€‰é¡¹â€ï¼Œé€‰æœ¬åœ°è¿æ¥ï¼Œå³é”®ç¦ç”¨å†å¯ç”¨ï¼Œè¿™æ ·å¯ä»¥é‡å¯ç½‘ç»œä½¿è®¾ç½®ç”Ÿæ•ˆã€‚", L"JiYuTrainer - æç¤º", MB_ICONWARNING | MB_YESNO) == IDYES)
 				if (currentWorker->RunOperation(TrainerWorkerOp5))
-					MessageBox(_hWnd, L"Ğ¶ÔØ¼«ÓòµÄÍøÂç¹ıÂËÇı¶¯³É¹¦", L"JiYuTrainer - ÌáÊ¾", MB_ICONINFORMATION);
+					MessageBox(_hWnd, L"å¸è½½æåŸŸçš„ç½‘ç»œè¿‡æ»¤é©±åŠ¨æˆåŠŸ", L"JiYuTrainer - æç¤º", MB_ICONINFORMATION);
 		}
 		else if (cmd == L"uj") {
 			if (currentWorker) {
-				//Ğ¶ÔØ²¡¶¾
+				//å¸è½½ç—…æ¯’
 				currentWorker->RunOperation(TrainerWorkerOpVirusBoom);
 				currentWorker->RunOperation(TrainerWorkerOpForceUnLoadVirus);
 			}
 		}
 #if _DEBUG
-		else if (cmd == L"test") currentLogger->Log(L"²âÊÔÃüÁî£¬ÎŞ¹¦ÄÜ");
+		else if (cmd == L"test") currentLogger->Log(L"æµ‹è¯•å‘½ä»¤ï¼Œæ— åŠŸèƒ½");
 		else if (cmd == L"test2") currentWorker->SendMessageToVirus(L"test2:f");
 		else if (cmd == L"test3") MessageBox(hWndMain, L"MessageBox", L"test3", 0);
 		else if (cmd == L"test5") {
-			ShowUpdateMessage(L"ÄúµÄ JiYu Trainer ÊÇ×îĞÂ°æ±¾", L"ÄúµÄ JiYu Trainer ÊÇ×îĞÂµÄ°æ±¾! Ê±³£¸üĞÂÊÇ¸öºÃÏ°¹ß£¬¿ÉÒÔ¸øÄã´øÀ´¸üºÃµÄÈí¼şÊ¹ÓÃÌåÑé");
+			ShowUpdateMessage(L"æ‚¨çš„ JiYu Trainer æ˜¯æœ€æ–°ç‰ˆæœ¬", L"æ‚¨çš„ JiYu Trainer æ˜¯æœ€æ–°çš„ç‰ˆæœ¬! æ—¶å¸¸æ›´æ–°æ˜¯ä¸ªå¥½ä¹ æƒ¯ï¼Œå¯ä»¥ç»™ä½ å¸¦æ¥æ›´å¥½çš„è½¯ä»¶ä½¿ç”¨ä½“éªŒ");
 		}
 		else if (cmd == L"test6") {
-			ShowUpdateMessage(L"¸üĞÂÊ§°Ü", L"¼ì²é¸üĞÂÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÁ¬½Ó£¿");
+			ShowUpdateMessage(L"æ›´æ–°å¤±è´¥", L"æ£€æŸ¥æ›´æ–°å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œè¿æ¥ï¼Ÿ");
 		}
 		else if (cmd == L"test7") {
-			ShowUpdateMessage(L"¸üĞÂ·şÎñÆ÷·µ»ØÁË´íÎóµÄ½á¹û", L"(¡Ño¡Ñ)£¿Ôã¸â£¬¸üĞÂ·şÎñÆ÷³öÁËÒ»µã¹ÊÕÏ£¬ÇëÄãÉÔºóÔÙÊÔ");
+			ShowUpdateMessage(L"æ›´æ–°æœåŠ¡å™¨è¿”å›äº†é”™è¯¯çš„ç»“æœ", L"(âŠ™oâŠ™)ï¼Ÿç³Ÿç³•ï¼Œæ›´æ–°æœåŠ¡å™¨å‡ºäº†ä¸€ç‚¹æ•…éšœï¼Œè¯·ä½ ç¨åå†è¯•");
 		}
 #endif
 		else if (cmd == L"version") {
-			currentLogger->Log(L"µ±Ç°°æ±¾ÊÇ£º%hs", CURRENT_VERSION);
+			currentLogger->Log(L"å½“å‰ç‰ˆæœ¬æ˜¯ï¼š%hs", CURRENT_VERSION);
 		}
 		else if (cmd == L"config") {
 			ShowMoreSettings(_hWnd);
 		}
 		else if (cmd == L"crash") {
-			currentLogger->Log(L"²âÊÔ±ÀÀ£¹¦ÄÜ");
+			currentLogger->Log(L"æµ‹è¯•å´©æºƒåŠŸèƒ½");
 			currentApp->RunOperation(AppOperation3);
 		}
 		else if (cmd == L"exit" || cmd == L"quit") {
@@ -456,14 +460,14 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		else if (cmd == L"hide") { ShowWindow(hWndMain, SW_HIDE); }
 		else {
 			succ = false;
-			ShowFastMessage(L"Î´ÖªÃüÁî", L"Òª²é¿´ËùÓĞÃüÁî¼°Ê¹ÓÃ·½·¨£¬ÇëÔÚÔ´´úÂëÖĞ²é¿´¡£");
+			ShowFastMessage(L"æœªçŸ¥å‘½ä»¤", L"è¦æŸ¥çœ‹æ‰€æœ‰å‘½ä»¤åŠä½¿ç”¨æ–¹æ³•ï¼Œè¯·åœ¨æºä»£ç ä¸­æŸ¥çœ‹ã€‚");
 		}
 		if (succ) input_cmd.set_value(sciter::value(L""));
 	}
 }
 void MainWindow::OnFirstShow()
 {
-	//ÈÈ¼ü
+	//çƒ­é”®
 	hotkeyShowHide = GlobalAddAtom(L"HotKeyShowHide");
 	hotkeySwFull = GlobalAddAtom(L"HotKeySwFull");
 
@@ -473,13 +477,13 @@ void MainWindow::OnFirstShow()
 	UINT mod = 0, vk = 0;
 	SysHlp::HotKeyCtlToKeyCode(setHotKeyShowHide, &mod, &vk);
 	if (!RegisterHotKey(_hWnd, hotkeyShowHide, mod, vk))
-		currentLogger->LogWarn(L"ÈÈ¼ü ¿ìËÙÏÔÊ¾/Òş²Ø´°¿Ú ×¢²áÊ§°Ü£¬Çë¼ì²éÊÇ·ñÓĞ³ÌĞòÕ¼ÓÃ£¬´íÎó£º%d", GetLastError());
+		currentLogger->LogWarn(L"çƒ­é”® å¿«é€Ÿæ˜¾ç¤º/éšè—çª—å£ æ³¨å†Œå¤±è´¥ï¼Œè¯·æ£€æŸ¥æ˜¯å¦æœ‰ç¨‹åºå ç”¨ï¼Œé”™è¯¯ï¼š%d", GetLastError());
 
 	SysHlp::HotKeyCtlToKeyCode(setHotKeyFakeFull, &mod, &vk);
 	if (!RegisterHotKey(_hWnd, hotkeySwFull, mod, vk))
-		currentLogger->LogWarn(L"ÈÈ¼ü ½ô¼±È«ÆÁ ×¢²áÊ§°Ü£¬Çë¼ì²éÊÇ·ñÓĞ³ÌĞòÕ¼ÓÃ£¬´íÎó£º%d", GetLastError());
+		currentLogger->LogWarn(L"çƒ­é”® ç´§æ€¥å…¨å± æ³¨å†Œå¤±è´¥ï¼Œè¯·æ£€æŸ¥æ˜¯å¦æœ‰ç¨‹åºå ç”¨ï¼Œé”™è¯¯ï¼š%d", GetLastError());
 
-	//ÍĞÅÌÍ¼±ê
+	//æ‰˜ç›˜å›¾æ ‡
 	WM_TASKBARCREATED = RegisterWindowMessage(TEXT("TaskbarCreated"));
 	CreateTrayIcon(_hWnd);
 	hMenuTray = LoadMenu(currentApp->GetInstance(), MAKEINTRESOURCE(IDR_MAINMENU));
@@ -491,33 +495,33 @@ void MainWindow::OnFirstShow()
 	SetMenuItemBitmaps(hMenuTray, IDM_EXIT, MF_BITMAP, hIconExit, hIconExit);
 	SetMenuItemBitmaps(hMenuTray, IDM_HELP, MF_BITMAP, hIconHelp, hIconHelp);
 
-	//³õÊ¼»¯¿ØÖÆÆ÷
+	//åˆå§‹åŒ–æ§åˆ¶å™¨
 	currentWorker->Init();
 	currentWorker->Start();
 
-	//ÏÔÊ¾ÖØÆôÌáÊ¾
+	//æ˜¾ç¤ºé‡å¯æç¤º
 	if (currentApp->IsCommandExists(L"r1")) {
 		currentLogger->LogInfo(L"Reboot mode 1");
-		ShowFastMessage(L"¸Õ²Å½ø³ÌÒâÍâÍË³ö", L"¼«Óò¿ÉÄÜÊÔÍ¼½áÊø±¾½ø³Ì£¬»òÊÇÆäËûÈí¼ş£¨±ÈÈçÈÎÎñ¹ÜÀíÆ÷£©½áÊøÁË±¾½ø³Ì£¬ÎªÁË°²È«£¬ÎÒÃÇÒÑ¾­ÖØÆôÁËÈí¼ş½ø³Ì£¬ÄúÈç¹ûÒªÍË³ö±¾Èí¼şµÄ»°£¬ÇëÊÖ¶¯µã»÷ÍĞÅÌÍ¼±ê>ÍË³öÈí¼ş¡£");
+		ShowFastMessage(L"åˆšæ‰è¿›ç¨‹æ„å¤–é€€å‡º", L"æåŸŸå¯èƒ½è¯•å›¾ç»“æŸæœ¬è¿›ç¨‹ï¼Œæˆ–æ˜¯å…¶ä»–è½¯ä»¶ï¼ˆæ¯”å¦‚ä»»åŠ¡ç®¡ç†å™¨ï¼‰ç»“æŸäº†æœ¬è¿›ç¨‹ï¼Œä¸ºäº†å®‰å…¨ï¼Œæˆ‘ä»¬å·²ç»é‡å¯äº†è½¯ä»¶è¿›ç¨‹ï¼Œæ‚¨å¦‚æœè¦é€€å‡ºæœ¬è½¯ä»¶çš„è¯ï¼Œè¯·æ‰‹åŠ¨ç‚¹å‡»æ‰˜ç›˜å›¾æ ‡>é€€å‡ºè½¯ä»¶ã€‚");
 	}
 	else if (currentApp->IsCommandExists(L"r2")) {
 		currentLogger->LogInfo(L"Reboot mode 2");
-		ShowFastTip(L"¸Õ²ÅÒâÍâÓë²¡¶¾Ê§È¥ÁªÏµ£¬ÏÖÒÑÉ±ËÀ¼«Óò²¢ÖØÆôÈí¼şÖ÷½ø³Ì");
+		ShowFastTip(L"åˆšæ‰æ„å¤–ä¸ç—…æ¯’å¤±å»è”ç³»ï¼Œç°å·²æ€æ­»æåŸŸå¹¶é‡å¯è½¯ä»¶ä¸»è¿›ç¨‹");
 	}
 	else if (currentApp->IsCommandExists(L"r3")) {
 		currentLogger->LogInfo(L"Reboot mode 3");
-		ShowFastTip(L"Èí¼şÒÑÖØÆô");
+		ShowFastTip(L"è½¯ä»¶å·²é‡å¯");
 	}
 
 	if (currentApp->IsCommandExists(L"ia")) {
-		ShowFastMessage(L"¸üĞÂÍê³É£¡", L"ÄúÒÑ¾­¸üĞÂµ½Èí¼ş×îĞÂ°æ±¾£¬ÎÒÃÇÅ¬Á¦±£Ö¤ÄúµÄ×î¼ÑÊ¹ÓÃÌåÑé£¬Ê±³£¸üĞÂÊÇ·Ç³£ºÃµÄ×ö·¨¡£");
+		ShowFastMessage(L"æ›´æ–°å®Œæˆï¼", L"æ‚¨å·²ç»æ›´æ–°åˆ°è½¯ä»¶æœ€æ–°ç‰ˆæœ¬ï¼Œæˆ‘ä»¬åŠªåŠ›ä¿è¯æ‚¨çš„æœ€ä½³ä½¿ç”¨ä½“éªŒï¼Œæ—¶å¸¸æ›´æ–°æ˜¯éå¸¸å¥½çš„åšæ³•ã€‚");
 	}
 
-	//ÔËĞĞ¸üĞÂ
+	//è¿è¡Œæ›´æ–°
 	if (setAutoUpdate)
 		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)UpdateThread, this, 0, NULL);
 
-	currentLogger->LogInfo(L"¿ØÖÆÆ÷ÒÑÆô¶¯");
+	currentLogger->LogInfo(L"æ§åˆ¶å™¨å·²å¯åŠ¨");
 
 	if (currentApp->GetAppIsHiddenMode()) {
 		hideTipShowed = true;
@@ -535,45 +539,45 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			if (setTopMost) {
 				setTopMost = false;
 				btn_top.set_attribute("class", L"btn-footers btn-top ml-0");
-				tooltip_top.set_text(L"±¾´°¿ÚÖÃ¶¥");
+				tooltip_top.set_text(L"æœ¬çª—å£ç½®é¡¶");
 				KillTimer(_hWnd, TIMER_AOP);
 				SetWindowPos(hWndMain, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 			}
 			else {
 				setTopMost = true;
 				btn_top.set_attribute("class", L"btn-footers btn-top ml-0 topmost");
-				tooltip_top.set_text(L"È¡ÏûÖÃ¶¥");
+				tooltip_top.set_text(L"å–æ¶ˆç½®é¡¶");
 				SetTimer(_hWnd, TIMER_AOP, 400, NULL);
 				SetWindowPos(hWndMain, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 			}
 		}
 		else if (ele.get_attribute("id") == L"btn_kill") {
 			if (currentWorker->Kill())
-				ShowFastTip(L"<h4>ÒÑ³É¹¦½áÊø¼«Óòµç×Ó½ÌÊÒ</h4>");
+				ShowFastTip(L"<h4>å·²æˆåŠŸç»“æŸæåŸŸç”µå­æ•™å®¤</h4>");
 		}
 		else if (ele.get_attribute("id") == L"btn_restart") {
 			if (currentWorker->Rerun())
-				ShowFastTip(L"<h4>ÒÑÆô¶¯¼«Óòµç×Ó½ÌÊÒ</h4>");
+				ShowFastTip(L"<h4>å·²å¯åŠ¨æåŸŸç”µå­æ•™å®¤</h4>");
 		}
 		else if (ele.get_attribute("id") == L"link_save_setting") {
 			SaveSettings();
-			ShowFastTip(L"<h4>ÉèÖÃ±£´æ³É¹¦£¡</h4>");
+			ShowFastTip(L"<h4>è®¾ç½®ä¿å­˜æˆåŠŸï¼</h4>");
 		}
 		else if (ele.get_attribute("id") == L"link_setto_default") {
 			ResetSettings();
-			ShowFastTip(L"<h4>ÒÑ»Ö¸´Ä¬ÈÏÉèÖÃ</h4>");
+			ShowFastTip(L"<h4>å·²æ¢å¤é»˜è®¤è®¾ç½®</h4>");
 		}
 		else if (ele.get_attribute("id") == L"link_checkupdate") {
-			ShowFastTip(L"ÕıÔÚ¼ì²é¸üĞÂ... ");
+			ShowFastTip(L"æ­£åœ¨æ£€æŸ¥æ›´æ–°... ");
 			if (JUpdater_CheckInternet()) {
 				int updateStatus = JUpdater_CheckUpdate(true);
 				CloseFastTip();
-				if (updateStatus == UPDATE_STATUS_LATEST)  ShowUpdateMessage(L"ÄúµÄ JiYu Trainer ÊÇ×îĞÂ°æ±¾", L"ÄúµÄ JiYu Trainer ÊÇ×îĞÂµÄ°æ±¾£¡Ê±³£¸üĞÂÊÇ¸öºÃÏ°¹ß£¬¿ÉÒÔ¸øÄã´øÀ´¸üºÃµÄÈí¼şÊ¹ÓÃÌåÑé");
+				if (updateStatus == UPDATE_STATUS_LATEST)  ShowUpdateMessage(L"æ‚¨çš„ JiYu Trainer æ˜¯æœ€æ–°ç‰ˆæœ¬", L"æ‚¨çš„ JiYu Trainer æ˜¯æœ€æ–°çš„ç‰ˆæœ¬ï¼æ—¶å¸¸æ›´æ–°æ˜¯ä¸ªå¥½ä¹ æƒ¯ï¼Œå¯ä»¥ç»™ä½ å¸¦æ¥æ›´å¥½çš„è½¯ä»¶ä½¿ç”¨ä½“éªŒ");
 				else if (updateStatus == UPDATE_STATUS_HAS_UPDATE) GetUpdateInfo();
-				else if (updateStatus == UPDATE_STATUS_COULD_NOT_CONNECT) ShowUpdateMessage(L"¸üĞÂÊ§°Ü",  L"¼ì²é¸üĞÂÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÁ¬½Ó£¿");
-				else if (updateStatus == UPDATE_STATUS_NOT_SUPPORT) ShowUpdateMessage(L"¸üĞÂ·şÎñÆ÷·µ»ØÁË´íÎóµÄ½á¹û", L"(¡Ño¡Ñ)£¿Ôã¸â£¬¸üĞÂ·şÎñÆ÷³öÁËÒ»µã¹ÊÕÏ£¬ÇëÄãÉÔºóÔÙÊÔ");
+				else if (updateStatus == UPDATE_STATUS_COULD_NOT_CONNECT) ShowUpdateMessage(L"æ›´æ–°å¤±è´¥",  L"æ£€æŸ¥æ›´æ–°å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œè¿æ¥ï¼Ÿ");
+				else if (updateStatus == UPDATE_STATUS_NOT_SUPPORT) ShowUpdateMessage(L"æ›´æ–°æœåŠ¡å™¨è¿”å›äº†é”™è¯¯çš„ç»“æœ", L"(âŠ™oâŠ™)ï¼Ÿç³Ÿç³•ï¼Œæ›´æ–°æœåŠ¡å™¨å‡ºäº†ä¸€ç‚¹æ•…éšœï¼Œè¯·ä½ ç¨åå†è¯•");
 			}
-			else ShowFastTip(L"¼ì²é¸üĞÂÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÁ¬½Ó£¿");
+			else ShowFastTip(L"æ£€æŸ¥æ›´æ–°å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œè¿æ¥ï¼Ÿ");
 		}
 		else if (ele.get_attribute("id") == L"link_runcmd") {
 			sciter::value cmdsx(input_cmd.get_value());
@@ -595,28 +599,42 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			Close();
 		}
 		else if (ele.get_attribute("id") == L"link_uninstall") {
-			if (MessageBox(_hWnd, L"ÄãÊÇ·ñÕæµÄÒªĞ¶ÔØ±¾Èí¼ş£¿\nĞ¶ÔØ»áÉ¾³ı±¾Èí¼şÏà¹Ø°²×°ÎÄ¼ş£¬µ«²»»áÉ¾³ıÔ´°²×°°ü£»²¢ÇÒĞ¶ÔØ¹ı³ÌÖĞ»áÔİÊ±½áÊø¼«ÓòÖ÷½ø³Ì£¬ÉÔºóÄúĞèÒªÊÖ¶¯Æô¶¯¼«Óò¡£", L"JiYuTrainer - ¾¯¸æ", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
+			if (MessageBox(_hWnd, L"ä½ æ˜¯å¦çœŸçš„è¦å¸è½½æœ¬è½¯ä»¶ï¼Ÿ\nå¸è½½ä¼šåˆ é™¤æœ¬è½¯ä»¶ç›¸å…³å®‰è£…æ–‡ä»¶ï¼Œä½†ä¸ä¼šåˆ é™¤æºå®‰è£…åŒ…ï¼›å¹¶ä¸”å¸è½½è¿‡ç¨‹ä¸­ä¼šæš‚æ—¶ç»“æŸæåŸŸä¸»è¿›ç¨‹ï¼Œç¨åæ‚¨éœ€è¦æ‰‹åŠ¨å¯åŠ¨æåŸŸã€‚", L"JiYuTrainer - è­¦å‘Š", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 				currentApp->UnInstall();
 		}
 		else if (ele.get_attribute("id") == L"link_read_jiyu_password" || ele.get_attribute("id") == L"link_read_jiyu_password2") { OnRunCmd(L"jypasswd"); CloseCmdsTip(); }
 		else if (ele.get_attribute("id") == L"link_unload_netfilter") { OnRunCmd(L"unload_netfilter"); CloseCmdsTip(); }
 		else if (ele.get_attribute("id") == L"link_hide") { OnRunCmd(L"hide"); }
 		else if (ele.get_attribute("id") == L"link_shutdown") {
-			if (MessageBox(_hWnd, L"ÄãÊÇ·ñÕæµÄÒª¹Ø±ÕµçÄÔ£¿", L"JiYuTrainer - ¾¯¸æ", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
+			if (MessageBox(_hWnd, L"ä½ æ˜¯å¦çœŸçš„è¦å…³é—­ç”µè„‘ï¼Ÿ", L"JiYuTrainer - è­¦å‘Š", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
 				OnRunCmd(L"sss");
 		}
 		else if (ele.get_attribute("id") == L"link_reboot") {
-			if (MessageBox(_hWnd, L"ÄãÊÇ·ñÕæµÄÒªÖØÆôµçÄÔ£¿", L"JiYuTrainer - ¾¯¸æ", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
+			if (MessageBox(_hWnd, L"ä½ æ˜¯å¦çœŸçš„è¦é‡å¯ç”µè„‘ï¼Ÿ", L"JiYuTrainer - è­¦å‘Š", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
 				OnRunCmd(L"ssr");
 		}
 		else if (ele.get_attribute("id") == L"link_more_settings") ShowMoreSettings(_hWnd);
 		else if (ele.get_attribute("id") == L"link_locate_jiyu_position") {
 			TCHAR strFilename[MAX_PATH] = { 0 };
-			if (SysHlp::ChooseFileSingal(_hWnd, NULL, L"ÇëÑ¡Ôñ¼«ÓòÖ÷½ø³Ì StudentMain.exe µÄÎ»ÖÃ", L"StudentMain.exe\0*.exe\0ËùÓĞÎÄ¼ş(*.*)\0*.*\0\0\0",
+			if (SysHlp::ChooseFileSingal(_hWnd, NULL, L"è¯·é€‰æ‹©æåŸŸä¸»è¿›ç¨‹ StudentMain.exe çš„ä½ç½®", L"StudentMain.exe\0*.exe\0æ‰€æœ‰æ–‡ä»¶(*.*)\0*.*\0\0\0",
 				strFilename, NULL, strFilename, MAX_PATH)) {		
-				if (currentWorker->AppointStudentMainLocation(strFilename)) ShowFastTip(L"ÒÑ¸ü¸Ä¼«ÓòÖ÷½ø³ÌÎ»ÖÃ");
-				else MessageBox(hWndMain, L"ÄúÑ¡ÔñµÄÖ÷½ø³ÌÎ»ÖÃÎŞĞ§¡£", L"JiYuTrainer - ÌáÊ¾", MB_ICONEXCLAMATION);
+				if (currentWorker->AppointStudentMainLocation(strFilename)) ShowFastTip(L"å·²æ›´æ”¹æåŸŸä¸»è¿›ç¨‹ä½ç½®");
+				else MessageBox(hWndMain, L"æ‚¨é€‰æ‹©çš„ä¸»è¿›ç¨‹ä½ç½®æ— æ•ˆã€‚", L"JiYuTrainer - æç¤º", MB_ICONEXCLAMATION);
 			}
+		}
+		else if (ele.get_attribute("id") == L"link_choose_fakescreen") {
+			TCHAR strFilename[MAX_PATH] = { 0 };
+			if (SysHlp::ChooseFileSingal(_hWnd, NULL, L"è¯·é€‰æ‹©ç”¨äºæ›¿æ¢å±å¹•æˆªå›¾çš„å›¾ç‰‡", L"å›¾ç‰‡æ–‡ä»¶(*.png;*.jpg;*.jpeg;*.bmp)\0*.png;*.jpg;*.jpeg;*.bmp\0æ‰€æœ‰æ–‡ä»¶(*.*)\0*.*\0\0\0",
+				strFilename, NULL, strFilename, MAX_PATH)) {
+				setFakeScreenImage = strFilename;
+				text_fakescreen_path.set_text(strFilename);
+				link_clear_fakescreen.set_attribute("style", L"");
+			}
+		}
+		else if (ele.get_attribute("id") == L"link_clear_fakescreen") {
+			setFakeScreenImage = L"";
+			text_fakescreen_path.set_text(L"");
+			link_clear_fakescreen.set_attribute("style", L"display: none;");
 		}
 	}
 	else if (type == BUTTON_CLICK)
@@ -625,12 +643,12 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			if (currentWorker->Running()) {
 				ele.set_value(sciter::value(false));
 				currentWorker->Stop();
-				currentLogger->LogInfo(L"¿ØÖÆÆ÷ÒÑÍ£Ö¹");
+				currentLogger->LogInfo(L"æ§åˆ¶å™¨å·²åœæ­¢");
 			}
 			else {
 				currentWorker->Start();
 				ele.set_value(sciter::value(true));
-				currentLogger->LogInfo(L"¿ØÖÆÆ÷ÕıÔÚÔËĞĞ");
+				currentLogger->LogInfo(L"æ§åˆ¶å™¨æ­£åœ¨è¿è¡Œ");
 			}
 		}
 	}
@@ -656,12 +674,12 @@ void MainWindow::OnUpdateStudentMainInfo(bool running, LPCWSTR fullPath, DWORD p
 
 	if (StringHlp::StrEmeptyW(fullPath)) {
 		link_read_jiyu_password2.set_attribute("style", L"display: none;");
-		status_jiyu_path.set_text(L"Î´ÕÒµ½¼«Óòµç×Ó½ÌÊÒ");
+		status_jiyu_path.set_text(L"æœªæ‰¾åˆ°æåŸŸç”µå­æ•™å®¤");
 	}
 	else {
 		link_read_jiyu_password2.set_attribute("style", L"");
 		std::wstring s1(fullPath);
-		s1 += L"<br/><small>µã»÷ÔËĞĞ¼«Óòµç×Ó½ÌÊÒ</small>";
+		s1 += L"<br/><small>ç‚¹å‡»è¿è¡ŒæåŸŸç”µå­æ•™å®¤</small>";
 		LPCSTR textMore2 = StringHlp::UnicodeToUtf8(s1.c_str());
 		status_jiyu_path.set_html((UCHAR*)textMore2, strlen(textMore2));
 		FreeStringPtr(textMore2);
@@ -696,21 +714,21 @@ void MainWindow::OnUpdateState(TrainerStatus status, LPCWSTR textMain, LPCWSTR t
 	
 	if (protectStat == 0) {
 		btn_protect_stat.set_attribute("class", L"btn-footers protect-stat no-danger");
-		status_protect.set_text(L"ÄúÎ´ÊÜµ½¼«Óòµç×Ó½ÌÊÒµÄ¿ØÖÆ");
+		status_protect.set_text(L"æ‚¨æœªå—åˆ°æåŸŸç”µå­æ•™å®¤çš„æ§åˆ¶");
 	}
 	else if (protectStat == 1) {
 		btn_protect_stat.set_attribute("class", L"btn-footers protect-stat not-protected");
-		status_protect.set_text(L"³öÏÖ´íÎó£¬ÎŞ·¨±£»¤ÄúÃâÊÜ¼«Óòµç×Ó½ÌÊÒµÄ¿ØÖÆ");
+		status_protect.set_text(L"å‡ºç°é”™è¯¯ï¼Œæ— æ³•ä¿æŠ¤æ‚¨å…å—æåŸŸç”µå­æ•™å®¤çš„æ§åˆ¶");
 	}
 	else if (protectStat == 2) {
 		btn_protect_stat.set_attribute("class", L"btn-footers protect-stat protected");
-		status_protect.set_text(L"ÒÑ±£»¤ÄúÃâÊÜ¼«Óòµç×Ó½ÌÊÒµÄ¿ØÖÆ");
+		status_protect.set_text(L"å·²ä¿æŠ¤æ‚¨å…å—æåŸŸç”µå­æ•™å®¤çš„æ§åˆ¶");
 	}
 }
 void MainWindow::OnResolveBlackScreenWindow()
 {
 	if (!domComplete) return;
-	ShowFastTip(L"<h5>ÒÑ¹Ø±Õ¼«ÓòµÄºÚÆÁ´°¿Ú£¬Äú¿ÉÒÔ¼ÌĞøÄúµÄ¹¤×÷ÁË£¡</h5>");
+	ShowFastTip(L"<h5>å·²å…³é—­æåŸŸçš„é»‘å±çª—å£ï¼Œæ‚¨å¯ä»¥ç»§ç»­æ‚¨çš„å·¥ä½œäº†ï¼</h5>");
 }
 void MainWindow::OnBeforeSendStartConf()
 {
@@ -799,6 +817,7 @@ void MainWindow::LoadSettings()
 	setProhibitCloseWindow = settings->GetSettingBool(L"ProhibitCloseWindow", true);
 	setBandAllRunOp = settings->GetSettingBool(L"BandAllRunOp", false);
 	setDoNotShowTrayIcon = settings->GetSettingBool(L"DoNotShowTrayIcon", false);
+	setFakeScreenImage = settings->GetSettingStr(L"FakeScreenImage", L"", 512);
 	
 	setCkInterval = settings->GetSettingInt(L"CKInterval", 3100);
 	if (setCkInterval < 1000 || setCkInterval > 10000) setCkInterval = 3000;
@@ -817,6 +836,11 @@ void MainWindow::LoadSettingsToUi()
 	check_allow_control.set_value(sciter::value(setAllowControl));
 	check_allow_monitor.set_value(sciter::value(setAllowMonitor));
 	check_allow_top.set_value(sciter::value(setAllowGbTop));
+
+	if (!setFakeScreenImage.empty()) {
+		text_fakescreen_path.set_text(setFakeScreenImage.c_str());
+		link_clear_fakescreen.set_attribute("style", L"");
+	}
 }
 void MainWindow::SaveSettings()
 {
@@ -840,6 +864,7 @@ void MainWindow::SaveSettings()
 	settings->SetSettingBool(L"AllowControl", setAllowControl);
 	settings->SetSettingBool(L"AllowMonitor", setAllowMonitor);
 	settings->SetSettingBool(L"AllowGbTop", setAllowGbTop);
+	settings->SetSettingStr(L"FakeScreenImage", setFakeScreenImage);
 
 	currentWorker->InitSettings();
 }
@@ -861,6 +886,7 @@ void MainWindow::ResetSettings()
 	setProhibitKillProcess = true;
 	setProhibitCloseWindow = true;
 	setBandAllRunOp = false;
+	setFakeScreenImage = L"";
 
 	LoadSettingsToUi();
 	SaveSettings();
@@ -960,7 +986,7 @@ LRESULT CALLBACK MainWindow::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 		hWndMain = hWnd;
 		self = (MainWindow*) lParam;
 
-		//´°¿Ú¾ÓÖĞ
+		//çª—å£å±…ä¸­
 		RECT rect; GetWindowRect(hWnd, &rect);
 		rect.left = (screenWidth - (rect.right - rect.left)) / 2;
 		rect.top = (screenHeight - (rect.bottom - rect.top)) / 2 - 60;
@@ -1006,7 +1032,7 @@ LRESULT CALLBACK MainWindow::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 			ShowWindow(hWnd, SW_HIDE);
 			if (!self->setTopMost) SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 			if (!self->hideTipShowed) {
-				self->ShowTrayBaloonTip(L"JiYu Trainer ÌáÊ¾", L"´°¿ÚÒş²Øµ½´Ë´¦ÁË£¬Ë«»÷ÕâÀïÏÔÊ¾Ö÷½çÃæ");
+				self->ShowTrayBaloonTip(L"JiYu Trainer æç¤º", L"çª—å£éšè—åˆ°æ­¤å¤„äº†ï¼ŒåŒå‡»è¿™é‡Œæ˜¾ç¤ºä¸»ç•Œé¢");
 				self->hideTipShowed = true;
 			}
 			return TRUE;

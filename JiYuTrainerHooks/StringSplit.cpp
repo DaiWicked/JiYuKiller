@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "StringSplit.h"
 
 void SplitString2(const std::string* s, std::vector<std::string>* v, const std::string& c)

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef __SCITER_OM_DEF_H__
 #define __SCITER_OM_DEF_H__

@@ -1,4 +1,4 @@
-// XZip.cpp  Version 1.3
+﻿// XZip.cpp  Version 1.3
 //
 // Authors:      Mark Adler et al. (see below)
 //
@@ -2296,17 +2296,17 @@ ZRESULT GetFileInfo(HANDLE hf, ulg *attr, long *size, iztimes *times, ulg *times
 	  SystemTimeToFileTime(&stUTC, &ftUTC);
 	  SystemTimeToFileTime(&stLocal, &ftLocal);
 	  LONG64 uiUTC, uiLocal;
-	  memcpy (&uiUTC, &ftUTC, min(sizeof(LONG64), sizeof(FILETIME))); // use 'min' as safeguard, however both sizes should be the same: 64-bit
-	  memcpy (&uiLocal, &ftLocal, min(sizeof(LONG64), sizeof(FILETIME)));
+	  memcpy (&uiUTC, &ftUTC, (sizeof(LONG64) < sizeof(FILETIME) ? sizeof(LONG64) : sizeof(FILETIME))); // use 'min' as safeguard, however both sizes should be the same: 64-bit
+	  memcpy (&uiLocal, &ftLocal, (sizeof(LONG64) < sizeof(FILETIME) ? sizeof(LONG64) : sizeof(FILETIME)));
 	  LONG64 uiTimeDiff = uiUTC - uiLocal;
 
 	  // apply difference
 	  FILETIME* pFileTimes[3] = { &bhi.ftLastWriteTime, &bhi.ftLastAccessTime, &bhi.ftCreationTime };
 	  for (int i=0; i<3; i++){
 		  LONG64 uiUTC_file;
-		  memcpy (&uiUTC_file, pFileTimes[i], min(sizeof(LONG64), sizeof(FILETIME)));
+		  memcpy (&uiUTC_file, pFileTimes[i], (sizeof(LONG64) < sizeof(FILETIME) ? sizeof(LONG64) : sizeof(FILETIME)));
 		  LONG64 uiLocal_file = uiUTC_file - uiTimeDiff;
-		  memcpy (pFileTimes[i], &uiLocal_file, min(sizeof(LONG64), sizeof(FILETIME)));
+		  memcpy (pFileTimes[i], &uiLocal_file, (sizeof(LONG64) < sizeof(FILETIME) ? sizeof(LONG64) : sizeof(FILETIME)));
 	  }
   }
 

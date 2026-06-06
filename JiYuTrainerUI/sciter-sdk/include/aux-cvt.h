@@ -1,4 +1,4 @@
-#ifndef __sciter_aux_h__
+﻿#ifndef __sciter_aux_h__
 #define __sciter_aux_h__
 
 #if defined(__cplusplus) && !defined( PLAIN_API_ONLY )

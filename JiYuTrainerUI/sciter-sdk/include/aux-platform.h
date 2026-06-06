@@ -1,4 +1,4 @@
-#ifndef __aux_platform_h__
+﻿#ifndef __aux_platform_h__
 #define __aux_platform_h__
 
 /*

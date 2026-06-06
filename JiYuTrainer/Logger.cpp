@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Logger.h"
 #include <time.h>
 #include "StringHlp.h"
@@ -92,6 +92,21 @@ void LoggerInternal::LogInfo2(const wchar_t * str, const char * file, int line, 
 		va_end(arg);
 	}
 }
+
+#ifdef __GNUC__
+void LoggerInternal::Log2Impl(const wchar_t * str, const char * file, int line, const char * functon, ...) {
+	va_list arg; va_start(arg, functon); LogInternalWithCodeAndLine(LogLevelText, str, file, line, functon, arg); va_end(arg);
+}
+void LoggerInternal::LogWarn2Impl(const wchar_t * str, const char * file, int line, const char * functon, ...) {
+	va_list arg; va_start(arg, functon); LogInternalWithCodeAndLine(LogLevelWarn, str, file, line, functon, arg); va_end(arg);
+}
+void LoggerInternal::LogError2Impl(const wchar_t * str, const char * file, int line, const char * functon, ...) {
+	va_list arg; va_start(arg, functon); LogInternalWithCodeAndLine(LogLevelError, str, file, line, functon, arg); va_end(arg);
+}
+void LoggerInternal::LogInfo2Impl(const wchar_t * str, const char * file, int line, const char * functon, ...) {
+	va_list arg; va_start(arg, functon); LogInternalWithCodeAndLine(LogLevelInfo, str, file, line, functon, arg); va_end(arg);
+}
+#endif
 
 void LoggerInternal::SetLogLevel(LogLevel level)
 {

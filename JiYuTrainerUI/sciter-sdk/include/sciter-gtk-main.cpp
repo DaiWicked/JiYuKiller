@@ -1,4 +1,4 @@
-//
+﻿//
 //  sciter-gtk-main.mm
 //  sciter
 //

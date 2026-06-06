@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef CPP11
 const // It is a const object...

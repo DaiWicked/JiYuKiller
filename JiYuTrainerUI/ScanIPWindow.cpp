@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ScanIPWindow.h"
 #include "resource.h"
 #include "../JiYuTrainer/SysHlp.h"
@@ -8,7 +8,7 @@
 
 extern int screenWidth, screenHeight;
 
-ScanIPWindow::ScanIPWindow(HWND parentHWnd) : CommonWindow(parentHWnd, 330, 360, L"JiYuTrainerScanIPWindow", L"É¨Ãè¾ÖÓòÍøIP", IDR_HTML_SCANIP)
+ScanIPWindow::ScanIPWindow(HWND parentHWnd) : CommonWindow(parentHWnd, 330, 360, L"JiYuTrainerScanIPWindow", L"æ‰«æå±€åŸŸç½‘IP", IDR_HTML_SCANIP)
 {
 	SetWindowLong(_hWnd, GWL_STYLE, GetWindowLong(_hWnd, GWL_STYLE) ^ (WS_MAXIMIZEBOX | WS_SIZEBOX));
 	init();
@@ -125,11 +125,11 @@ void ScanIPWindow::ScanAddIpToList(JyNetworkIP* data) {
 }
 void ScanIPWindow::ScanFinish() {
 
-	btn_refresh_ip_list.set_text(L"É¨ÃèÍê³É£¬ÖØÐÂÉ¨Ãè");
+	btn_refresh_ip_list.set_text(L"æ‰«æå®Œæˆï¼Œé‡æ–°æ‰«æ");
 	btn_refresh_ip_list.remove_attribute("disabled");
 
 	if (scanCount == 0)
-		AddStringToIpList(L"Ã»ÓÐËÑË÷µ½¾ÖÓòÍøÄÚµÄÖ÷»ú");
+		AddStringToIpList(L"æ²¡æœ‰æœç´¢åˆ°å±€åŸŸç½‘å†…çš„ä¸»æœº");
 }
 void ScanIPWindow::AddStringToIpList(LPCWSTR str) {
 	sciter::dom::element newEle = ip_list.create("div", str);
@@ -142,11 +142,11 @@ void ScanIPWindow::RefreshIpList() {
 	std::wregex express(L"^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
 
 	if (!std::regex_match(start.begin(), start.end(), express)) {
-		MessageBox(_hWnd, L"ÆðÊ¼µØÖ·²»ÕýÈ·£¬Ö»Ö§³ÖIPV4µØÖ· (xx.xx.xx.xx) ¸ñÊ½", L"ÌáÊ¾", MB_ICONEXCLAMATION);
+		MessageBox(_hWnd, L"èµ·å§‹åœ°å€ä¸æ­£ç¡®ï¼Œåªæ”¯æŒIPV4åœ°å€ (xx.xx.xx.xx) æ ¼å¼", L"æç¤º", MB_ICONEXCLAMATION);
 		return;
 	}
 	if (!std::regex_match(end.begin(), end.end(), express)) {
-		MessageBox(_hWnd, L"½áÊøµØÖ·²»ÕýÈ·£¬Ö»Ö§³ÖIPV4µØÖ· (xx.xx.xx.xx) ¸ñÊ½", L"ÌáÊ¾", MB_ICONEXCLAMATION);
+		MessageBox(_hWnd, L"ç»“æŸåœ°å€ä¸æ­£ç¡®ï¼Œåªæ”¯æŒIPV4åœ°å€ (xx.xx.xx.xx) æ ¼å¼", L"æç¤º", MB_ICONEXCLAMATION);
 		return;
 	}
 
@@ -159,14 +159,14 @@ void ScanIPWindow::RefreshIpList() {
 		ipHost2 = end.substr(0, lastDotIndex);
 
 	if (ipHost1 != ipHost2) {
-		MessageBox(_hWnd, L"ÆðÊ¼µØÖ·ºÍ½áÊøµØÖ·±ØÐëÔÚÍ¬Ò»¸öÍø¶Î", L"ÌáÊ¾", MB_ICONEXCLAMATION);
+		MessageBox(_hWnd, L"èµ·å§‹åœ°å€å’Œç»“æŸåœ°å€å¿…é¡»åœ¨åŒä¸€ä¸ªç½‘æ®µ", L"æç¤º", MB_ICONEXCLAMATION);
 		return;
 	}
 
 
 	scanCount = 0;
 	ip_list.clear();
-	btn_refresh_ip_list.set_text(L"ÕýÔÚÉ¨ÃèÇëÉÔºó...");
+	btn_refresh_ip_list.set_text(L"æ­£åœ¨æ‰«æè¯·ç¨åŽ...");
 	btn_refresh_ip_list.set_attribute("disabled", L"disabled");
 	JyUdpAttack::currentJyUdpAttack->ScanNetworkIP(this->_hWnd, start, end, ipHost1, scanCurrentIP);
 }
