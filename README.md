@@ -1,6 +1,8 @@
 # JiYu Trainer Next
 
-基于 [JiYu Trainer](https://github.com/imengyu/JiYuTrainer) 的 fork，由 zsyn666 维护。
+基于 [JiYu Trainer](https://github.com/imengyu/JiYuTrainer) 的 fork
+本项目原作者已经停止更新
+该项目源于作者zsyn666的fork进行二改
 
 ---
 
@@ -13,6 +15,7 @@
   <img alt="JiYu Trainer Title" src="https://imengyu.top/assets/images/jy/JiYuTrainerTitle.png">
 </p>
 <p align="center">不再被极域电子教室控制</p>
+<p align="center">制裁老毕登极域</p>
 
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/language-C++-blue.svg"></a>
@@ -21,6 +24,7 @@
 </p>
 
 ---
+## 来自于zsyn666
 
 ## 新增功能（相比原版）
 
@@ -97,6 +101,7 @@
 ## 致谢
 
 - 原作者 [imengyu](https://github.com/imengyu)（快乐的梦鱼）开发了 JiYu Trainer
+- 二改作者 [zsyn666](https://github.com/zsyn666) 进行二改
 
 ## 许可
 
