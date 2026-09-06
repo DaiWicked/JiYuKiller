@@ -60,30 +60,6 @@
 
 > 附加说明：本软件不依赖任何运行库，您只需复制一个 **JiYuXXXX.exe** (可能还是这个名字) 至目标电脑即可运行，本软件已将需要的DLL打包，它会自动进行安装。
 
-## 编译以及生成
-
-| 支持的编译工具：||
-|:-|:-:|
-| [Visual Studio](https://www.visualstudio.com/) 2019 BuildTools | (推荐) |
-| [MSVC Build Script](build_msvc.ps1) | `powershell -ExecutionPolicy Bypass -File build_msvc.ps1` |
-
-### 使用 MSVC 命令行编译（推荐）
-
-1. 安装 [Visual Studio 2019 BuildTools](https://visualstudio.microsoft.com/)，勾选"C++ 桌面开发"工作负载
-2. 打开 PowerShell，运行：
-   ```
-   powershell -ExecutionPolicy Bypass -File build_msvc.ps1
-   ```
-3. 编译完成后，`Release/` 目录下有 `JiYuTrainer.exe` 和 `JiYuTrainerHooks.dll`
-
-### 使用 Visual Studio IDE 编译
-
-1. 使用 Visual Studio 打开项目 JiYuTrainer.sln
-2. 在顶部工具栏选择配置为 Release，平台为 x86
-3. 在解决方案资源管理器中右键"JiYuTrainer"项目，点击"生成"
-4. 等待生成完毕。不用理会 JiYuTrainerDriver 的编译错误，因为无须生成驱动，源码里已经有生成好的驱动了
-5. 在项目目录/Release 下就有构建完成的程序了
-
 ## 使用的第三方库
 
 *第三方库已经包含在项目中，不需要您自己安装*
