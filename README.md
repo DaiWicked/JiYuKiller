@@ -1,4 +1,5 @@
-# JiYu Trainer Next
+# i.chaoxing
+# 这是目前最后一版，有时间我回来重新编写
 
 基于 [JiYu Trainer](https://github.com/imengyu/JiYuTrainer) 的 fork
 本项目原作者已经停止更新
