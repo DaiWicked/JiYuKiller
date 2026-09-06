@@ -80,6 +80,8 @@ IDR_HTML_CHAT           HTML                    "ChatWindow.html"
 IDR_HTML_SCREENSHOT     HTML                    "ScreenshotWindow.html"
 IDR_HTML_UDPATTACK             HTML                     "UdpAttackWindow.html"
 
+IDR_HTML_LIQUIDGLASS           HTML                     "LiquidGlassWindow.html"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -158,13 +160,13 @@ END
 IDD_BUGREPORT DIALOGEX 0, 0, 311, 176
 STYLE DS_SETFONT | DS_SETFOREGROUND | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "很抱歉, ichaoxing 崩溃了..."
+CAPTION "很抱歉, i.chaoxing 崩溃了..."
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "发送错误报告帮助我们改进软件",IDOK,124,155,124,14
     PUSHBUTTON      "不发送",IDCANCEL,254,155,50,14
     CONTROL         "重启本软件",IDC_REBOOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,156,56,10
-    LTEXT           "非常抱歉，ichaoxing 遇到了问题需要关闭",IDC_STATIC,17,17,150,8
+    LTEXT           "非常抱歉，i.chaoxing 遇到了问题需要关闭",IDC_STATIC,17,17,150,8
     EDITTEXT        IDC_BUGREPORT_CONTENT,7,60,297,84,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VSCROLL
     LTEXT           "程序已经生成了一份关于此错误的详细报告（不包含您的个人信息），我们希望您能将此报告发送给我们，这有助于我们修复这些错误，并提高软件的稳定性。以下是错误报告的详细内容：",IDC_STATIC,17,30,267,26
 END

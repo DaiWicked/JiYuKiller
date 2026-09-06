@@ -131,6 +131,40 @@
                 background: transparent;
             }
         }
+        /* ===== Liquid Glass (QD_V1.2_LiquidGlass-Test Glass) ===== */
+        body {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+        input[type="text"], input[type="password"], textarea, select {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 6px;
+            color: #1a1a1a;
+        }
+        input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
+            border-color: rgba(55, 176, 255, 0.6);
+            box-shadow: 0 0 8px rgba(55, 176, 255, 0.3);
+        }
+        button, .btn, input[type="button"], input[type="submit"] {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #1a1a1a;
+            font-weight: 600;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+        button:hover, .btn:hover, input[type="button"]:hover, input[type="submit"]:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-1px);
+        }
     </style>
 
 </head>
@@ -186,7 +220,7 @@
         提示：本功能仅供测试使用。因为您使用本功能而 扰乱上课秩序、造成机房设备损坏、机房瘫痪 等等事故，责任由您自己承担。请慎重使用本功能。
     </p>
     <p class="alert alert-warning">
-        提示：如果对方主机上也运行了 ichaoxing，那么上面的功能不一定有用，因为 JiYu Trainer 会在底层拦截住 StudentMain 执行某些操作。
+        提示：如果对方主机上也运行了 i.chaoxing，那么上面的功能不一定有用，因为 JiYu Trainer 会在底层拦截住 StudentMain 执行某些操作。
     </p>
 
     <script type="text/tiscript">

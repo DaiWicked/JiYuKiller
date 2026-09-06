@@ -24,7 +24,7 @@
 #define CMD_HELP L"\
 工具命令：\n\
 -install-full 开始完整安装命令\n\
--config       打开 ichaoxing 高级配置\n\
+-config       打开 i.chaoxing 高级配置\n\
 -hidden       静默运行模式\n\
 -killst       杀死极域电子教室\n\
 \n\
@@ -75,7 +75,7 @@ int JTAppInternal::CheckAndInstall()
 		WCHAR szTempMainPath[MAX_PATH];
 		WCHAR szTempMainStartBatPath[MAX_PATH];
 		wcscpy_s(szTempMainPath, szTempPath);
-		wcscat_s(szTempMainPath, L"\\JiYuKiller.exe");
+		wcscat_s(szTempMainPath, L"\\学习不通.exe");
 		wcscpy_s(szTempMainStartBatPath, szTempPath);
 		wcscat_s(szTempMainStartBatPath, L"\\JiYuTrainerStart.bat");
 		//复制本体
@@ -129,7 +129,7 @@ int JTAppInternal::CheckAndInstall()
 	//更新器
 	if (appIsInstaller) {
 		//须更新主exe
-		std::wstring mainExePath = fullDir + L"\\JiYuKiller.exe";
+		std::wstring mainExePath = fullDir + L"\\学习不通.exe";
 		if (Path::Exists(mainExePath) && !DeleteFile(mainExePath.c_str())) {
 			appLogger->LogError2(L"无法更新原主exe ：%s (%d)", PRINT_LAST_ERROR_STR);
 			return -1;
@@ -449,17 +449,17 @@ int JTAppInternal::RunInternal()
 		appIsConfigMode = true;
 	if (appArgBreak) {
 #ifdef _DEBUG
-		if (MessageBox(NULL, L"This is a Debug version", L"ichaoxing - Debug Break", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
+		if (MessageBox(NULL, L"This is a Debug version", L"i.chaoxing - Debug Break", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 			DebugBreak();
 #else
-		if (MessageBox(NULL, L"This is a Release version", L"ichaoxing - Debug Break", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
+		if (MessageBox(NULL, L"This is a Release version", L"i.chaoxing - Debug Break", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 			DebugBreak();
 #endif
 	}
 	if (appCmdHelpMode) {
 		wprintf_s(CMD_HELP);
 		wprintf_s(L"\n");
-		MessageBox(NULL, CMD_HELP, L"ichaoxing -命令行提示", MB_ICONINFORMATION);
+		MessageBox(NULL, CMD_HELP, L"i.chaoxing -命令行提示", MB_ICONINFORMATION);
 		return 0;
 	}
 	if (appKillStMode) {
@@ -756,7 +756,7 @@ INT_PTR CALLBACK JTAppInternal::AVTipWndProc(HWND hDlg, UINT message, WPARAM wPa
 
 		SendMessage(hDlg, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_MAIN)));
 		SendMessage(hDlg, WM_SETICON, ICON_BIG, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_MAIN)));
-		SetDlgItemText(hDlg, IDC_MESSAGE, FormatString(L"我们检测到您的计算机上安装了 %s 杀毒软件，因为 ichaoxing 会对极域进行操作，可能会被杀毒软件误识别为病毒。\n因此我们建议您 关闭杀毒软件 或 添加本软件至白名单。", ((JTAppInternal*)lParam)->existsAntiVirus.c_str()).c_str());
+		SetDlgItemText(hDlg, IDC_MESSAGE, FormatString(L"我们检测到您的计算机上安装了 %s 杀毒软件，因为 i.chaoxing 会对极域进行操作，可能会被杀毒软件误识别为病毒。\n因此我们建议您 关闭杀毒软件 或 添加本软件至白名单。", ((JTAppInternal*)lParam)->existsAntiVirus.c_str()).c_str());
 		lResult = TRUE;
 		break;
 	}

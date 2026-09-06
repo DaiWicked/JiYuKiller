@@ -1,0 +1,249 @@
+<html>
+<head>
+    <style>
+        html { background: transparent; overflow: hidden; }
+        body {
+            font-family: "Microsoft YaHei", Tahoma, sans-serif;
+            margin: 15px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+        h2 {
+            text-align: center;
+            padding-top: 0;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        .info-bar {
+            background: rgba(232, 244, 253, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(184, 218, 255, 0.5);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #004085;
+        }
+        .section {
+            margin-bottom: 14px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .slider-row {
+            display: block;
+            margin-bottom: 6px;
+        }
+        .slider-row label {
+            display: inline-block;
+            width: 80px;
+            font-size: 13px;
+            color: #333;
+        }
+        input[type="hslider"] {
+            width: 200px;
+            vertical-align: middle;
+            height: 24px;
+        }
+        #text_opacity {
+            display: inline-block;
+            width: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #0072ff;
+            margin-left: 8px;
+        }
+        .color-row {
+            display: block;
+            margin-bottom: 6px;
+        }
+        .color-btn {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            vertical-align: middle;
+            padding: 0;
+        }
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+        .color-btn.active {
+            border-color: #fff;
+            box-shadow: 0 0 0 2px #0072ff;
+        }
+        #color_blue { background: linear-gradient(135deg, #2ea4f0, #2e8cf0); }
+        #color_green { background: linear-gradient(135deg, #00cc05, #288c00); }
+        #color_gray { background: linear-gradient(135deg, #6c757d, #4d5863); }
+        #color_purple { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+        #color_dark { background: linear-gradient(135deg, #1e1e28, #0f0f15); }
+        .preview-area {
+            text-align: center;
+            margin: 12px 0;
+        }
+        #preview_box {
+            display: inline-block;
+            width: 280px;
+            height: 80px;
+            border-radius: 12px;
+            background: rgba(46, 164, 240, 0.72);
+            backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.4);
+        }
+        .preview-label {
+            font-size: 11px;
+            color: #888;
+            margin-top: 6px;
+        }
+        .btn-row {
+            text-align: center;
+            margin-top: 12px;
+        }
+        .btn {
+            display: inline-block;
+            color: #1a1a1a;
+            font-weight: 600;
+            background: rgba(55, 176, 255, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 190, 255, 0.5);
+            padding: 6px 20px;
+            border-radius: 5px;
+            font-size: 13px;
+            margin: 0 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(55, 176, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+        .btn:hover {
+            background: rgba(30, 158, 255, 0.85);
+            transform: translateY(-1px);
+        }
+        .btn-green { background: rgba(40, 167, 69, 0.75); border-color: rgba(80, 200, 100, 0.5); }
+        .btn-green:hover { background: rgba(30, 150, 60, 0.85); }
+        .btn-gray { background: rgba(108, 117, 125, 0.75); border-color: rgba(140, 150, 160, 0.5); }
+        .btn-gray:hover { background: rgba(90, 98, 104, 0.85); }
+        .status {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+    <script type="text/tiscript">
+        var currentOpacity = 72;
+        var currentColor = "blue";
+        var colorMap = {
+            "blue": "46, 164, 240",
+            "green": "0, 204, 5",
+            "gray": "108, 117, 125",
+            "purple": "111, 66, 193",
+            "dark": "30, 30, 40"
+        };
+
+        function updatePreview() {
+            var preview = $(#preview_box);
+            var rgb = colorMap[currentColor];
+            var alpha = currentOpacity / 100.0;
+            preview.style["background"] = "rgba(" + rgb + ", " + alpha + ")";
+        }
+
+        function selectColor(colorName, btn) {
+            currentColor = colorName;
+            $(.color-btn.active).attributes.removeClass("active");
+            btn.attributes.addClass("active");
+            updatePreview();
+        }
+
+        // hslider 值变化事件
+        $(#slider_opacity).on("change", function() {
+            currentOpacity = this.value;
+            $(#text_opacity).text = currentOpacity + "%";
+            updatePreview();
+        });
+
+        // 颜色按钮
+        $(#color_blue).onClick = function() { selectColor("blue", this); };
+        $(#color_green).onClick = function() { selectColor("green", this); };
+        $(#color_gray).onClick = function() { selectColor("gray", this); };
+        $(#color_purple).onClick = function() { selectColor("purple", this); };
+        $(#color_dark).onClick = function() { selectColor("dark", this); };
+
+        // 应用按钮 - 调用 C++ 函数保存
+        $(#btn_apply).onClick = function() {
+            view.applyLiquidGlass(currentOpacity, currentColor);
+            $(#text_status).text = "已保存 Liquid Glass 设置，重启主窗口后生效。";
+        };
+
+        // 恢复默认
+        $(#btn_reset).onClick = function() {
+            currentOpacity = 72;
+            currentColor = "blue";
+            $(#slider_opacity).value = 72;
+            $(#text_opacity).text = "72%";
+            $(.color-btn.active).attributes.removeClass("active");
+            $(#color_blue).attributes.addClass("active");
+            updatePreview();
+            $(#text_status).text = "已恢复默认设置，点击应用保存。";
+        };
+
+        // C++ 调用此函数初始化
+        function initSettings(opacity, color) {
+            currentOpacity = opacity;
+            currentColor = color;
+            $(#slider_opacity).value = opacity;
+            $(#text_opacity).text = opacity + "%";
+            $(.color-btn.active).attributes.removeClass("active");
+            var btnId = "#color_" + color;
+            $(btnId).attributes.addClass("active");
+            updatePreview();
+        }
+    </script>
+</head>
+<body>
+    <h2>Liquid Glass 设置</h2>
+    <div class="info-bar">
+        个性化定制界面外观。调节透明度和背景色，实时预览效果，点击应用后保存。
+    </div>
+
+    <div class="section">
+        <div class="section-title">透明程度</div>
+        <div class="slider-row">
+            <label>透明度</label>
+            <input type="hslider" id="slider_opacity" min="30" max="100" value="72" step="1" />
+            <span id="text_opacity">72%</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">背景色彩</div>
+        <div class="color-row">
+            <button id="color_blue" class="color-btn active" title="经典蓝"></button>
+            <button id="color_green" class="color-btn" title="活力绿"></button>
+            <button id="color_gray" class="color-btn" title="高级灰"></button>
+            <button id="color_purple" class="color-btn" title="神秘紫"></button>
+            <button id="color_dark" class="color-btn" title="深邃黑"></button>
+        </div>
+    </div>
+
+    <div class="preview-area">
+        <div id="preview_box"></div>
+        <div class="preview-label">实时预览效果</div>
+    </div>
+
+    <div class="btn-row">
+        <button id="btn_apply" class="btn btn-green">应用</button>
+        <button id="btn_reset" class="btn btn-gray">恢复默认</button>
+    </div>
+    <div class="status" id="text_status">调节透明度和背景色，点击应用保存。</div>
+</body>
+</html>

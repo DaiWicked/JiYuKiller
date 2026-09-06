@@ -24,6 +24,7 @@
 #define IDR_HTML_CHAT                   153
 #define IDR_HTML_SCREENSHOT             154
 #define IDR_HTML_UDPATTACK              155
+#define IDR_HTML_LIQUIDGLASS            156
 #define IDC_CHECK_INI_11                1001
 #define IDC_CHECK_INI_12                1002
 #define IDC_CHECK_INI_21                1003

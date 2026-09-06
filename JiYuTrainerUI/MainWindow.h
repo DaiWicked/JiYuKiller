@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 #define MAIN_WND_CLS_NAME L"JiYuTrainerWindow"
-#define MAIN_WND_NAME L"ichaoxing Main Window"
+#define MAIN_WND_NAME L"i.chaoxing Main Window"
 
 #ifdef JIYUTRAINERUI_EXPORTS
 
@@ -17,6 +17,7 @@
 #include "ChatWindow.h"
 #include "ScreenshotWindow.h"
 #include "UdpAttackWindow.h"
+#include "LiquidGlassWindow.h"
 #include <list>
 #include "../JiYuTrainer/AppPublic.h"
 
@@ -99,6 +100,7 @@ private:
 	ChatWindow* currentChatWindow = nullptr;
 	ScreenshotWindow* currentScreenshotWindow = nullptr;
 	UdpAttackWindow* currentUdpAttackWindow = nullptr;
+	LiquidGlassWindow* currentLiquidGlassWindow = nullptr;
 
 	Logger* currentLogger = nullptr;
 	TrainerWorker * currentWorker = nullptr;
@@ -137,7 +139,6 @@ private:
 	sciter::dom::element check_allow_op;
 	sciter::dom::element check_allow_control;
 	sciter::dom::element check_allow_monitor;
-	sciter::dom::element check_auto_update;
 	sciter::dom::element check_allow_top;
 
 
@@ -145,9 +146,6 @@ private:
 	sciter::dom::element common_message;
 	sciter::dom::element common_message_title;
 	sciter::dom::element common_message_text;
-	sciter::dom::element update_message;
-	sciter::dom::element update_message_newver;
-	sciter::dom::element update_message_text;
 	sciter::dom::element isnew_message;
 	sciter::dom::element isnew_message_text;
 	sciter::dom::element isnew_message_title;
@@ -177,11 +175,9 @@ private:
 
 	void ShowFastTip(LPCWSTR text);
 	void CloseFastTip();
-	void ShowUpdateMessage(LPCWSTR title, LPCWSTR text);
 	void ShowFastMessage(LPCWSTR title, LPCWSTR text);
 	void CloseCmdsTip();
 
-	void GetUpdateInfo();
 
 	void LoadSettings();
 	void LoadSettingsToUi();
@@ -189,7 +185,6 @@ private:
 	void SaveSettingsOnQuit();
 	void ResetSettings();
 
-	static VOID WINAPI UpdateThread(LPVOID lpFiberParameter);
 	static void LogCallBack(const wchar_t*str, LogLevel level, LPARAM lParam);
 	void WriteLogItem(const wchar_t * str, LogLevel level);
 	void WritePendingLogs();

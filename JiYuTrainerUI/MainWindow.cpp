@@ -1,6 +1,5 @@
 ﻿#include "stdafx.h"
 #include "MainWindow.h"
-#include "UpdaterWindow.h"
 #include "ConfigWindow.h"
 #include "AttackWindow.h"
 #include "ChatWindow.h"
@@ -15,7 +14,6 @@
 #include "../JiYuTrainer/SysHlp.h"
 #include "../JiYuTrainer/MD5Utils.h"
 #include "../JiYuTrainer/PathHelper.h"
-#include "../JiYuTrainerUpdater/JiYuTrainerUpdater.h"
 
 using namespace std;
 
@@ -155,7 +153,6 @@ sciter::value MainWindow::docunmentComplete()
 	check_probit_terminate_process = root.get_element_by_id(L"check_probit_terminate_process");
 	check_allow_op = root.get_element_by_id(L"check_allow_op");
 	check_allow_top = root.get_element_by_id(L"check_allow_top");
-	check_auto_update = root.get_element_by_id(L"check_auto_update");
 	check_allow_control = root.get_element_by_id(L"check_allow_control");
 	check_allow_monitor = root.get_element_by_id(L"check_allow_monitor");
 	link_read_jiyu_password2 = root.get_element_by_id(L"link_read_jiyu_password2");
@@ -165,9 +162,6 @@ sciter::value MainWindow::docunmentComplete()
 	common_message = root.get_element_by_id(L"common_message");
 	common_message_title = root.get_element_by_id(L"common_message_title");
 	common_message_text = root.get_element_by_id(L"common_message_text");
-	update_message_newver = root.get_element_by_id(L"update_message_newver");
-	update_message_text = root.get_element_by_id(L"update_message_text");
-	update_message = root.get_element_by_id(L"update_message");
 	isnew_message = root.get_element_by_id(L"isnew_message");
 	isnew_message_text = root.get_element_by_id(L"isnew_message_text");
 	isnew_message_title = root.get_element_by_id(L"isnew_message_title");
@@ -216,10 +210,6 @@ void MainWindow::OnWmCommand(WPARAM wParam)
 		break;
 	}
 	case IDM_HELP: ShowHelp(); break;
-	case IDC_UPDATE_CLOSE: {
-		Close();
-		break;
-	}
 	default: break;
 	}
 }
@@ -259,6 +249,8 @@ void MainWindow::OnWmHotKey(WPARAM wParam)
 				SendMessage(currentScreenshotWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
 			if (currentUdpAttackWindow)
 				SendMessage(currentUdpAttackWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
+			if (currentLiquidGlassWindow)
+				SendMessage(currentLiquidGlassWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
 			if (currentHelpWindow)
 				SendMessage(currentHelpWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
 		}
@@ -267,7 +259,7 @@ void MainWindow::OnWmHotKey(WPARAM wParam)
 	}
 	if (wParam == hotkeySwFull) {
 		if(!currentWorker->SwitchFakeFull())
-			ShowTrayBaloonTip(L"ichaoxing 提示", L"您已退出假装全屏模式");
+			ShowTrayBaloonTip(L"i.chaoxing 提示", L"您已退出假装全屏模式");
 	}
 }
 void MainWindow::OnWmTimer(WPARAM wParam)
@@ -392,26 +384,22 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		else if (cmd == L"whereisi") {
 			currentLogger->Log(L"本程序路径是：%s", currentApp->GetFullPath());
 		}
-		else if (cmd == L"testupdate") {
-			UpdaterWindow u(_hWnd);
-			u.RunLoop();
-		}	
 		else if (cmd == L"jypasswd") { 
 			LPCWSTR passwd;
-			int res = MessageBox(_hWnd, L"您是否希望使用解密模式读取极域密码？\n选择 [是]  使用解密模式读取极域密码，适用于极域6.0版本\n选择 [否]  则直接读取极域注册表密码，适用于极域老版本", L"ichaoxing - 提示", MB_ICONASTERISK | MB_YESNOCANCEL);
+			int res = MessageBox(_hWnd, L"您是否希望使用解密模式读取极域密码？\n选择 [是]  使用解密模式读取极域密码，适用于极域6.0版本\n选择 [否]  则直接读取极域注册表密码，适用于极域老版本", L"i.chaoxing - 提示", MB_ICONASTERISK | MB_YESNOCANCEL);
 			if (res == IDYES) passwd = (LPCWSTR)currentWorker->RunOperation(TrainerWorkerOp3);
 			else if (res == IDNO) passwd = (LPCWSTR)currentWorker->RunOperation(TrainerWorkerOp2);
 			else return;
 			if (passwd) {
 				if (StrEmepty(passwd)) {
-					MessageBox(_hWnd, L"已成功读取极域密码，密码为空。", L"ichaoxing - 提示", MB_ICONINFORMATION);
+					MessageBox(_hWnd, L"已成功读取极域密码，密码为空。", L"i.chaoxing - 提示", MB_ICONINFORMATION);
 				}
 				else {
 					FAST_STR_BINDER(str, L"已成功读取极域密码，\n密码是：%s", 128, passwd);
-					MessageBox(_hWnd, str, L"ichaoxing - 提示", MB_ICONINFORMATION);
+					MessageBox(_hWnd, str, L"i.chaoxing - 提示", MB_ICONINFORMATION);
 				}
 			}
-			else MessageBox(_hWnd, L"极域电子教室密码读取失败！或许你可以用 mythware_super_password 试试", L"ichaoxing - 提示", MB_ICONEXCLAMATION);
+			else MessageBox(_hWnd, L"极域电子教室密码读取失败！或许你可以用 mythware_super_password 试试", L"i.chaoxing - 提示", MB_ICONEXCLAMATION);
 		}
 		else if (cmd == L"attack") {
 			if (currentAttackWindow == nullptr)
@@ -428,9 +416,9 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		else if (cmd == L"unload_netfilter") {
 			if (MessageBox(_hWnd, L"您是否希望解除极域的网络控制？此操作会卸载极域的网络过滤驱动，卸载以后网络将不受其控制。\n" 
 				"卸载过程中可能卡顿，请等待程序执行完成。\n此操作只需执行一次即可。\n提示：在卸载完成以后最好在“控制面板”>"
-				"“网络和共享中心”>“更改适配器选项”，选本地连接，右键禁用再启用，这样可以重启网络使设置生效。", L"ichaoxing - 提示", MB_ICONWARNING | MB_YESNO) == IDYES)
+				"“网络和共享中心”>“更改适配器选项”，选本地连接，右键禁用再启用，这样可以重启网络使设置生效。", L"i.chaoxing - 提示", MB_ICONWARNING | MB_YESNO) == IDYES)
 				if (currentWorker->RunOperation(TrainerWorkerOp5))
-					MessageBox(_hWnd, L"卸载极域的网络过滤驱动成功", L"ichaoxing - 提示", MB_ICONINFORMATION);
+					MessageBox(_hWnd, L"卸载极域的网络过滤驱动成功", L"i.chaoxing - 提示", MB_ICONINFORMATION);
 		}
 		else if (cmd == L"uj") {
 			if (currentWorker) {
@@ -443,15 +431,6 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		else if (cmd == L"test") currentLogger->Log(L"测试命令，无功能");
 		else if (cmd == L"test2") currentWorker->SendMessageToVirus(L"test2:f");
 		else if (cmd == L"test3") MessageBox(hWndMain, L"MessageBox", L"test3", 0);
-		else if (cmd == L"test5") {
-			ShowUpdateMessage(L"您的 ichaoxing 是最新版本", L"您的 ichaoxing 是最新的版本! 时常更新是个好习惯，可以给你带来更好的软件使用体验");
-		}
-		else if (cmd == L"test6") {
-			ShowUpdateMessage(L"更新失败", L"检查更新失败，请检查您的网络连接？");
-		}
-		else if (cmd == L"test7") {
-			ShowUpdateMessage(L"更新服务器返回了错误的结果", L"(⊙o⊙)？糟糕，更新服务器出了一点故障，请你稍后再试");
-		}
 #endif
 		else if (cmd == L"version") {
 			currentLogger->Log(L"当前版本是：%hs", CURRENT_VERSION);
@@ -528,8 +507,6 @@ void MainWindow::OnFirstShow()
 	}
 
 	//运行更新
-	if (setAutoUpdate)
-		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)UpdateThread, this, 0, NULL);
 
 	currentLogger->LogInfo(L"控制器已启动");
 
@@ -577,27 +554,11 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			ResetSettings();
 			ShowFastTip(L"<h4>已恢复默认设置</h4>");
 		}
-		else if (ele.get_attribute("id") == L"link_checkupdate") {
-			ShowFastTip(L"正在检查更新... ");
-			if (JUpdater_CheckInternet()) {
-				int updateStatus = JUpdater_CheckUpdate(true);
-				CloseFastTip();
-				if (updateStatus == UPDATE_STATUS_LATEST)  ShowUpdateMessage(L"您的 ichaoxing 是最新版本", L"您的 ichaoxing 是最新的版本！时常更新是个好习惯，可以给你带来更好的软件使用体验");
-				else if (updateStatus == UPDATE_STATUS_HAS_UPDATE) GetUpdateInfo();
-				else if (updateStatus == UPDATE_STATUS_COULD_NOT_CONNECT) ShowUpdateMessage(L"更新失败",  L"检查更新失败，请检查您的网络连接？");
-				else if (updateStatus == UPDATE_STATUS_NOT_SUPPORT) ShowUpdateMessage(L"更新服务器返回了错误的结果", L"(⊙o⊙)？糟糕，更新服务器出了一点故障，请你稍后再试");
-			}
-			else ShowFastTip(L"检查更新失败，请检查您的网络连接？");
-		}
 		else if (ele.get_attribute("id") == L"link_runcmd") {
 			sciter::value cmdsx(input_cmd.get_value());
 			OnRunCmd(cmdsx.to_string().c_str());
 		}
 		else if (ele.get_attribute("id") == L"link_exit") SendMessage(_hWnd, WM_COMMAND, IDM_EXIT, NULL);
-		else if (ele.get_attribute("id") == L"update_message_update") {
-			UpdaterWindow updateWindow(_hWnd);
-			updateWindow.RunLoop();
-		}
 		else if (ele.get_attribute("id") == L"exit_message_kill_and_exit") {
 			isUserCancel = true;
 			currentWorker->Kill(true);
@@ -609,7 +570,7 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			Close();
 		}
 		else if (ele.get_attribute("id") == L"link_uninstall") {
-			if (MessageBox(_hWnd, L"你是否真的要卸载本软件？\n卸载会删除本软件相关安装文件，但不会删除源安装包；并且卸载过程中会暂时结束极域主进程，稍后您需要手动启动极域。", L"ichaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
+			if (MessageBox(_hWnd, L"你是否真的要卸载本软件？\n卸载会删除本软件相关安装文件，但不会删除源安装包；并且卸载过程中会暂时结束极域主进程，稍后您需要手动启动极域。", L"i.chaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 				currentApp->UnInstall();
 		}
 		else if (ele.get_attribute("id") == L"link_read_jiyu_password" || ele.get_attribute("id") == L"link_read_jiyu_password2") { OnRunCmd(L"jypasswd"); CloseCmdsTip(); }
@@ -618,12 +579,13 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 		else if (ele.get_attribute("id") == L"link_chat") { OnRunCmd(L"chat"); }
 		else if (ele.get_attribute("id") == L"link_screenshot") { if (!currentScreenshotWindow) currentScreenshotWindow = new ScreenshotWindow(_hWnd); else currentScreenshotWindow->Show(); }
 		else if (ele.get_attribute("id") == L"link_udpattack") { if (!currentUdpAttackWindow) currentUdpAttackWindow = new UdpAttackWindow(_hWnd); else currentUdpAttackWindow->Show(); }
+else if (ele.get_attribute("id") == L"link_liquidglass") { if (!currentLiquidGlassWindow) currentLiquidGlassWindow = new LiquidGlassWindow(_hWnd); else currentLiquidGlassWindow->Show(); }
 		else if (ele.get_attribute("id") == L"link_shutdown") {
-			if (MessageBox(_hWnd, L"你是否真的要关闭电脑？", L"ichaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
+			if (MessageBox(_hWnd, L"你是否真的要关闭电脑？", L"i.chaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
 				OnRunCmd(L"sss");
 		}
 		else if (ele.get_attribute("id") == L"link_reboot") {
-			if (MessageBox(_hWnd, L"你是否真的要重启电脑？", L"ichaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
+			if (MessageBox(_hWnd, L"你是否真的要重启电脑？", L"i.chaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
 				OnRunCmd(L"ssr");
 		}
 		else if (ele.get_attribute("id") == L"link_more_settings") ShowMoreSettings(_hWnd);
@@ -632,7 +594,7 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			if (SysHlp::ChooseFileSingal(_hWnd, NULL, L"请选择极域主进程 StudentMain.exe 的位置", L"StudentMain.exe\0*.exe\0所有文件(*.*)\0*.*\0\0\0",
 				strFilename, NULL, strFilename, MAX_PATH)) {		
 				if (currentWorker->AppointStudentMainLocation(strFilename)) ShowFastTip(L"已更改极域主进程位置");
-				else MessageBox(hWndMain, L"您选择的主进程位置无效。", L"ichaoxing - 提示", MB_ICONEXCLAMATION);
+				else MessageBox(hWndMain, L"您选择的主进程位置无效。", L"i.chaoxing - 提示", MB_ICONEXCLAMATION);
 			}
 		}
 	}
@@ -775,14 +737,6 @@ void MainWindow::CloseFastTip()
 {
 	sciter::dom::element(get_root()).call_function("closeFastTip");
 }
-void MainWindow::ShowUpdateMessage(LPCWSTR title, LPCWSTR text)
-{
-	isnew_message_title.set_text(title);
-	LPCSTR textMore2 = StringHlp::UnicodeToUtf8(text);
-	isnew_message_text.set_html((UCHAR*)textMore2, strlen(textMore2));
-	FreeStringPtr(textMore2);
-	isnew_message.set_attribute("class", L"window-extend-area upper with-mask shown");
-}
 void MainWindow::ShowFastMessage(LPCWSTR title, LPCWSTR text)
 {
 	common_message_title.set_text(title);
@@ -793,19 +747,11 @@ void MainWindow::CloseCmdsTip() {
 	sciter::dom::element root(get_root());
 	root.call_function("close_cmds_tip");
 }
-void MainWindow::GetUpdateInfo() {
-	CHAR newUpdateMessage[256];
-	if (JUpdater_GetUpdateNew(newUpdateMessage, 256))
-		update_message_text.set_html((UCHAR*)newUpdateMessage, strlen(newUpdateMessage));
-	update_message_newver.set_text(JUpdater_GetUpdateNewVer());
-	update_message.set_attribute("class", L"window-extend-area upper with-mask shown");
-}
 
 void MainWindow::LoadSettings()
 {
 	SettingHlp *settings = currentApp->GetSettings();
 	setTopMost = settings->GetSettingBool(L"TopMost", false);
-	setAutoUpdate = settings->GetSettingBool(L"AutoUpdate ", true);
 	setAutoIncludeFullWindow = settings->GetSettingBool(L"AutoIncludeFullWindow", false);
 	setAllowAllRunOp = settings->GetSettingBool(L"AllowAllRunOp", true);
 	setAutoForceKill = settings->GetSettingBool(L"AutoForceKill", false);
@@ -830,7 +776,6 @@ void MainWindow::LoadSettingsToUi()
 	check_probit_terminate_process.set_value(sciter::value(setProhibitKillProcess));
 
 	check_allow_op.set_value(sciter::value(!setAllowAllRunOp));
-	check_auto_update.set_value(sciter::value(setAutoUpdate));
 	check_allow_control.set_value(sciter::value(setAllowControl));
 	check_allow_monitor.set_value(sciter::value(setAllowMonitor));
 	check_allow_top.set_value(sciter::value(setAllowGbTop));
@@ -845,7 +790,6 @@ void MainWindow::SaveSettings()
 
 	setAllowAllRunOp = !check_allow_op.get_value().get(true);
 	
-	setAutoUpdate = check_auto_update.get_value().get(true);
 	setAllowControl = check_allow_control.get_value().get(false);
 	setAllowMonitor = check_allow_monitor.get_value().get(false);
 	setAllowGbTop = check_allow_top.get_value().get(false);
@@ -855,7 +799,6 @@ void MainWindow::SaveSettings()
 	settings->SetSettingBool(L"AutoIncludeFullWindow", setAutoIncludeFullWindow);
 	settings->SetSettingBool(L"AllowAllRunOp", setAllowAllRunOp);
 	settings->SetSettingBool(L"AutoForceKill", setAutoForceKill);
-	settings->SetSettingBool(L"AutoUpdate", setAutoUpdate);
 	settings->SetSettingBool(L"AllowControl", setAllowControl);
 	settings->SetSettingBool(L"AllowMonitor", setAllowMonitor);
 	settings->SetSettingBool(L"AllowGbTop", setAllowGbTop);
@@ -874,7 +817,6 @@ void MainWindow::ResetSettings()
 	setAutoIncludeFullWindow = false;
 	setAllowAllRunOp = false;
 	setAutoForceKill = false;
-	setAutoUpdate = true;
 	setAllowControl = false;
 	setAllowMonitor = true;
 	setAllowGbTop = false;
@@ -887,12 +829,6 @@ void MainWindow::ResetSettings()
 }
 
 
-VOID WINAPI MainWindow::UpdateThread(LPVOID lpFiberParameter)
-{
-	MainWindow* self = (MainWindow*)lpFiberParameter;
-	if (JUpdater_CheckInternet() && JUpdater_CheckUpdate(false) == UPDATE_STATUS_HAS_UPDATE)
-		self->GetUpdateInfo();
-}
 
 void MainWindow::LogCallBack(const wchar_t * str, LogLevel level, LPARAM lParam)
 {
@@ -949,7 +885,7 @@ void MainWindow::CreateTrayIcon(HWND hDlg) {
 	nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_INFO | NIF_TIP;
 	nid.uCallbackMessage = WM_USER;
 	nid.hIcon = LoadIcon(currentApp->GetInstance(), MAKEINTRESOURCE(IDI_APP));
-	lstrcpy(nid.szTip, L"ichaoxing");
+	lstrcpy(nid.szTip, L"i.chaoxing");
 	Shell_NotifyIcon(NIM_ADD, &nid);
 }
 void MainWindow::ShowTrayBaloonTip(const wchar_t* title, const wchar_t* text) {
@@ -1026,7 +962,7 @@ LRESULT CALLBACK MainWindow::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 			ShowWindow(hWnd, SW_HIDE);
 			if (!self->setTopMost) SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 			if (!self->hideTipShowed) {
-				self->ShowTrayBaloonTip(L"ichaoxing 提示", L"窗口隐藏到此处了，双击这里显示主界面");
+				self->ShowTrayBaloonTip(L"i.chaoxing 提示", L"窗口隐藏到此处了，双击这里显示主界面");
 				self->hideTipShowed = true;
 			}
 			return TRUE;
@@ -1061,6 +997,10 @@ LRESULT CALLBACK MainWindow::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 		if (wnd == static_cast<CommonWindow*>(self->currentUdpAttackWindow)) {
 			self->currentUdpAttackWindow->Release();
 			self->currentUdpAttackWindow = nullptr;
+		}
+		if (wnd == static_cast<CommonWindow*>(self->currentLiquidGlassWindow)) {
+			self->currentLiquidGlassWindow->Release();
+			self->currentLiquidGlassWindow = nullptr;
 		}
 		break;
 	}

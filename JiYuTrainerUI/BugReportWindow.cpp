@@ -56,11 +56,11 @@ INT_PTR CALLBACK BugReportDlgFunc(HWND hDlg, UINT message, WPARAM wParam, LPARAM
 		case IDOK: {
 			if (JUpdater_CheckInternet()) {
 				Sleep(2000);
-				MessageBox(hDlg, L"您的错误报告已成功提交，感谢您的支持！", L"ichaoxing", MB_ICONINFORMATION);
+				MessageBox(hDlg, L"您的错误报告已成功提交，感谢您的支持！", L"i.chaoxing", MB_ICONINFORMATION);
 				EndDialog(hDlg, LOWORD(wParam));
 			}
 			else {
-				MessageBox(hDlg, L"无法提交错误报告，可能是网络未连接？", L"ichaoxing", MB_ICONEXCLAMATION);
+				MessageBox(hDlg, L"无法提交错误报告，可能是网络未连接？", L"i.chaoxing", MB_ICONEXCLAMATION);
 			}
 			if (IsDlgButtonChecked(hDlg, IDC_REBOOT))
 				SysHlp::RunApplication(currentApp->GetFullPath(), L"-r3");

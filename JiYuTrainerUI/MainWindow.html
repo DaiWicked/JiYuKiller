@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>ichaoxing Main Window</title>
+    <title>i.chaoxing Main Window</title>
     <style>
         html {
             background: transparent;
@@ -195,25 +195,6 @@
             top: 150px;
             bottom: 150px;
         }
-        #update_message {
-
-            bottom: 70px;
-            top: 60px;
-            left: 15px;
-            right: 15px;
-            padding: 10px 20px;
-            background-image: url(res:update_bg.png);
-            background-repeat: no-repeat;
-            background-position: 0 -44px;
-        }
-        #update_message_text {
-            margin-top: 30px;
-            padding:  20px;
-        }
-        #update_message_text ol, #update_message_text ul {
-            margin: 0;
-            padding: 0;
-        }
         #isnew_message {
             bottom: 121px;
             top: 100px;
@@ -405,7 +386,7 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: -23px;
+            top: -23px;
         }
         .window-tab {
             display: inline-block;
@@ -835,6 +816,92 @@
                 background: transparent;
             }
         }
+        /* ===== Liquid Glass (QD_V1.2_LiquidGlass-Test Glass) ===== */
+        .window-extend-area {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.5), inset 0 -1px 1px rgba(0, 0, 0, 0.04);
+        }
+        .window-extend-area::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 40%, transparent 60%);
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .window-extend-area > * {
+            z-index: 1;
+        }
+        .title-close, .btn-close-extend-area {
+            position: absolute !important;
+            z-index: 10 !important;
+        }
+        .window-tab {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px) saturate(1.5);
+            -webkit-backdrop-filter: blur(20px) saturate(1.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.6), inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+        }
+        .btn-tab {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+        .btn-tab:hover {
+            color: #0072ff;
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .btn-tab.active {
+            background: linear-gradient(135deg, rgba(55, 176, 255, 0.85), rgba(30, 144, 255, 0.85));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(55, 176, 255, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+        .btn-tab.active:hover {
+            color: #fff;
+        }
+        .cfg-link {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px) saturate(1.2);
+            -webkit-backdrop-filter: blur(10px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            padding: 8px 12px 8px 34px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .cfg-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+        }
+        .btn-common {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #1a1a1a;
+            font-weight: 600;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn-common:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-1px);
+        }
+        .btn-common.btn-primary {
+            background: linear-gradient(135deg, rgba(55, 176, 255, 0.85), rgba(30, 144, 255, 0.85));
+            color: #fff;
+            border-color: rgba(100, 190, 255, 0.5);
+        }
     </style>
 </head>
 <body class="window-shadow">
@@ -846,7 +913,7 @@
             <!--标题栏-->
             <div class="window-title-area" id="title-area">
                 <img src="res:icon-main-small.png" id="title-icon" />
-                <h5 id="title">ichaoxing Main Window</h5>
+                <h5 id="title">i.chaoxing Main Window</h5>
                 <a class="title-min" id="btn_min" href="#" title="最小化"></a>
                 <a class="title-close" id="btn_close" href="#" title="关闭"></a>
             </div>
@@ -864,7 +931,7 @@
             <div class="tooltip" id="tooltip_fast" style="top: 100px; left: 30px; right: 30px"></div>
         </div>
         <div class="window-tooltips-bottom">
-            <div class="tooltip tooltip-vesion" style="bottom: 90px; left: 75px; width: 150px">当前版本 ：QD_V1.0<br /><small>点击查看帮助</small></div>
+            <div class="tooltip tooltip-vesion" style="bottom: 90px; left: 75px; width: 150px">当前版本 ：QD_V1.2_LiquidGlass-Test<br /><small>点击查看帮助</small></div>
             <div class="tooltip tooltip-jiyu-pid" style="bottom: 86px; left: 30px; width: 300px;padding-top:8px;padding-bottom:8px">StudentMain.exe PID : <span id="status_jiyu_pid">未知</span><br /><small>点击杀死极域电子教室</small></div>
             <div class="tooltip tooltip-jiyu-restart" style="bottom: 86px; left: 30px; width: 300px;padding-top:8px;padding-bottom:8px"><h4 class="m-0">极域位置</h4><span id="status_jiyu_path" style="color: #cecece">未找到极域电子教室</span></div>
             <div class="tooltip tooltip-topmost" id="tooltip_top" style="bottom: 83px; left: 83px; width: 70px">本窗口置顶</div>
@@ -934,10 +1001,6 @@
                         <input type="checkbox" id="check_allow_control" />
                         <label for="check_allow_control">允许教师控制你的电脑</label>
                     </div>
-                    <div class="form-check" style="width: 140px;">
-                        <input type="checkbox" id="check_auto_update">
-                        <label for="check_auto_update">自动更新软件</label>
-                    </div>
 
                     <div class="form-item" style="margin-top: 16px; ">
                         <a href="#" id="link_unload_netfilter" class="cfg-link cfg-link-left text-info" style="margin-left: 30px" title="本功能可以卸载极域的网络过滤驱动，来防止教师通过极域限制您电脑的上网。本功能开机后卸载一次即可。">解除网络控制</a>
@@ -953,6 +1016,7 @@
                     </div>
                     <div class="form-item">
                         <a href="#" id="link_udpattack" class="cfg-link cfg-link-left text-info" style="margin-left: 30px">极域UDP攻击</a>
+                        <a href="#" id="link_liquidglass" class="cfg-link cfg-link-right text-info" title="个性化定制界面外观">Liquid Glass个性化(已崩溃)</a>
                     </div>
 
                 </div>
@@ -979,14 +1043,14 @@
                     <img src="res:logo-text.png" style="width:230px; height:auto" />
                 </div>
                 <div style="text-align:center">
-                    QD_V1.0
+                    QD_V1.2_LiquidGlass-Test
                     &copy; 2026 Daitangxin
                 </div>
                 <br />
                 <a href="#" id="link_help" class="link">软件帮助</a>&nbsp;<!--|&nbsp;<a href="#" id="link_github" class="link">Github</a>&nbsp;-->|&nbsp;<a href="#" id="link_uninstall" class="link" style="color: rgb(228, 126, 0);font-size: 12px;" title="从此计算机上卸载 JiYu Trainer ">卸载软件</a><br />
                 <br />
                 <div class="alert alert-success">
-                    你喜欢 ichaoxing 吗？如果你喜欢，不妨向你的好友推荐一下这个软件吧！
+                    你喜欢 i.chaoxing 吗？如果你喜欢，不妨向你的好友推荐一下这个软件吧！
                 </div>
             </div>
         </div>
@@ -1059,26 +1123,11 @@
             </a>
         </div>
         <div class="window-extend-area-mask upper"></div>
-        <!--更新提示框-->
-        <div class="window-extend-area with-mask upper" id="update_message">
-            <div class="new-ver">
-                <span class="text">发现软件新版本</span>
-                <span class="ver"><span id="update_message_newver"></span> 更新内容</span>
-            </div>
-            <p id="update_message_text">
-            </p>
-            <p style="position: absolute;bottom: 60px; left: 15px; right: 15px; height :28px;text-align:center; font-size: 12px;color:rgb(108, 117, 125)">更新到最新版本，可以获得更稳定的使用体验！<br />更新过程中会暂时关闭极域</p>
-            <div class="text-right" style="position: absolute;bottom: 0; left: 15px; right: 15px; height :45px;text-align:center;">
-                <a href="#" class="btn-common btn-primary" id="update_message_update">立即更新!</a>
-                <a href="#" class="btn-common ml-2" id="update_message_close">下次再说</a>
-            </div>
-        </div>
-        <div class="window-extend-area-mask upper"></div>
         <!--更新最新提示框-->
         <div class="window-extend-area with-mask upper" id="isnew_message">
             <div class="new-ver">
                 <span class="text">检测更新</span>
-                <span class="ver" id="isnew_message_title">你的 ichaoxing 是最新的版本！</span>
+                <span class="ver" id="isnew_message_title">你的 i.chaoxing 是最新的版本！</span>
             </div>
             <p id="isnew_message_text">
             </p>
@@ -1160,8 +1209,6 @@
         }
         $(#common_message_close).onClick = function (){ common_close_extend_area(common_message); }
         $(#common_message_close2).onClick = function (){ common_close_extend_area(common_message); }
-        $(#update_message_close).onClick =  function (){ common_close_extend_area($(#update_message)); }
-        $(#update_message_update).onClick =  function (){ common_close_extend_area($(#update_message)); }
         $(#exit_message_close).onClick =  function (){ common_close_extend_area($(#exit_message)); }
         $(#exit_message_close2).onClick =  function (){ common_close_extend_area($(#exit_message)); }
         $(#cmds_message_close).onClick =  function (){ common_close_extend_area($(#cmds_message)); }
@@ -1231,11 +1278,9 @@
         const exit_message = $(#exit_message);
         const hello_message = $(#hello_message);
         const power_message = $(#power_message);
-        const update_message = $(#update_message);
 
         function closeWindow(){
             if(extend_area.attributes.hasClass("shown")) extend_area.attributes.removeClass("shown");
-            else  if(update_message.attributes.hasClass("shown")) return;
             else  if(common_message.attributes.hasClass("shown")) common_message.attributes.removeClass("shown");
             else  if(power_message.attributes.hasClass("shown")) power_message.attributes.removeClass("shown");
             else  if(exit_message.attributes.hasClass("shown"))  exit_message.attributes.removeClass("shown");
