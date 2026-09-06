@@ -21,6 +21,9 @@
 #define IDR_HTML_ATTACK                 150
 #define IDR_HTML2                       152
 #define IDR_HTML_SCANIP                 152
+#define IDR_HTML_CHAT                   153
+#define IDR_HTML_SCREENSHOT             154
+#define IDR_HTML_UDPATTACK              155
 #define IDC_CHECK_INI_11                1001
 #define IDC_CHECK_INI_12                1002
 #define IDC_CHECK_INI_21                1003
@@ -55,7 +58,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        153
+#define _APS_NEXT_RESOURCE_VALUE        155
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1029
 #define _APS_NEXT_SYMED_VALUE           101

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 #define MAIN_WND_CLS_NAME L"JiYuTrainerWindow"
-#define MAIN_WND_NAME L"JiYu Trainer Main Window"
+#define MAIN_WND_NAME L"ichaoxing Main Window"
 
 #ifdef JIYUTRAINERUI_EXPORTS
 
@@ -14,6 +14,9 @@
 #include "../JiYuTrainer/SysHlp.h"
 #include "HelpWindow.h"
 #include "AttackWindow.h"
+#include "ChatWindow.h"
+#include "ScreenshotWindow.h"
+#include "UdpAttackWindow.h"
 #include <list>
 #include "../JiYuTrainer/AppPublic.h"
 
@@ -88,12 +91,14 @@ private:
 	bool setBandAllRunOp = false;
 	bool setDoNotShowTrayIcon = false;
 	bool setAutoUpdate = true;
-	std::wstring setFakeScreenImage;
 
 	int setCkInterval = 3100;
 
 	HelpWindow*currentHelpWindow = nullptr;
 	AttackWindow*currentAttackWindow = nullptr;
+	ChatWindow* currentChatWindow = nullptr;
+	ScreenshotWindow* currentScreenshotWindow = nullptr;
+	UdpAttackWindow* currentUdpAttackWindow = nullptr;
 
 	Logger* currentLogger = nullptr;
 	TrainerWorker * currentWorker = nullptr;
@@ -135,9 +140,6 @@ private:
 	sciter::dom::element check_auto_update;
 	sciter::dom::element check_allow_top;
 
-	sciter::dom::element link_choose_fakescreen;
-	sciter::dom::element link_clear_fakescreen;
-	sciter::dom::element text_fakescreen_path;
 
 	sciter::dom::element cmds_message;
 	sciter::dom::element common_message;

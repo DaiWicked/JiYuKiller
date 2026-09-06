@@ -1,6 +1,6 @@
 /.vs/
 /Debug/
-/Release/JiYuTrainer.ini
+/Release/
 *.lib
 *.pdb
 *.idb
@@ -11,9 +11,7 @@
 *.ilk
 *.exp
 *.tlog
-*.pdb
 *.obj
-*.idb
 *.pch
 *.log
 *.dll
@@ -21,4 +19,17 @@
 *.bat
 *.enc
 *.recipe
-
+*.exe
+*.res
+*.user
+*.suo
+RCa*
+/sciter/
+/Jiyu_chat-master/
+/Jiyu_udp_attack/
+/x64/
+/x86/
+**/Debug/
+**/Release/
+**/x64/
+**/x86/

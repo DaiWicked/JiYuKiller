@@ -215,7 +215,7 @@ bool TrainerWorkerInternal::Kill(bool autoWork)
 		if(!vkill){
 			MSGBOXPARAMSW mbp = { 0 };
 			mbp.hwndOwner = hWndMain;
-			mbp.lpszCaption = L"JiYuTrainer - 提示";
+			mbp.lpszCaption = L"ichaoxing - 提示";
 			mbp.lpszText = L"您是否希望使用病毒进行爆破？";
 			mbp.cbSize = sizeof(MSGBOXPARAMSW);
 			mbp.dwStyle = MB_ICONEXCLAMATION | MB_TOPMOST | MB_YESNOCANCEL;
@@ -259,7 +259,7 @@ bool TrainerWorkerInternal::Kill(bool autoWork)
 		else if (status != STATUS_INVALID_CID && status != STATUS_INVALID_HANDLE) {
 			currentLogger->LogError(L"结束进程错误：0x%08X，请手动结束", status);
 			if (!autoWork)
-				MessageBox(hWndMain, L"无法结束极域电子教室，您需要使用其他工具手动结束", L"JiYuTrainer - 错误", MB_ICONERROR);;
+				MessageBox(hWndMain, L"无法结束极域电子教室，您需要使用其他工具手动结束", L"ichaoxing - 错误", MB_ICONERROR);;
 			CloseHandle(hProcess);
 			return false;
 		}
@@ -274,7 +274,7 @@ bool TrainerWorkerInternal::Kill(bool autoWork)
 	}
 
 FORCEKILL:
-	if (XDriverLoaded() && MessageBox(hWndMain, L"普通无法结束极域，是否调用驱动结束极域？\n（驱动可能不稳定，请慎用。您也可以使用 PCHunter 等安全软件进行强杀）", L"JiYuTrainer - 提示", MB_ICONEXCLAMATION | MB_YESNO | MB_TOPMOST) == IDYES)
+	if (XDriverLoaded() && MessageBox(hWndMain, L"普通无法结束极域，是否调用驱动结束极域？\n（驱动可能不稳定，请慎用。您也可以使用 PCHunter 等安全软件进行强杀）", L"ichaoxing - 提示", MB_ICONEXCLAMATION | MB_YESNO | MB_TOPMOST) == IDYES)
 	{
 		if (KForceKill(_StudentMainPid, &status)) {
 			_StudentMainPid = 0;

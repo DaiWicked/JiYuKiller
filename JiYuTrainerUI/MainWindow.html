@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>JiYu Trainer Main Window</title>
+    <title>ichaoxing Main Window</title>
     <style>
         html {
             background: transparent;
@@ -846,7 +846,7 @@
             <!--标题栏-->
             <div class="window-title-area" id="title-area">
                 <img src="res:icon-main-small.png" id="title-icon" />
-                <h5 id="title">JiYu Trainer Main Window</h5>
+                <h5 id="title">ichaoxing Main Window</h5>
                 <a class="title-min" id="btn_min" href="#" title="最小化"></a>
                 <a class="title-close" id="btn_close" href="#" title="关闭"></a>
             </div>
@@ -864,7 +864,7 @@
             <div class="tooltip" id="tooltip_fast" style="top: 100px; left: 30px; right: 30px"></div>
         </div>
         <div class="window-tooltips-bottom">
-            <div class="tooltip tooltip-vesion" style="bottom: 90px; left: 75px; width: 150px">当前版本 ：V1.7.6<br /><small>点击查看帮助</small></div>
+            <div class="tooltip tooltip-vesion" style="bottom: 90px; left: 75px; width: 150px">当前版本 ：QD_V1.0<br /><small>点击查看帮助</small></div>
             <div class="tooltip tooltip-jiyu-pid" style="bottom: 86px; left: 30px; width: 300px;padding-top:8px;padding-bottom:8px">StudentMain.exe PID : <span id="status_jiyu_pid">未知</span><br /><small>点击杀死极域电子教室</small></div>
             <div class="tooltip tooltip-jiyu-restart" style="bottom: 86px; left: 30px; width: 300px;padding-top:8px;padding-bottom:8px"><h4 class="m-0">极域位置</h4><span id="status_jiyu_path" style="color: #cecece">未找到极域电子教室</span></div>
             <div class="tooltip tooltip-topmost" id="tooltip_top" style="bottom: 83px; left: 83px; width: 70px">本窗口置顶</div>
@@ -924,14 +924,6 @@
                         <input type="checkbox" id="check_allow_monitor" />
                         <label for="check_allow_monitor">允许教师监视你的电脑</label>
                     </div>
-                    <div class="form-item" style="width: 280px; margin-top: 4px;" title="Custom image to replace screen captures">
-                        <label style="font-size: 12px; color: #888;">Screenshot replacement:</label>
-                        <div style="display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                            <a href="#" id="link_choose_fakescreen" class="cfg-link text-info" style="font-size: 12px; white-space: nowrap;">Choose image...</a>
-                            <span id="text_fakescreen_path" style="font-size: 11px; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px;"></span>
-                            <a href="#" id="link_clear_fakescreen" class="cfg-link text-danger" style="font-size: 11px; display: none;">Clear</a>
-                        </div>
-                    </div>
 
                     <div class="form-check" style="width: 140px;" title="是否允许教师通过极域关闭您电脑上的窗口，默认不允许。 ">
                         <input type="checkbox" id="check_probit_close_window" />
@@ -954,6 +946,13 @@
                     <div class="form-item">
                         <a href="#" id="link_more_settings" class="cfg-link cfg-link-left text-info" style="margin-left: 30px">软件高级配置</a>
                         <a href="#" id="link_locate_jiyu_position" class="cfg-link cfg-link-right text-info" title="如果本软件并没有找到极域电子教室或者是寻找的路径不正确，您可以手动选择">选择极域主进程位置</a>
+                    </div>
+                    <div class="form-item">
+                        <a href="#" id="link_chat" class="cfg-link cfg-link-left text-info" style="margin-left: 30px">小小私聊(beta)</a>
+                        <a href="#" id="link_screenshot" class="cfg-link cfg-link-right text-info">截图替换</a>
+                    </div>
+                    <div class="form-item">
+                        <a href="#" id="link_udpattack" class="cfg-link cfg-link-left text-info" style="margin-left: 30px">极域UDP攻击</a>
                     </div>
 
                 </div>
@@ -980,14 +979,14 @@
                     <img src="res:logo-text.png" style="width:230px; height:auto" />
                 </div>
                 <div style="text-align:center">
-                    V.1.7.6 Next
-                    &copy; 2024 zsyn666
+                    QD_V1.0
+                    &copy; 2026 Daitangxin
                 </div>
                 <br />
-                <a href="#" id="link_help" class="link">软件帮助</a>&nbsp;|&nbsp;<a href="#" id="link_checkupdate" class="link">检查更新</a>&nbsp;<!--|&nbsp;<a href="#" id="link_github" class="link">Github</a>&nbsp;-->|&nbsp;<a href="#" id="link_uninstall" class="link" style="color: rgb(228, 126, 0);font-size: 12px;" title="从此计算机上卸载 JiYu Trainer ">卸载软件</a><br />
+                <a href="#" id="link_help" class="link">软件帮助</a>&nbsp;<!--|&nbsp;<a href="#" id="link_github" class="link">Github</a>&nbsp;-->|&nbsp;<a href="#" id="link_uninstall" class="link" style="color: rgb(228, 126, 0);font-size: 12px;" title="从此计算机上卸载 JiYu Trainer ">卸载软件</a><br />
                 <br />
                 <div class="alert alert-success">
-                    你喜欢 JiYu Trainer 吗？如果你喜欢，不妨向你的好友推荐一下这个软件吧！
+                    你喜欢 ichaoxing 吗？如果你喜欢，不妨向你的好友推荐一下这个软件吧！
                 </div>
             </div>
         </div>
@@ -1027,6 +1026,7 @@
                 <span>testupdate</span><br />
                 <span>crash</span><br />
                 <span>attack</span><br />
+                <span>chat 打开小小私聊(beta)</span><br />
                 <span>config</span><br />
                 <span>uj</span><br />
                 <span>inspector</span><br />
@@ -1078,7 +1078,7 @@
         <div class="window-extend-area with-mask upper" id="isnew_message">
             <div class="new-ver">
                 <span class="text">检测更新</span>
-                <span class="ver" id="isnew_message_title">你的 JiYuTrainer 是最新的版本！</span>
+                <span class="ver" id="isnew_message_title">你的 ichaoxing 是最新的版本！</span>
             </div>
             <p id="isnew_message_text">
             </p>

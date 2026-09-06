@@ -3,6 +3,8 @@
 #include "UpdaterWindow.h"
 #include "ConfigWindow.h"
 #include "AttackWindow.h"
+#include "ChatWindow.h"
+#include "ScreenshotWindow.h"
 #include "resource.h"
 #include "../JiYuTrainer/JiYuTrainer.h"
 #include "../JiYuTrainer/AppPublic.h"
@@ -159,10 +161,6 @@ sciter::value MainWindow::docunmentComplete()
 	link_read_jiyu_password2 = root.get_element_by_id(L"link_read_jiyu_password2");
 	link_unload_netfilter = root.get_element_by_id(L"link_unload_netfilter");
 
-	link_choose_fakescreen = root.get_element_by_id(L"link_choose_fakescreen");
-	link_clear_fakescreen = root.get_element_by_id(L"link_clear_fakescreen");
-	text_fakescreen_path = root.get_element_by_id(L"text_fakescreen_path");
-
 	cmds_message = root.get_element_by_id(L"cmds_message");
 	common_message = root.get_element_by_id(L"common_message");
 	common_message_title = root.get_element_by_id(L"common_message_title");
@@ -188,7 +186,7 @@ sciter::value MainWindow::exitClick()
 	return sciter::value::null();
 }
 sciter::value MainWindow::toGithub() {
-	SysHlp::OpenUrl(L"https://github.com/zsyn666/JiYuTrainer_Next");
+	SysHlp::OpenUrl(L"https://github.com/DaiWicked/JiYuKiller");
 	return sciter::value::null();
 }
 
@@ -255,6 +253,12 @@ void MainWindow::OnWmHotKey(WPARAM wParam)
 		if (IsWindowVisible(_hWnd)) {
 			if (currentAttackWindow) 
 				SendMessage(currentAttackWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
+				if (currentChatWindow)
+					SendMessage(currentChatWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
+			if (currentScreenshotWindow)
+				SendMessage(currentScreenshotWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
+			if (currentUdpAttackWindow)
+				SendMessage(currentUdpAttackWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
 			if (currentHelpWindow)
 				SendMessage(currentHelpWindow->get_hwnd(), WM_MY_FORCE_HIDE, 0, 0);
 		}
@@ -263,7 +267,7 @@ void MainWindow::OnWmHotKey(WPARAM wParam)
 	}
 	if (wParam == hotkeySwFull) {
 		if(!currentWorker->SwitchFakeFull())
-			ShowTrayBaloonTip(L"JiYu Trainer 提示", L"您已退出假装全屏模式");
+			ShowTrayBaloonTip(L"ichaoxing 提示", L"您已退出假装全屏模式");
 	}
 }
 void MainWindow::OnWmTimer(WPARAM wParam)
@@ -394,20 +398,20 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		}	
 		else if (cmd == L"jypasswd") { 
 			LPCWSTR passwd;
-			int res = MessageBox(_hWnd, L"您是否希望使用解密模式读取极域密码？\n选择 [是]  使用解密模式读取极域密码，适用于极域6.0版本\n选择 [否]  则直接读取极域注册表密码，适用于极域老版本", L"JiYuTrainer - 提示", MB_ICONASTERISK | MB_YESNOCANCEL);
+			int res = MessageBox(_hWnd, L"您是否希望使用解密模式读取极域密码？\n选择 [是]  使用解密模式读取极域密码，适用于极域6.0版本\n选择 [否]  则直接读取极域注册表密码，适用于极域老版本", L"ichaoxing - 提示", MB_ICONASTERISK | MB_YESNOCANCEL);
 			if (res == IDYES) passwd = (LPCWSTR)currentWorker->RunOperation(TrainerWorkerOp3);
 			else if (res == IDNO) passwd = (LPCWSTR)currentWorker->RunOperation(TrainerWorkerOp2);
 			else return;
 			if (passwd) {
 				if (StrEmepty(passwd)) {
-					MessageBox(_hWnd, L"已成功读取极域密码，密码为空。", L"JiYuTrainer - 提示", MB_ICONINFORMATION);
+					MessageBox(_hWnd, L"已成功读取极域密码，密码为空。", L"ichaoxing - 提示", MB_ICONINFORMATION);
 				}
 				else {
 					FAST_STR_BINDER(str, L"已成功读取极域密码，\n密码是：%s", 128, passwd);
-					MessageBox(_hWnd, str, L"JiYuTrainer - 提示", MB_ICONINFORMATION);
+					MessageBox(_hWnd, str, L"ichaoxing - 提示", MB_ICONINFORMATION);
 				}
 			}
-			else MessageBox(_hWnd, L"极域电子教室密码读取失败！或许你可以用 mythware_super_password 试试", L"JiYuTrainer - 提示", MB_ICONEXCLAMATION);
+			else MessageBox(_hWnd, L"极域电子教室密码读取失败！或许你可以用 mythware_super_password 试试", L"ichaoxing - 提示", MB_ICONEXCLAMATION);
 		}
 		else if (cmd == L"attack") {
 			if (currentAttackWindow == nullptr)
@@ -415,12 +419,18 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 			else
 				currentAttackWindow->Show();
 		}
+		else if (cmd == L"chat") {
+			if (currentChatWindow == nullptr)
+				currentChatWindow = new ChatWindow(_hWnd);
+			else
+				currentChatWindow->Show();
+		}
 		else if (cmd == L"unload_netfilter") {
 			if (MessageBox(_hWnd, L"您是否希望解除极域的网络控制？此操作会卸载极域的网络过滤驱动，卸载以后网络将不受其控制。\n" 
 				"卸载过程中可能卡顿，请等待程序执行完成。\n此操作只需执行一次即可。\n提示：在卸载完成以后最好在“控制面板”>"
-				"“网络和共享中心”>“更改适配器选项”，选本地连接，右键禁用再启用，这样可以重启网络使设置生效。", L"JiYuTrainer - 提示", MB_ICONWARNING | MB_YESNO) == IDYES)
+				"“网络和共享中心”>“更改适配器选项”，选本地连接，右键禁用再启用，这样可以重启网络使设置生效。", L"ichaoxing - 提示", MB_ICONWARNING | MB_YESNO) == IDYES)
 				if (currentWorker->RunOperation(TrainerWorkerOp5))
-					MessageBox(_hWnd, L"卸载极域的网络过滤驱动成功", L"JiYuTrainer - 提示", MB_ICONINFORMATION);
+					MessageBox(_hWnd, L"卸载极域的网络过滤驱动成功", L"ichaoxing - 提示", MB_ICONINFORMATION);
 		}
 		else if (cmd == L"uj") {
 			if (currentWorker) {
@@ -434,7 +444,7 @@ void MainWindow::OnRunCmd(LPCWSTR cmd)
 		else if (cmd == L"test2") currentWorker->SendMessageToVirus(L"test2:f");
 		else if (cmd == L"test3") MessageBox(hWndMain, L"MessageBox", L"test3", 0);
 		else if (cmd == L"test5") {
-			ShowUpdateMessage(L"您的 JiYu Trainer 是最新版本", L"您的 JiYu Trainer 是最新的版本! 时常更新是个好习惯，可以给你带来更好的软件使用体验");
+			ShowUpdateMessage(L"您的 ichaoxing 是最新版本", L"您的 ichaoxing 是最新的版本! 时常更新是个好习惯，可以给你带来更好的软件使用体验");
 		}
 		else if (cmd == L"test6") {
 			ShowUpdateMessage(L"更新失败", L"检查更新失败，请检查您的网络连接？");
@@ -572,7 +582,7 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			if (JUpdater_CheckInternet()) {
 				int updateStatus = JUpdater_CheckUpdate(true);
 				CloseFastTip();
-				if (updateStatus == UPDATE_STATUS_LATEST)  ShowUpdateMessage(L"您的 JiYu Trainer 是最新版本", L"您的 JiYu Trainer 是最新的版本！时常更新是个好习惯，可以给你带来更好的软件使用体验");
+				if (updateStatus == UPDATE_STATUS_LATEST)  ShowUpdateMessage(L"您的 ichaoxing 是最新版本", L"您的 ichaoxing 是最新的版本！时常更新是个好习惯，可以给你带来更好的软件使用体验");
 				else if (updateStatus == UPDATE_STATUS_HAS_UPDATE) GetUpdateInfo();
 				else if (updateStatus == UPDATE_STATUS_COULD_NOT_CONNECT) ShowUpdateMessage(L"更新失败",  L"检查更新失败，请检查您的网络连接？");
 				else if (updateStatus == UPDATE_STATUS_NOT_SUPPORT) ShowUpdateMessage(L"更新服务器返回了错误的结果", L"(⊙o⊙)？糟糕，更新服务器出了一点故障，请你稍后再试");
@@ -599,18 +609,21 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			Close();
 		}
 		else if (ele.get_attribute("id") == L"link_uninstall") {
-			if (MessageBox(_hWnd, L"你是否真的要卸载本软件？\n卸载会删除本软件相关安装文件，但不会删除源安装包；并且卸载过程中会暂时结束极域主进程，稍后您需要手动启动极域。", L"JiYuTrainer - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
+			if (MessageBox(_hWnd, L"你是否真的要卸载本软件？\n卸载会删除本软件相关安装文件，但不会删除源安装包；并且卸载过程中会暂时结束极域主进程，稍后您需要手动启动极域。", L"ichaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 				currentApp->UnInstall();
 		}
 		else if (ele.get_attribute("id") == L"link_read_jiyu_password" || ele.get_attribute("id") == L"link_read_jiyu_password2") { OnRunCmd(L"jypasswd"); CloseCmdsTip(); }
 		else if (ele.get_attribute("id") == L"link_unload_netfilter") { OnRunCmd(L"unload_netfilter"); CloseCmdsTip(); }
 		else if (ele.get_attribute("id") == L"link_hide") { OnRunCmd(L"hide"); }
+		else if (ele.get_attribute("id") == L"link_chat") { OnRunCmd(L"chat"); }
+		else if (ele.get_attribute("id") == L"link_screenshot") { if (!currentScreenshotWindow) currentScreenshotWindow = new ScreenshotWindow(_hWnd); else currentScreenshotWindow->Show(); }
+		else if (ele.get_attribute("id") == L"link_udpattack") { if (!currentUdpAttackWindow) currentUdpAttackWindow = new UdpAttackWindow(_hWnd); else currentUdpAttackWindow->Show(); }
 		else if (ele.get_attribute("id") == L"link_shutdown") {
-			if (MessageBox(_hWnd, L"你是否真的要关闭电脑？", L"JiYuTrainer - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
+			if (MessageBox(_hWnd, L"你是否真的要关闭电脑？", L"ichaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
 				OnRunCmd(L"sss");
 		}
 		else if (ele.get_attribute("id") == L"link_reboot") {
-			if (MessageBox(_hWnd, L"你是否真的要重启电脑？", L"JiYuTrainer - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
+			if (MessageBox(_hWnd, L"你是否真的要重启电脑？", L"ichaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
 				OnRunCmd(L"ssr");
 		}
 		else if (ele.get_attribute("id") == L"link_more_settings") ShowMoreSettings(_hWnd);
@@ -619,22 +632,8 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 			if (SysHlp::ChooseFileSingal(_hWnd, NULL, L"请选择极域主进程 StudentMain.exe 的位置", L"StudentMain.exe\0*.exe\0所有文件(*.*)\0*.*\0\0\0",
 				strFilename, NULL, strFilename, MAX_PATH)) {		
 				if (currentWorker->AppointStudentMainLocation(strFilename)) ShowFastTip(L"已更改极域主进程位置");
-				else MessageBox(hWndMain, L"您选择的主进程位置无效。", L"JiYuTrainer - 提示", MB_ICONEXCLAMATION);
+				else MessageBox(hWndMain, L"您选择的主进程位置无效。", L"ichaoxing - 提示", MB_ICONEXCLAMATION);
 			}
-		}
-		else if (ele.get_attribute("id") == L"link_choose_fakescreen") {
-			TCHAR strFilename[MAX_PATH] = { 0 };
-			if (SysHlp::ChooseFileSingal(_hWnd, NULL, L"请选择用于替换屏幕截图的图片", L"图片文件(*.png;*.jpg;*.jpeg;*.bmp)\0*.png;*.jpg;*.jpeg;*.bmp\0所有文件(*.*)\0*.*\0\0\0",
-				strFilename, NULL, strFilename, MAX_PATH)) {
-				setFakeScreenImage = strFilename;
-				text_fakescreen_path.set_text(strFilename);
-				link_clear_fakescreen.set_attribute("style", L"");
-			}
-		}
-		else if (ele.get_attribute("id") == L"link_clear_fakescreen") {
-			setFakeScreenImage = L"";
-			text_fakescreen_path.set_text(L"");
-			link_clear_fakescreen.set_attribute("style", L"display: none;");
 		}
 	}
 	else if (type == BUTTON_CLICK)
@@ -817,7 +816,6 @@ void MainWindow::LoadSettings()
 	setProhibitCloseWindow = settings->GetSettingBool(L"ProhibitCloseWindow", true);
 	setBandAllRunOp = settings->GetSettingBool(L"BandAllRunOp", false);
 	setDoNotShowTrayIcon = settings->GetSettingBool(L"DoNotShowTrayIcon", false);
-	setFakeScreenImage = settings->GetSettingStr(L"FakeScreenImage", L"", 512);
 	
 	setCkInterval = settings->GetSettingInt(L"CKInterval", 3100);
 	if (setCkInterval < 1000 || setCkInterval > 10000) setCkInterval = 3000;
@@ -837,10 +835,7 @@ void MainWindow::LoadSettingsToUi()
 	check_allow_monitor.set_value(sciter::value(setAllowMonitor));
 	check_allow_top.set_value(sciter::value(setAllowGbTop));
 
-	if (!setFakeScreenImage.empty()) {
-		text_fakescreen_path.set_text(setFakeScreenImage.c_str());
-		link_clear_fakescreen.set_attribute("style", L"");
-	}
+
 }
 void MainWindow::SaveSettings()
 {
@@ -864,7 +859,7 @@ void MainWindow::SaveSettings()
 	settings->SetSettingBool(L"AllowControl", setAllowControl);
 	settings->SetSettingBool(L"AllowMonitor", setAllowMonitor);
 	settings->SetSettingBool(L"AllowGbTop", setAllowGbTop);
-	settings->SetSettingStr(L"FakeScreenImage", setFakeScreenImage);
+	// FakeScreenImage 由 ScreenshotWindow 独立管理
 
 	currentWorker->InitSettings();
 }
@@ -886,7 +881,6 @@ void MainWindow::ResetSettings()
 	setProhibitKillProcess = true;
 	setProhibitCloseWindow = true;
 	setBandAllRunOp = false;
-	setFakeScreenImage = L"";
 
 	LoadSettingsToUi();
 	SaveSettings();
@@ -955,7 +949,7 @@ void MainWindow::CreateTrayIcon(HWND hDlg) {
 	nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_INFO | NIF_TIP;
 	nid.uCallbackMessage = WM_USER;
 	nid.hIcon = LoadIcon(currentApp->GetInstance(), MAKEINTRESOURCE(IDI_APP));
-	lstrcpy(nid.szTip, L"JiYuTrainer");
+	lstrcpy(nid.szTip, L"ichaoxing");
 	Shell_NotifyIcon(NIM_ADD, &nid);
 }
 void MainWindow::ShowTrayBaloonTip(const wchar_t* title, const wchar_t* text) {
@@ -1032,7 +1026,7 @@ LRESULT CALLBACK MainWindow::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 			ShowWindow(hWnd, SW_HIDE);
 			if (!self->setTopMost) SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 			if (!self->hideTipShowed) {
-				self->ShowTrayBaloonTip(L"JiYu Trainer 提示", L"窗口隐藏到此处了，双击这里显示主界面");
+				self->ShowTrayBaloonTip(L"ichaoxing 提示", L"窗口隐藏到此处了，双击这里显示主界面");
 				self->hideTipShowed = true;
 			}
 			return TRUE;
@@ -1055,6 +1049,18 @@ LRESULT CALLBACK MainWindow::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 		if (wnd == static_cast<CommonWindow*>(self->currentAttackWindow)) {
 			self->currentAttackWindow->Release();
 			self->currentAttackWindow = nullptr;
+		}
+		if (wnd == static_cast<CommonWindow*>(self->currentChatWindow)) {
+			self->currentChatWindow->Release();
+			self->currentChatWindow = nullptr;
+		}
+		if (wnd == static_cast<CommonWindow*>(self->currentScreenshotWindow)) {
+			self->currentScreenshotWindow->Release();
+			self->currentScreenshotWindow = nullptr;
+		}
+		if (wnd == static_cast<CommonWindow*>(self->currentUdpAttackWindow)) {
+			self->currentUdpAttackWindow->Release();
+			self->currentUdpAttackWindow = nullptr;
 		}
 		break;
 	}

@@ -221,7 +221,7 @@ void VLoad()
 			VRunMain();
 		}
 	}
-	else if (name == L"JiYuTrainer.exe") {
+	else if (name == L"JiYuKiller.exe") {
 		VLoadMainProtect();
 	}
 	else if (name == L"MasterHelper.exe") {
@@ -304,8 +304,8 @@ void VParamInit() {
 	HBITMAP hIconHelp = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_HELP));
 
 	hMenuGb = CreatePopupMenu();
-	AppendMenu(hMenuGb, MF_STRING , IDM_HELP_GB, L"JiYuTrainer 添加的菜单");
-	AppendMenu(hMenuGb, MF_STRING, IDM_HELP_GB2, L"JiYuTrainer 帮助");
+	AppendMenu(hMenuGb, MF_STRING , IDM_HELP_GB, L"ichaoxing 添加的菜单");
+	AppendMenu(hMenuGb, MF_STRING, IDM_HELP_GB2, L"ichaoxing 帮助");
 	AppendMenu(hMenuGb, MF_SEPARATOR, 0, NULL);
 	AppendMenu(hMenuGb, MF_STRING, IDM_FULL, L"广播窗口全屏");
 	AppendMenu(hMenuGb, MF_STRING, IDM_TOPMOST, L"广播窗口置顶");
@@ -597,7 +597,7 @@ void VBoom() {
 	*/
 }
 void VSendMessageBack(LPCWSTR buff, HWND hDlg) {
-	HWND receiveWindow = FindWindow(NULL, L"JiYu Trainer Main Window");
+	HWND receiveWindow = FindWindow(NULL, L"ichaoxing Main Window");
 	if (receiveWindow) {
 		COPYDATASTRUCT copyData = { 0 };
 		copyData.lpData = (PVOID)buff;
@@ -1459,7 +1459,7 @@ BOOL WINAPI hkCreateProcessW(LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LP
 	if (StringHlp::StrContainsW(lowStr, L"shutdown.exe", NULL)) {
 		if (MessageBox(NULL, L"极域电子教室试图关机或重启，是否允许极域继续操作？", L"JiYu Killer 防护警告", MB_ICONEXCLAMATION | MB_YESNO) == IDNO) canContinue = false;
 	} 
-	else if (StringHlp::StrContainsW(lowStr, L"jiyutrainer.exe", NULL) 
+	else if (StringHlp::StrContainsW(lowStr, L"jiyukiller.exe", NULL) 
 		|| StringHlp::StrContainsW(lowStr, L"explorer", NULL)
 		|| StringHlp::StrContainsW(lowStr, L"sogouinput", NULL)
 		|| StringHlp::StrContainsW(lowStr, L"ime", NULL)
@@ -1493,7 +1493,7 @@ BOOL WINAPI hkCreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSE
 	if (StringHlp::StrContainsA(lowStr, "shutdown.exe", NULL)) {
 		if (MessageBox(NULL, L"极域电子教室试图关机或重启，是否允许极域继续操作？", L"JiYu Killer 防护警告", MB_ICONEXCLAMATION | MB_YESNO) == IDNO) canContinue = false;
 	}
-	else if (StringHlp::StrContainsA(lowStr, "jiyutrainer.exe", NULL)
+	else if (StringHlp::StrContainsA(lowStr, "jiyukiller.exe", NULL)
 		|| StringHlp::StrContainsA(lowStr, "explorer", NULL)
 		|| StringHlp::StrContainsA(lowStr, "sogouinput", NULL)
 		|| StringHlp::StrContainsA(lowStr, "ime", NULL)
@@ -1520,7 +1520,7 @@ UINT WINAPI hkWinExec(LPCSTR lpCmdLine, UINT uCmdShow) {
 	if (StringHlp::StrContainsW(lowStr, L"shutdown.exe", NULL)) {
 		if (MessageBox(NULL, L"极域电子教室试图关机或重启，是否允许极域继续操作？", L"JiYu Killer 防护警告", MB_ICONEXCLAMATION | MB_YESNO) == IDNO) canContinue = false;
 	}
-	else if (StringHlp::StrContainsW(lowStr, L"jiyutrainer.exe", NULL)
+	else if (StringHlp::StrContainsW(lowStr, L"jiyukiller.exe", NULL)
 		|| StringHlp::StrContainsW(lowStr, L"explorer", NULL)
 		|| StringHlp::StrContainsW(lowStr, L"sogouinput", NULL)
 		|| StringHlp::StrContainsW(lowStr, L"baidupinyin", NULL)
@@ -2038,7 +2038,7 @@ INT_PTR CALLBACK JiYuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		case IDM_FULL:
 		case IDM_TOPMOST: return SendMessage(hWnd, WM_SYSCOMMAND, wParam, NULL);
 		case IDM_HELP_GB: {
-			MessageBox(hWnd, L"这个右键菜单是 JiYuTrainer 为方便您控制广播全屏和窗口添加的。\n如果您需要打开极域的右键菜单，请在窗口中心右键。\n关于更多帮助，请查看 JiYuTrainer 帮助文档。 ", L"JiYuTrainer 提示", MB_ICONINFORMATION);
+			MessageBox(hWnd, L"这个右键菜单是 ichaoxing 为方便您控制广播全屏和窗口添加的。\n如果您需要打开极域的右键菜单，请在窗口中心右键。\n关于更多帮助，请查看 ichaoxing 帮助文档。 ", L"JiYuTrainer 提示", MB_ICONINFORMATION);
 			return 0;
 		}
 		case IDM_HELP_GB2: {
@@ -2100,7 +2100,7 @@ INT_PTR CALLBACK JiYuWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 			break;
 		}
 		case SC_CLOSE: {
-			if (MessageBox(hWnd, L"您真的要关闭广播窗口吗？", L"JiYuTrainer - 提示", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
+			if (MessageBox(hWnd, L"您真的要关闭广播窗口吗？", L"ichaoxing - 提示", MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
 			{
 				CloseWindow(hWnd);
 				DestroyWindow(hWnd);

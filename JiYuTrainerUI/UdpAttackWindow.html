@@ -1,0 +1,115 @@
+<html>
+<head>
+    <style>
+        html { overflow: hidden; }
+        body {
+            font-family: "Microsoft YaHei", Tahoma, sans-serif;
+            margin: 15px;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            padding-top: 0;
+            margin-top: 0;
+        }
+        .info-bar {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #856404;
+        }
+        .form-row {
+            margin-bottom: 10px;
+        }
+        .form-row label {
+            display: inline-block;
+            width: 80px;
+            font-size: 13px;
+            color: #333;
+        }
+        .form-row input[type="text"], .form-row select {
+            width: 200px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .form-row input[type="text"].small {
+            width: 80px;
+        }
+        .btn-row {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            color: #fff;
+            background-color: #37b0ff;
+            padding: 6px 18px;
+            border-radius: 5px;
+            font-size: 13px;
+            margin: 0 4px;
+            cursor: pointer;
+        }
+        .btn:hover { background-color: #1e9eff; }
+        .btn-danger { background-color: #ff6b6b; }
+        .btn-danger:hover { background-color: #ff5252; }
+        .log-box {
+            background-color: #f8f9fa;
+            color: #212529;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 12px;
+            font-family: Consolas, "Courier New", monospace;
+            height: 180px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+        .log-box .log-info { color: #0066cc; }
+        .log-box .log-ok { color: #1a7f37; font-weight: bold; }
+        .log-box .log-err { color: #cf222e; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>极域UDP攻击</h2>
+    <div class="info-bar">
+        利用极域学生端不对UDP包做身份验证的漏洞，向目标发送构造数据包。支持单IP、IP范围(192.168.1.10-50)、C段(192.168.1.1/24)。
+    </div>
+    <div class="form-row">
+        <label>目标IP:</label>
+        <input type="text" id="input_ip" placeholder="192.168.1.10 或 192.168.1.10-50 或 192.168.1.1/24" />
+    </div>
+    <div class="form-row">
+        <label>端口:</label>
+        <input type="text" id="input_port" class="small" value="4705" />
+        <label style="margin-left:20px;">攻击模式:</label>
+        <select id="select_mode">
+            <option value="msg">发送消息</option>
+            <option value="cmd">执行命令</option>
+            <option value="reboot">重启</option>
+            <option value="shutdown">关机</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label>内容:</label>
+        <input type="text" id="input_content" placeholder="消息内容或命令，如 calc.exe" style="width:380px;" />
+    </div>
+    <div class="form-row">
+        <label>循环次数:</label>
+        <input type="text" id="input_loop" class="small" value="1" />
+        <label style="margin-left:20px;">间隔(秒):</label>
+        <input type="text" id="input_interval" class="small" value="5" />
+    </div>
+    <div class="btn-row">
+        <button class="btn btn-danger" id="btn_send">开始攻击</button>
+        <button class="btn" id="btn_clearlog">清空日志</button>
+    </div>
+    <div class="log-box" id="text_log"></div>
+</body>
+</html>

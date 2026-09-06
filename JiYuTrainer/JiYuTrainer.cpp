@@ -75,7 +75,7 @@ LONG GenerateMiniDump(PEXCEPTION_POINTERS pExInfo)
 
 		TCHAR info[300];
 		swprintf_s(info, L"应用程序出现了一个错误，%s。\n%s", (hasCrashInfo ? L"需要关闭，已生成关于此错误的报告" : L"并且无法生成错误转储文件"), expInfo);
-		MessageBoxTimeoutW(NULL, info, L"JiYuTrainer 应用程序错误", MB_ICONERROR | MB_SYSTEMMODAL, 0, 3600);
+		MessageBoxTimeoutW(NULL, info, L"ichaoxing 应用程序错误", MB_ICONERROR | MB_SYSTEMMODAL, 0, 3600);
 
 		if (hasCrashInfo)
 		{
@@ -88,7 +88,7 @@ LONG GenerateMiniDump(PEXCEPTION_POINTERS pExInfo)
 	{
 		TCHAR info[300];
 		swprintf_s(info, L"应用程序出现了一个错误，并且无法生成错误转储文件。\n%s\nFail to create dump file: %s \nLast Error : %d\n现在应用程序即将关闭。", expInfo, file_name, GetLastError());
-		MessageBox(NULL, info, L"JiYuTrainer 应用程序错误", MB_ICONERROR | MB_SYSTEMMODAL);
+		MessageBox(NULL, info, L"ichaoxing 应用程序错误", MB_ICONERROR | MB_SYSTEMMODAL);
 	}
 	return EXCEPTION_EXECUTE_HANDLER;
 }
@@ -105,14 +105,14 @@ EXPORT_CFUNC(void*) GetSciterAPI()
 }
 EXPORT_CFUNC(VOID) ShowAppStartupFail(int rs) {
 	if (rs == APP_FAIL_SYSTEM_NOT_SUPPORT)
-		MessageBox(NULL, L"运行本程序最低要求 Windows XP，请使用更高版本的系统", L"JiYuTrainer - 错误", MB_ICONERROR);
+		MessageBox(NULL, L"运行本程序最低要求 Windows XP，请使用更高版本的系统", L"ichaoxing - 错误", MB_ICONERROR);
 	else if (rs == APP_FAIL_ALEDAY_RUN)
-		MessageBox(0, L"已经有一个程序正在运行，同时只能运行一个实例，请关闭之前那个", L"JiYuTrainer - 错误", MB_ICONERROR);
+		MessageBox(0, L"已经有一个程序正在运行，同时只能运行一个实例，请关闭之前那个", L"ichaoxing - 错误", MB_ICONERROR);
 	else if (rs == APP_FAIL_PIRACY_VERSION)
-		MessageBox(0, L"您可能是盗版软件的受害者，您现在运行的是被修改过的 JiYuTrainer ，我们建议您至官网下载使用安全版本。", L"JiYuTrainer - 错误", MB_ICONERROR);
+		MessageBox(0, L"您可能是盗版软件的受害者，您现在运行的是被修改过的 ichaoxing ，我们建议您至官网下载使用安全版本。", L"ichaoxing - 错误", MB_ICONERROR);
 	else if (rs == APP_FAIL_INSTALL) {
 		FAST_STR_BINDER(err, L"安装失败，具体错误请查看日志文件 : \n%s", 300, currentApp->GetPartFullPath(PART_LOG));
-		MessageBox(0, err, L"JiYuTrainer - 错误", MB_ICONERROR);
+		MessageBox(0, err, L"ichaoxing - 错误", MB_ICONERROR);
 	}
 }
 EXPORT_CFUNC(void*) GetApp() { return currentApp; }

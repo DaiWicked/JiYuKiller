@@ -1,0 +1,174 @@
+<html>
+<head>
+    <style>
+        html {
+            overflow: hidden;
+            overflow-y: scroll;
+            vertical-scrollbar: my-v-scrollbar;
+        }
+        body {
+            font-family: "Microsoft YaHei", Tahoma, sans-serif;
+            margin: 15px;
+            padding: 0;
+        }
+
+        .info-bar {
+            background-color: #e8f4fd;
+            border: 1px solid #b8daff;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #004085;
+        }
+
+        .input-item {
+            position: relative;
+            margin-bottom: 8px;
+        }
+        .input-item span {
+            display: inline-block;
+            width: 100px;
+            font-size: 13px;
+        }
+
+        #chat_log {
+            display: block;
+            height: 220px;
+            overflow: hidden;
+            overflow-y: scroll;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px;
+            background-color: #fafafa;
+            vertical-scrollbar: my-v-scrollbar;
+        }
+        #chat_log div {
+            margin-bottom: 2px;
+            word-break: break-all;
+        }
+
+        textarea {
+            vertical-scrollbar: my-v-scrollbar;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #37b0ff;
+            border-radius: 14px;
+            padding: 5px 14px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover, .btn:active {
+            background-color: #006bef;
+        }
+        .btn-green {
+            background-color: #28a745;
+        }
+        .btn-green:hover {
+            background-color: #1e7e34;
+        }
+
+        .target-status {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .alert {
+            display: block;
+            position: relative;
+            padding: 10px 16px;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+
+        @set my-v-scrollbar {
+            .prev { display: none; }
+            .next { display: none; }
+            .base, .next-page, .prev-page {
+                background-color: #f3f3f3;
+                border: none;
+            }
+            .slider {
+                background: #ccc;
+                border-radius: 6px;
+                border: 2px solid #f3f3f3;
+            }
+            .slider:hover { background: #999; }
+            .slider:active { background: #888; }
+            .base:disabled { background: transparent; }
+            .base { width: 10px; }
+            .corner { background: transparent; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style="text-align: center; padding-top: 0; margin-top: 0;">小小私聊(beta)</h2>
+
+    <div class="info-bar" id="text_local_info">正在获取本机信息...</div>
+
+    <div class="input-item">
+        <span>对方座位号:</span>
+        <input id="input_target_seat" type="number" placeholder="输入座位号，如 12" style="width: 100px;" />
+        <button id="btn_check_target" class="btn">查找同学</button>
+        <span class="target-status" id="text_target_status"></span>
+    </div>
+
+    <div class="input-item">
+        <span>目标端口:</span>
+        <input id="input_port" type="number" placeholder="极域学生端端口，默认4705" value="4705" style="width: 100px;" />
+    </div>
+
+    <hr />
+
+    <div id="chat_log">
+        <div>欢迎使用小小私聊</div>
+    </div>
+
+    <div class="input-item" style="margin-top: 10px;">
+        <span>发送消息:</span>
+        <textarea id="input_message" placeholder="输入要发送的消息，最多80字" style="height: 50px; width: 280px;"></textarea>
+        <button id="btn_send_msg" class="btn btn-green" style="vertical-align: top; margin-left: 8px;">发送</button>
+    </div>
+
+    <hr />
+
+    <p class="alert alert-warning">
+        提示：座位号换算算法移植自 jiyu_chat，按「6人一排」的机房布局推算。如果你们机房布局不同，换算结果可能不准确，可以直接用 Attack 窗口按 IP 发送。
+    </p>
+    <p class="alert alert-danger">
+        警告：本功能仅用于学习交流，请勿用于骚扰他人或影响课堂秩序。
+    </p>
+
+    <p style="font-size: 11px; color: #999;">
+        原理源自 <a href="https://github.com/ht0Ruial/Jiyu_udp_attack" target="_blank">ht0Ruial/Jiyu_udp_attack</a>
+    </p>
+
+    <script type="text/tiscript">
+        function self.ready()
+        {
+            view.docunmentComplete();
+        }
+    </script>
+</body>
+</html>
