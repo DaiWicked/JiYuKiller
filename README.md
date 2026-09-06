@@ -3,6 +3,10 @@
 基于 [JiYu Trainer](https://github.com/imengyu/JiYuTrainer) 的 fork
 本项目原作者已经停止更新
 该项目源于作者zsyn666的fork进行二改
+合并了来自于作者BengbuGuards的MythwareToolkit作为子功能
+合并了来自于作者weilycoder的Jiyu_replay_attack作为子功能
+
+
 
 ---
 
@@ -26,11 +30,6 @@
 ---
 ## 来自于zsyn666
 
-## 新增功能（相比原版）
-
-- **截图替换**：可选择自定义图片替换屏幕截图，教师端监视/截屏时看到的是你指定的图片而非真实桌面
-- **MSVC 编译支持**：提供 `build_msvc.ps1` 脚本，使用 MSVC 2019 BuildTools 直接编译
-
 ## 简介
 
 本软件研发目的就是为了对抗极域电子教室，如果您的学校机房使用极域电子教室来控制学生电脑的话，本软件很可能会帮到你。
@@ -51,6 +50,7 @@
 * 防控制功能，防止教师通过极域控制您所用的电脑。
 * 监控极域远程执行命令，您可以自由选择是否允许教师端远程执行的命令。
 * 通过极域电子教室对同学的电脑远程发送信息或远程执行命令。
+* 极域工具包，支持极域以及学生机房管理助手的工具。
 
 提示：**由于本软件会对极域电子教室进行必要的操作（远程注入、替换模块），某些杀毒软件可能会报毒，您可能需要关闭杀毒软件或添加白名单**。
 
@@ -69,11 +69,17 @@
 - [mhook](https://github.com/martona/mhook) (用于 JiYu HOOKER 模块)
 - [MemoryModule](https://github.com/fancycode/MemoryModule)
 - [XZip-XUnZip](https://github.com/yuanjia1011/XZip-XUnZip)
+- [weilycoder](https://github.com/weilycoder/Jiyu_replay_attack)
+- [BengbuGuards](https://github.com/weilycoder/Jiyu_replay_attack)
+
+## 许可
 
 ## 致谢
 
 - 原作者 [imengyu](https://github.com/imengyu)（快乐的梦鱼）开发了 JiYu Trainer
 - 二改作者 [zsyn666](https://github.com/zsyn666) 进行二改
+- [weilycoder](https://github.com/weilycoder/Jiyu_replay_attack)
+- [BengbuGuards](https://github.com/weilycoder/Jiyu_replay_attack)
 
 ## 许可
 
