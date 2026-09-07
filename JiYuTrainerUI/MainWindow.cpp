@@ -580,6 +580,7 @@ bool MainWindow::on_event(HELEMENT he, HELEMENT target, BEHAVIOR_EVENTS type, UI
 		else if (ele.get_attribute("id") == L"link_screenshot") { if (!currentScreenshotWindow) currentScreenshotWindow = new ScreenshotWindow(_hWnd); else currentScreenshotWindow->Show(); }
 		else if (ele.get_attribute("id") == L"link_udpattack") { if (!currentUdpAttackWindow) currentUdpAttackWindow = new UdpAttackWindow(_hWnd); else currentUdpAttackWindow->Show(); }
 else if (ele.get_attribute("id") == L"link_liquidglass") { if (!currentLiquidGlassWindow) currentLiquidGlassWindow = new LiquidGlassWindow(_hWnd); else currentLiquidGlassWindow->Show(); }
+		else if (ele.get_attribute("id") == L"link_imteacher") { if (!currentIMTeacherWindow) currentIMTeacherWindow = new IMTeacherWindow(_hWnd); else currentIMTeacherWindow->Show(); }
 		else if (ele.get_attribute("id") == L"link_shutdown") {
 			if (MessageBox(_hWnd, L"你是否真的要关闭电脑？", L"i.chaoxing - 警告", MB_YESNO | MB_ICONEXCLAMATION) == IDYES) 
 				OnRunCmd(L"sss");

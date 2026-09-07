@@ -1,0 +1,70 @@
+<html>
+<head>
+    <style>
+        html { background: transparent; overflow: hidden; }
+        body {
+            font-family: "Microsoft YaHei", Tahoma, sans-serif;
+            margin: 15px; padding: 0;
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 12px;
+        }
+        h2 { text-align: center; margin: 0 0 10px 0; }
+        .status-bar {
+            background: rgba(232,244,253,0.7);
+            border: 1px solid rgba(184,218,255,0.5);
+            border-radius: 6px; padding: 6px 12px; margin-bottom: 10px;
+            font-size: 12px;
+        }
+        .form-row { margin-bottom: 8px; }
+        .form-row label { display: inline-block; width: 70px; font-size: 13px; }
+        .form-row input[type="text"] {
+            width: 300px; padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px;
+            background: rgba(255,255,255,0.65);
+        }
+        .btn-row { text-align: center; margin-bottom: 10px; }
+        .btn {
+            display: inline-block; color: #fff; background: rgba(55,176,255,0.75);
+            padding: 6px 16px; border-radius: 5px; font-size: 13px; margin: 0 3px; cursor: pointer;
+        }
+        .btn:hover { background: rgba(30,158,255,0.85); }
+        .btn-green { background: rgba(40,167,69,0.75); }
+        .btn-green:hover { background: rgba(30,150,60,0.85); }
+        .btn-danger { background: rgba(255,107,107,0.75); }
+        .btn-danger:hover { background: rgba(255,82,82,0.85); }
+        .students-box {
+            background: rgba(255,255,255,0.55); border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 6px; padding: 8px; font-size: 12px; height: 80px;
+            overflow-y: auto; margin-bottom: 8px;
+        }
+        .log-box {
+            background: rgba(255,255,255,0.55); border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 6px; padding: 8px; font-size: 11px;
+            font-family: Consolas, monospace; height: 160px; overflow-y: auto;
+            white-space: pre-wrap; word-break: break-all;
+        }
+        .hint { font-size: 11px; color: #666; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <h2>极域教师端模拟 (beta)</h2>
+    <div class="status-bar">状态: <span id="text_status">已停止</span> | 基于 Third-party-JiYu-Teacher-Endpoint</div>
+    <div class="btn-row">
+        <button class="btn btn-green" id="btn_start">启动模拟</button>
+        <button class="btn btn-danger" id="btn_stop">停止</button>
+        <button class="btn" id="btn_refresh">刷新学生</button>
+    </div>
+    <div class="form-row">
+        <label>命令:</label>
+        <input type="text" id="input_cmd" placeholder="如: list / msg 192.168.1.10 你好 / bs 192.168.1.10" />
+        <button class="btn" id="btn_send">发送</button>
+    </div>
+    <div class="hint">常用命令: list(学生列表) msg(发消息) bs(黑屏) unlock(解锁) shutdown(关机) reboot(重启) help(帮助)</div>
+    <div class="students-box" id="text_students">学生列表将显示在这里</div>
+    <div class="log-box" id="text_log"></div>
+    <div class="btn-row" style="margin-top:8px;">
+        <button class="btn" id="btn_clear">清空日志</button>
+    </div>
+</body>
+</html>

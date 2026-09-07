@@ -18,6 +18,7 @@
 #include "ScreenshotWindow.h"
 #include "UdpAttackWindow.h"
 #include "LiquidGlassWindow.h"
+#include "IMTeacherWindow.h"
 #include <list>
 #include "../JiYuTrainer/AppPublic.h"
 
@@ -101,6 +102,7 @@ private:
 	ScreenshotWindow* currentScreenshotWindow = nullptr;
 	UdpAttackWindow* currentUdpAttackWindow = nullptr;
 	LiquidGlassWindow* currentLiquidGlassWindow = nullptr;
+	IMTeacherWindow* currentIMTeacherWindow = nullptr;
 
 	Logger* currentLogger = nullptr;
 	TrainerWorker * currentWorker = nullptr;

@@ -81,6 +81,7 @@ IDR_HTML_SCREENSHOT     HTML                    "ScreenshotWindow.html"
 IDR_HTML_UDPATTACK             HTML                     "UdpAttackWindow.html"
 
 IDR_HTML_LIQUIDGLASS           HTML                     "LiquidGlassWindow.html"
+IDR_HTML_IMTEACHER             HTML                     "IMTeacherWindow.html"
 
 
 /////////////////////////////////////////////////////////////////////////////
