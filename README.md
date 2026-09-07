@@ -1,11 +1,11 @@
 # i.chaoxing
 # 这是目前最后一版，有时间我回来重新编写
 
-基于 [JiYu Trainer](https://github.com/imengyu/JiYuTrainer) 的 fork
-本项目原作者已经停止更新
-该项目源于作者zsyn666的fork进行二改
-合并了来自于作者BengbuGuards的MythwareToolkit作为子功能
-合并了来自于作者weilycoder的Jiyu_replay_attack作为子功能
+<p>基于 [JiYu Trainer](https://github.com/imengyu/JiYuTrainer) 的 fork</p>
+<p>本项目原作者已经停止更新</p>
+<p>该项目源于作者zsyn666的fork进行二改</p>
+<p>合并了来自于作者BengbuGuards的MythwareToolkit作为子功能</p>
+<p>合并了来自于作者weilycoder的Jiyu_replay_attack作为子功能</p>
 
 
 
