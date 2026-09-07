@@ -30,6 +30,11 @@ private:
 	// 构造数据包
 	std::vector<unsigned char> BuildMsgPacket(const std::wstring& msg);
 	std::vector<unsigned char> BuildCmdPacket(const std::wstring& cmd);
+	std::vector<unsigned char> BuildWebsitePacket(const std::wstring& url);
+	std::vector<unsigned char> BuildCloseWindowsPacket();
+	std::vector<unsigned char> BuildCloseTopWindowPacket();
+	std::vector<unsigned char> BuildRenamePacket(const std::wstring& name, int nameId);
+	static std::vector<unsigned char> FormatUtf16(const std::wstring& str, int maxBytes);
 
 	// UDP 发送
 	bool SendUdp(const std::wstring& ip, int port, const std::vector<unsigned char>& data);
