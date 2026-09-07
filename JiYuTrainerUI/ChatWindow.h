@@ -5,6 +5,7 @@
 #include "CommonWindow.h"
 #include "../JiYuTrainer/AppPublic.h"
 #include "../JiYuTrainer/JyUdpAttack.h"
+#include "../JiYuTrainer/FileLogger.h"
 
 extern JTApp* currentApp;
 

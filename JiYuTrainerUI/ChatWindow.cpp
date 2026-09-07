@@ -257,6 +257,7 @@ sciter::value ChatWindow::docunmentComplete()
 		mySeatID = IPLast2StuID(ipLast);
 	}
 	text_local_info.set_text(FormatString(L"本机IP: %s   座位号: %d", localIP.c_str(), mySeatID).c_str());
+	FileLogger::Get(L"chat")->Log(FormatString(L"本机IP: %s，推算座位号: %d", localIP.c_str(), mySeatID).c_str());
 	input_port.set_value(sciter::value(4705));
 
 	AddChatRecord(L"~~ 欢迎使用小小私聊 ~~");

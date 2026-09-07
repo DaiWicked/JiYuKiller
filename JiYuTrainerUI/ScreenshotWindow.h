@@ -4,6 +4,7 @@
 #include "sciter-x-host-callback.h"
 #include "CommonWindow.h"
 #include "../JiYuTrainer/AppPublic.h"
+#include "../JiYuTrainer/FileLogger.h"
 
 extern JTApp* currentApp;
 

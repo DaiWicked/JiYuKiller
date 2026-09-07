@@ -69,6 +69,7 @@ void ScreenshotWindow::OnChooseImage()
 		strFilename, NULL, strFilename, MAX_PATH))
 	{
 		currentImagePath = strFilename;
+		FileLogger::Get(L"screenshot")->Log(FormatString(L"已选择图片: %s", currentImagePath.c_str()).c_str());
 		// 应用时才保存，此处不立即写入 settings
 		// 应用时才保存，此处不立即写入 settings
 		RefreshUI();
@@ -79,6 +80,7 @@ void ScreenshotWindow::OnChooseImage()
 void ScreenshotWindow::OnClearImage()
 {
 	currentImagePath = L"";
+	FileLogger::Get(L"screenshot")->Log(L"已清除截图替换图片");
 	RefreshUI();
 	text_status.set_text(L"已清除截图替换，点击应用后生效。");
 }
@@ -160,6 +162,7 @@ sciter::value ScreenshotWindow::docunmentComplete()
 	currentImagePath.resize(wcslen(currentImagePath.c_str()));
 	RefreshUI();
 
+	FileLogger::Get(L"screenshot")->Log(currentImagePath.empty() ? L"加载: 尚未设置截图替换图片" : FormatString(L"加载: 当前已设置截图: %s", currentImagePath.c_str()).c_str());
 	if (!currentImagePath.empty())
 		text_status.set_text(L"当前已设置截图替换图片。");
 	else

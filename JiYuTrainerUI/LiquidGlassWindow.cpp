@@ -2,6 +2,7 @@
 #include "LiquidGlassWindow.h"
 #include "resource.h"
 #include "../JiYuTrainer/SettingHlp.h"
+#include "../JiYuTrainer/StringHlp.h"
 #include <string>
 
 extern int screenWidth, screenHeight;
@@ -68,6 +69,7 @@ sciter::value LiquidGlassWindow::docunmentComplete()
 	if (bgColor.empty()) bgColor = L"blue";
 
 	sciter::dom::element root = get_root();
+	FileLogger::Get(L"liquidglass")->Log(FormatString(L"加载: 透明度 %d%%，背景色 %s", opacityInt, bgColor.c_str()).c_str());
 	root.call_function("initSettings", sciter::value(opacityInt), sciter::value(bgColor.c_str()));
 
 	return sciter::value(true);
