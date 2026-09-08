@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta charset="utf-8">
     <style>
         html {
             overflow: hidden;
@@ -171,56 +172,56 @@
 
 <body>
 
-    <h2 style="text-align: center; padding-top: 0;margin-top: 0;">¼«Óòµç×Ó½ÌÊÒÊý¾Ý°ü(udp)ÖØ·Å¹¥»÷</h2>
+    <h2 style="text-align: center; padding-top: 0;margin-top: 0;">æžåŸŸç”µå­æ•™å®¤æ•°æ®åŒ…(udp)é‡æ”¾æ”»å‡»</h2>
 
     <div class="input-item">
-        <span>Ä¿±êÖ÷»úIP£¬¶à¸öIPÊ¹ÓÃÓ¢ÎÄ¶ººÅ£¨,£©·Ö¸ô</span>
-        <textarea id="input_target_ip" placeholder="ÊäÈëÄ¿±êÖ÷»úIP£¬¶à¸öIPÊ¹ÓÃÓ¢ÎÄ¶ººÅ£¨,£©·Ö¸ô" style="height: 40px;width:200px"></textarea>
-        <button id="btn_scan_ip" style="margin-left: 10px;">É¨Ãè¾ÖÓòÍøÄÚÔÚÏßÖ÷»úIP</button>
+        <span>ç›®æ ‡ä¸»æœºIPï¼Œå¤šä¸ªIPä½¿ç”¨è‹±æ–‡é€—å·ï¼ˆ,ï¼‰åˆ†éš”</span>
+        <textarea id="input_target_ip" placeholder="è¾“å…¥ç›®æ ‡ä¸»æœºIPï¼Œå¤šä¸ªIPä½¿ç”¨è‹±æ–‡é€—å·ï¼ˆ,ï¼‰åˆ†éš”" style="height: 40px;width:200px"></textarea>
+        <button id="btn_scan_ip" style="margin-left: 10px;">æ‰«æå±€åŸŸç½‘å†…åœ¨çº¿ä¸»æœºIP</button>
     </div>
     <div class="input-item">
-        <span>¼«Óò¼àÌý¶Ë¿Ú</span>
-        <input id="input_target_port" type="number" placeholder="ÊäÈëÄ¿±êÖ÷»ú¼«Óò¼àÌý¶Ë¿Ú(1-65535)" value="4705" />
+        <span>æžåŸŸç›‘å¬ç«¯å£</span>
+        <input id="input_target_port" type="number" placeholder="è¾“å…¥ç›®æ ‡ä¸»æœºæžåŸŸç›‘å¬ç«¯å£(1-65535)" value="4705" />
     </div>
     <div class="input-item">
-        <span>·¢ËÍÎÄ×Ö</span>
-        <textarea id="input_send_message" placeholder="·¢ËÍÎÄ×Ö£¬³¤¶ÈÔÚ100¸ö×Ö·ûÒÔÄÚ" style="height: 30px;"></textarea>
-        <button id="btn_send_msg">·¢ËÍ</button>
+        <span>å‘é€æ–‡å­—</span>
+        <textarea id="input_send_message" placeholder="å‘é€æ–‡å­—ï¼Œé•¿åº¦åœ¨100ä¸ªå­—ç¬¦ä»¥å†…" style="height: 30px;"></textarea>
+        <button id="btn_send_msg">å‘é€</button>
     </div>
     <div class="input-item">
-        <span>Ö´ÐÐCMDÃüÁî</span>
-        <textarea id="input_send_cmd" placeholder="CMDÃüÁî£¬ÀýÈçC:\Windows\system32\NOTEPAD.EXE" style="height: 40px;"></textarea>
-        <button id="btn_send_cmd">Ö´ÐÐ</button>
+        <span>æ‰§è¡ŒCMDå‘½ä»¤</span>
+        <textarea id="input_send_cmd" placeholder="CMDå‘½ä»¤ï¼Œä¾‹å¦‚C:\Windows\system32\NOTEPAD.EXE" style="height: 40px;"></textarea>
+        <button id="btn_send_cmd">æ‰§è¡Œ</button>
     </div>
     <div class="input-item">
-        <span>¶Ô·½µçÄÔ¹Ø»ú</span>
-        <button id="btn_send_shutdown">Ö´ÐÐ</button>
+        <span>å¯¹æ–¹ç”µè„‘å…³æœº</span>
+        <button id="btn_send_shutdown">æ‰§è¡Œ</button>
     </div>
     <div class="input-item">
-        <span>¶Ô·½µçÄÔÖØÆô</span>
-        <button id="btn_send_reboot">Ö´ÐÐ</button>
+        <span>å¯¹æ–¹ç”µè„‘é‡å¯</span>
+        <button id="btn_send_reboot">æ‰§è¡Œ</button>
     </div>
 
     <hr />
 
     <div id="result_list">
-        <div>µã»÷ÉÏ·½°´Å¥·¢ËÍÖ¸Áî</div>
+        <div>ç‚¹å‡»ä¸Šæ–¹æŒ‰é’®å‘é€æŒ‡ä»¤</div>
     </div>
 
     <hr />
 
     <p>
-        ¹¦ÄÜÔ­ÀíÓÉ <a href="https://github.com/ht0Ruial" target="_blank">ht0Ruial</a> ´óÀÐÌá¹©£¬
-        <br/>»¶Ó­·ÃÎÊËûµÄÏîÄ¿Ö÷Ò³Å¶£º<a href="https://github.com/ht0Ruial/Jiyu_udp_attack" target="_blank">https://github.com/ht0Ruial/Jiyu_udp_attack</a>¡£
+        åŠŸèƒ½åŽŸç†ç”± <a href="https://github.com/ht0Ruial" target="_blank">ht0Ruial</a> å¤§ä½¬æä¾›ï¼Œ
+        <br/>æ¬¢è¿Žè®¿é—®ä»–çš„é¡¹ç›®ä¸»é¡µå“¦ï¼š<a href="https://github.com/ht0Ruial/Jiyu_udp_attack" target="_blank">https://github.com/ht0Ruial/Jiyu_udp_attack</a>ã€‚
     </p>
 
     <hr />
 
     <p class="alert alert-danger">
-        ÌáÊ¾£º±¾¹¦ÄÜ½ö¹©²âÊÔÊ¹ÓÃ¡£ÒòÎªÄúÊ¹ÓÃ±¾¹¦ÄÜ¶ø ÈÅÂÒÉÏ¿ÎÖÈÐò¡¢Ôì³É»ú·¿Éè±¸Ëð»µ¡¢»ú·¿Ì±»¾ µÈµÈÊÂ¹Ê£¬ÔðÈÎÓÉÄú×Ô¼º³Ðµ£¡£ÇëÉ÷ÖØÊ¹ÓÃ±¾¹¦ÄÜ¡£
+        æç¤ºï¼šæœ¬åŠŸèƒ½ä»…ä¾›æµ‹è¯•ä½¿ç”¨ã€‚å› ä¸ºæ‚¨ä½¿ç”¨æœ¬åŠŸèƒ½è€Œ æ‰°ä¹±ä¸Šè¯¾ç§©åºã€é€ æˆæœºæˆ¿è®¾å¤‡æŸåã€æœºæˆ¿ç˜«ç—ª ç­‰ç­‰äº‹æ•…ï¼Œè´£ä»»ç”±æ‚¨è‡ªå·±æ‰¿æ‹…ã€‚è¯·æ…Žé‡ä½¿ç”¨æœ¬åŠŸèƒ½ã€‚
     </p>
     <p class="alert alert-warning">
-        ÌáÊ¾£ºÈç¹û¶Ô·½Ö÷»úÉÏÒ²ÔËÐÐÁË i.chaoxing£¬ÄÇÃ´ÉÏÃæµÄ¹¦ÄÜ²»Ò»¶¨ÓÐÓÃ£¬ÒòÎª JiYu Trainer »áÔÚµ×²ãÀ¹½Ø×¡ StudentMain Ö´ÐÐÄ³Ð©²Ù×÷¡£
+        æç¤ºï¼šå¦‚æžœå¯¹æ–¹ä¸»æœºä¸Šä¹Ÿè¿è¡Œäº† i.chaoxingï¼Œé‚£ä¹ˆä¸Šé¢çš„åŠŸèƒ½ä¸ä¸€å®šæœ‰ç”¨ï¼Œå› ä¸º JiYu Trainer ä¼šåœ¨åº•å±‚æ‹¦æˆªä½ StudentMain æ‰§è¡ŒæŸäº›æ“ä½œã€‚
     </p>
 
     <script type="text/tiscript">

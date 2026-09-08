@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta charset="utf-8">
     <style>
         html { background: transparent; overflow: hidden; }
         body {
@@ -164,27 +165,27 @@
             updatePreview();
         }
 
-        // hslider Öµ±ä»¯ÊÂ¼ş
+        // hslider å€¼å˜åŒ–äº‹ä»¶
         $(#slider_opacity).on("change", function() {
             currentOpacity = this.value;
             $(#text_opacity).text = currentOpacity + "%";
             updatePreview();
         });
 
-        // ÑÕÉ«°´Å¥
+        // é¢œè‰²æŒ‰é’®
         $(#color_blue).onClick = function() { selectColor("blue", this); };
         $(#color_green).onClick = function() { selectColor("green", this); };
         $(#color_gray).onClick = function() { selectColor("gray", this); };
         $(#color_purple).onClick = function() { selectColor("purple", this); };
         $(#color_dark).onClick = function() { selectColor("dark", this); };
 
-        // Ó¦ÓÃ°´Å¥ - µ÷ÓÃ C++ º¯Êı±£´æ
+        // åº”ç”¨æŒ‰é’® - è°ƒç”¨ C++ å‡½æ•°ä¿å­˜
         $(#btn_apply).onClick = function() {
             view.applyLiquidGlass(currentOpacity, currentColor);
-            $(#text_status).text = "ÒÑ±£´æ Liquid Glass ÉèÖÃ£¬ÖØÆôÖ÷´°¿ÚºóÉúĞ§¡£";
+            $(#text_status).text = "å·²ä¿å­˜ Liquid Glass è®¾ç½®ï¼Œé‡å¯ä¸»çª—å£åç”Ÿæ•ˆã€‚";
         };
 
-        // »Ö¸´Ä¬ÈÏ
+        // æ¢å¤é»˜è®¤
         $(#btn_reset).onClick = function() {
             currentOpacity = 72;
             currentColor = "blue";
@@ -193,10 +194,10 @@
             $(.color-btn.active).attributes.removeClass("active");
             $(#color_blue).attributes.addClass("active");
             updatePreview();
-            $(#text_status).text = "ÒÑ»Ö¸´Ä¬ÈÏÉèÖÃ£¬µã»÷Ó¦ÓÃ±£´æ¡£";
+            $(#text_status).text = "å·²æ¢å¤é»˜è®¤è®¾ç½®ï¼Œç‚¹å‡»åº”ç”¨ä¿å­˜ã€‚";
         };
 
-        // C++ µ÷ÓÃ´Ëº¯Êı³õÊ¼»¯
+        // C++ è°ƒç”¨æ­¤å‡½æ•°åˆå§‹åŒ–
         function initSettings(opacity, color) {
             currentOpacity = opacity;
             currentColor = color;
@@ -210,40 +211,40 @@
     </script>
 </head>
 <body>
-    <h2>Liquid Glass ÉèÖÃ</h2>
+    <h2>Liquid Glass è®¾ç½®</h2>
     <div class="info-bar">
-        ¸öĞÔ»¯¶¨ÖÆ½çÃæÍâ¹Û¡£µ÷½ÚÍ¸Ã÷¶ÈºÍ±³¾°É«£¬ÊµÊ±Ô¤ÀÀĞ§¹û£¬µã»÷Ó¦ÓÃºó±£´æ¡£
+        ä¸ªæ€§åŒ–å®šåˆ¶ç•Œé¢å¤–è§‚ã€‚è°ƒèŠ‚é€æ˜åº¦å’ŒèƒŒæ™¯è‰²ï¼Œå®æ—¶é¢„è§ˆæ•ˆæœï¼Œç‚¹å‡»åº”ç”¨åä¿å­˜ã€‚
     </div>
 
     <div class="section">
-        <div class="section-title">Í¸Ã÷³Ì¶È</div>
+        <div class="section-title">é€æ˜ç¨‹åº¦</div>
         <div class="slider-row">
-            <label>Í¸Ã÷¶È</label>
+            <label>é€æ˜åº¦</label>
             <input type="hslider" id="slider_opacity" min="30" max="100" value="72" step="1" />
             <span id="text_opacity">72%</span>
         </div>
     </div>
 
     <div class="section">
-        <div class="section-title">±³¾°É«²Ê</div>
+        <div class="section-title">èƒŒæ™¯è‰²å½©</div>
         <div class="color-row">
-            <button id="color_blue" class="color-btn active" title="¾­µäÀ¶"></button>
-            <button id="color_green" class="color-btn" title="»îÁ¦ÂÌ"></button>
-            <button id="color_gray" class="color-btn" title="¸ß¼¶»Ò"></button>
-            <button id="color_purple" class="color-btn" title="ÉñÃØ×Ï"></button>
-            <button id="color_dark" class="color-btn" title="ÉîåäºÚ"></button>
+            <button id="color_blue" class="color-btn active" title="ç»å…¸è“"></button>
+            <button id="color_green" class="color-btn" title="æ´»åŠ›ç»¿"></button>
+            <button id="color_gray" class="color-btn" title="é«˜çº§ç°"></button>
+            <button id="color_purple" class="color-btn" title="ç¥ç§˜ç´«"></button>
+            <button id="color_dark" class="color-btn" title="æ·±é‚ƒé»‘"></button>
         </div>
     </div>
 
     <div class="preview-area">
         <div id="preview_box"></div>
-        <div class="preview-label">ÊµÊ±Ô¤ÀÀĞ§¹û</div>
+        <div class="preview-label">å®æ—¶é¢„è§ˆæ•ˆæœ</div>
     </div>
 
     <div class="btn-row">
-        <button id="btn_apply" class="btn btn-green">Ó¦ÓÃ</button>
-        <button id="btn_reset" class="btn btn-gray">»Ö¸´Ä¬ÈÏ</button>
+        <button id="btn_apply" class="btn btn-green">åº”ç”¨</button>
+        <button id="btn_reset" class="btn btn-gray">æ¢å¤é»˜è®¤</button>
     </div>
-    <div class="status" id="text_status">µ÷½ÚÍ¸Ã÷¶ÈºÍ±³¾°É«£¬µã»÷Ó¦ÓÃ±£´æ¡£</div>
+    <div class="status" id="text_status">è°ƒèŠ‚é€æ˜åº¦å’ŒèƒŒæ™¯è‰²ï¼Œç‚¹å‡»åº”ç”¨ä¿å­˜ã€‚</div>
 </body>
 </html>

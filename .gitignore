@@ -29,6 +29,9 @@ RCa*
 /Jiyu_udp_attack/
 /x64/
 /x86/
+/build/
+/dist/
+/artifacts/
 **/Debug/
 **/Release/
 **/x64/

@@ -138,6 +138,9 @@ void IMTeacherWindow::AppendLog(const std::wstring& msg)
 	if (!text_log.is_valid()) return;
 	std::wstring cur = text_log.get_value().to_string();
 	cur += msg + L"\r\n";
+	constexpr size_t kMaxLogCharacters = 16384;
+	if (cur.size() > kMaxLogCharacters)
+		cur.erase(0, cur.size() - kMaxLogCharacters);
 	text_log.set_text(cur.c_str());
 }
 
@@ -152,8 +155,15 @@ bool IMTeacherWindow::StartProcess()
 
 	SECURITY_ATTRIBUTES sa = { sizeof(sa), NULL, TRUE };
 	HANDLE hStdinRead = NULL, hStdoutWrite = NULL;
-	CreatePipe(&hStdinRead, &hStdinWrite_, &sa, 0);
-	SetHandleInformation(hStdinWrite_, HANDLE_FLAG_INHERIT, 0);
+	if (!CreatePipe(&hStdinRead, &hStdinWrite_, &sa, 0) ||
+		!SetHandleInformation(hStdinWrite_, HANDLE_FLAG_INHERIT, 0))
+	{
+		FileLogger::Get(L"imteacher")->LogError((L"创建教师端标准输入管道失败，错误码=" + std::to_wstring(GetLastError())).c_str());
+		if (hStdinRead) CloseHandle(hStdinRead);
+		if (hStdinWrite_) CloseHandle(hStdinWrite_);
+		hStdinWrite_ = NULL;
+		return false;
+	}
 
 	STARTUPINFO si = { sizeof(si) };
 	si.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
@@ -199,12 +209,14 @@ bool IMTeacherWindow::SendToProcess(const std::wstring& cmd)
 	if (!hStdinWrite_) return false;
 	std::string utf8;
 	int len = WideCharToMultiByte(CP_UTF8, 0, cmd.c_str(), -1, NULL, 0, NULL, NULL);
-	utf8.resize(len);
-	WideCharToMultiByte(CP_UTF8, 0, cmd.c_str(), -1, &utf8[0], len, NULL, NULL);
+	if (len <= 1) return false;
+	utf8.resize(static_cast<size_t>(len - 1));
+	if (!WideCharToMultiByte(CP_UTF8, 0, cmd.data(), static_cast<int>(cmd.size()), &utf8[0], len - 1, NULL, NULL))
+		return false;
 	utf8 += "\n";
 	DWORD written = 0;
 	BOOL ok = WriteFile(hStdinWrite_, utf8.c_str(), (DWORD)utf8.size(), &written, NULL);
-	return ok == TRUE;
+	return ok == TRUE && written == utf8.size();
 }
 
 std::wstring IMTeacherWindow::ReadLogFile()
@@ -214,10 +226,17 @@ std::wstring IMTeacherWindow::ReadLogFile()
 	std::stringstream ss;
 	ss << ifs.rdbuf();
 	std::string utf8 = ss.str();
-	if (utf8.size() > 2048) utf8 = utf8.substr(utf8.size() - 2048);
-	int len = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, NULL, 0);
+	if (utf8.size() > 2048) {
+		size_t begin = utf8.size() - 2048;
+		while (begin < utf8.size() && (static_cast<unsigned char>(utf8[begin]) & 0xC0) == 0x80)
+			++begin;
+		utf8 = utf8.substr(begin);
+	}
+	int len = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), static_cast<int>(utf8.size()), NULL, 0);
+	if (len <= 0) return L"";
 	std::wstring result;
-	result.resize(len);
-	MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, &result[0], len);
+	result.resize(static_cast<size_t>(len));
+	if (!MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), static_cast<int>(utf8.size()), &result[0], len))
+		return L"";
 	return result;
 }

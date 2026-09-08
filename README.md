@@ -61,6 +61,12 @@
 
 > 附加说明：本软件不依赖任何运行库，您只需复制一个 **JiYuXXXX.exe** (可能还是这个名字) 至目标电脑即可运行，本软件已将需要的DLL打包，它会自动进行安装。
 
+## 构建
+
+- 原生程序：Visual Studio 2022（MSVC v142 工具集）、Windows SDK 10，以及 Windows Driver Kit（WDK）。使用 `Release|Win32` 配置构建解决方案。
+- 教师端模拟器：安装 `requirements-build.txt` 中的依赖后执行 `./scripts/build-teacher-sim.ps1`；它会生成 `Release/teacher_sim.exe`，需与主程序放在同一目录。
+- GitHub Actions 会分别验证 Python、打包教师端，并构建 x86 原生程序后上传构建产物。
+
 ## 使用的第三方库
 
 *第三方库已经包含在项目中，不需要您自己安装*

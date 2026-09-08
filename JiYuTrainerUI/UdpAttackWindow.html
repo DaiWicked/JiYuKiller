@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta charset="utf-8">
     <style>
         html {
             background: transparent; overflow: hidden; }
@@ -150,38 +151,38 @@
     </style>
 </head>
 <body>
-    <h2>¼«ÓòUDP¹¥»÷</h2>
+    <h2>æžåŸŸUDPæ”»å‡»</h2>
     <div class="info-bar">
-        ÀûÓÃ¼«ÓòÑ§Éú¶Ë²»¶ÔUDP°ü×öÉí·ÝÑéÖ¤µÄÂ©¶´£¬ÏòÄ¿±ê·¢ËÍ¹¹ÔìÊý¾Ý°ü¡£Ö§³Öµ¥IP¡¢IP·¶Î§(192.168.1.10-50)¡¢C¶Î(192.168.1.1/24)¡£
+        åˆ©ç”¨æžåŸŸå­¦ç”Ÿç«¯ä¸å¯¹UDPåŒ…åšèº«ä»½éªŒè¯çš„æ¼æ´žï¼Œå‘ç›®æ ‡å‘é€æž„é€ æ•°æ®åŒ…ã€‚æ”¯æŒå•IPã€IPèŒƒå›´(192.168.1.10-50)ã€Cæ®µ(192.168.1.1/24)ã€‚
     </div>
     <div class="form-row">
-        <label>Ä¿±êIP:</label>
-        <input type="text" id="input_ip" placeholder="192.168.1.10 »ò 192.168.1.10-50 »ò 192.168.1.1/24" />
+        <label>ç›®æ ‡IP:</label>
+        <input type="text" id="input_ip" placeholder="192.168.1.10 æˆ– 192.168.1.10-50 æˆ– 192.168.1.1/24" />
     </div>
     <div class="form-row">
-        <label>¶Ë¿Ú:</label>
+        <label>ç«¯å£:</label>
         <input type="text" id="input_port" class="small" value="4705" />
-        <label style="margin-left:20px;">¹¥»÷Ä£Ê½:</label>
+        <label style="margin-left:20px;">æ”»å‡»æ¨¡å¼:</label>
         <select id="select_mode">
-            <option value="msg">·¢ËÍÏûÏ¢</option>
-            <option value="cmd">Ö´ÐÐÃüÁî</option>
-            <option value="reboot">ÖØÆô</option>
-            <option value="shutdown">¹Ø»ú</option>
+            <option value="msg">å‘é€æ¶ˆæ¯</option>
+            <option value="cmd">æ‰§è¡Œå‘½ä»¤</option>
+            <option value="reboot">é‡å¯</option>
+            <option value="shutdown">å…³æœº</option>
         </select>
     </div>
     <div class="form-row">
-        <label>ÄÚÈÝ:</label>
-        <input type="text" id="input_content" placeholder="ÏûÏ¢/ÃüÁî/ÍøÖ·/ÐÂÃû³Æ" style="width:380px;" />
+        <label>å†…å®¹:</label>
+        <input type="text" id="input_content" placeholder="æ¶ˆæ¯/å‘½ä»¤/ç½‘å€/æ–°åç§°" style="width:380px;" />
     </div>
     <div class="form-row">
-        <label>Ñ­»·´ÎÊý:</label>
+        <label>å¾ªçŽ¯æ¬¡æ•°:</label>
         <input type="text" id="input_loop" class="small" value="1" />
-        <label style="margin-left:20px;">¼ä¸ô(Ãë):</label>
+        <label style="margin-left:20px;">é—´éš”(ç§’):</label>
         <input type="text" id="input_interval" class="small" value="5" />
     </div>
     <div class="btn-row">
-        <button class="btn btn-danger" id="btn_send">¿ªÊ¼¹¥»÷</button>
-        <button class="btn" id="btn_clearlog">Çå¿ÕÈÕÖ¾</button>
+        <button class="btn btn-danger" id="btn_send">å¼€å§‹æ”»å‡»</button>
+        <button class="btn" id="btn_clearlog">æ¸…ç©ºæ—¥å¿—</button>
     </div>
     <div class="log-box" id="text_log"></div>
 </body>
