@@ -53,12 +53,13 @@ jobs:
         run: |
           $kit = "${env:ProgramFiles(x86)}\\Windows Kits\\10"
           $version = Get-ChildItem "$kit\\Include" -Directory |
-            Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'km\\ntddk.h') } |
+            Where-Object {
+              (Test-Path -LiteralPath (Join-Path $_.FullName 'km\\ntddk.h')) -and
+              (Test-Path -LiteralPath "$kit\\Lib\\$($_.Name)\\km\\x86\\ntoskrnl.lib") -and
+              (Test-Path -LiteralPath "$kit\\Lib\\$($_.Name)\\km\\x86\\BufferOverflowK.lib")
+            } |
             Sort-Object Name -Descending |
-            ForEach-Object {
-              if ((Test-Path -LiteralPath "$kit\\Lib\\$($_.Name)\\km\\x86\\ntoskrnl.lib") -and
-                  (Test-Path -LiteralPath "$kit\\Lib\\$($_.Name)\\km\\x86\\BufferOverflowK.lib")) { $_.Name; break }
-            }
+            Select-Object -First 1 -ExpandProperty Name
           if (-not $version) { throw 'Windows Driver Kit is required but was not found on the runner.' }
           "WDK_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           Write-Host "Using Windows Driver Kit $version"
