@@ -57,10 +57,10 @@ jobs:
 
       - name: Build application projects
         run: |
-          msbuild JiYuTrainerHooks/JiYuTrainerHooks.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:WindowsTargetPlatformVersion=10.0.19041.0
-          msbuild JiYuTrainerUI/JiYuTrainerUI.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:WindowsTargetPlatformVersion=10.0.19041.0
-          msbuild JiYuTrainerUpdater/JiYuTrainerUpdater.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:WindowsTargetPlatformVersion=10.0.19041.0
-          msbuild JiYuTrainer/JiYuTrainer.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:WindowsTargetPlatformVersion=10.0.19041.0
+          msbuild JiYuTrainerHooks/JiYuTrainerHooks.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
+          msbuild JiYuTrainerUI/JiYuTrainerUI.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
+          msbuild JiYuTrainerUpdater/JiYuTrainerUpdater.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
+          msbuild JiYuTrainer/JiYuTrainer.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
 
       - name: Verify native package inputs
         shell: pwsh
