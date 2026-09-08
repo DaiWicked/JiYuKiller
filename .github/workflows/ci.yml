@@ -56,11 +56,30 @@ jobs:
           }
 
       - name: Build application projects
+        shell: pwsh
         run: |
-          msbuild JiYuTrainerHooks/JiYuTrainerHooks.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
-          msbuild JiYuTrainerUI/JiYuTrainerUI.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
-          msbuild JiYuTrainerUpdater/JiYuTrainerUpdater.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
-          msbuild JiYuTrainer/JiYuTrainer.vcxproj /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path ci-logs | Out-Null
+          $projects = @(
+            'JiYuTrainerHooks/JiYuTrainerHooks.vcxproj',
+            'JiYuTrainerUI/JiYuTrainerUI.vcxproj',
+            'JiYuTrainerUpdater/JiYuTrainerUpdater.vcxproj',
+            'JiYuTrainer/JiYuTrainer.vcxproj'
+          )
+          foreach ($project in $projects) {
+            $name = [IO.Path]::GetFileNameWithoutExtension($project)
+            & msbuild $project /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0 2>&1 |
+              Tee-Object -FilePath "ci-logs/$name.log"
+            if ($LASTEXITCODE -ne 0) { throw "MSBuild failed for $project. See ci-logs/$name.log." }
+          }
+
+      - name: Upload native build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-build-logs
+          path: ci-logs
+          if-no-files-found: warn
 
       - name: Verify native package inputs
         shell: pwsh
