@@ -63,7 +63,7 @@
 
 ## 构建
 
-- 原生程序：Visual Studio 2022（MSVC v142 工具集）、Windows SDK 10，以及 Windows Driver Kit（WDK）。使用 `Release|Win32` 配置构建解决方案。
+- 原生程序：Visual Studio 2022（MSVC v142 工具集）和 Windows SDK 10。使用 `Release|Win32` 配置构建应用项目；`Release/JiYuTrainerDriver.sys` 是随项目提供的旧版兼容驱动。如需自行重新编译驱动源码，还需与目标系统匹配的 WDK。
 - 教师端模拟器：安装 `requirements-build.txt` 中的依赖后执行 `./scripts/build-teacher-sim.ps1`；它会生成 `Release/teacher_sim.exe`，需与主程序放在同一目录。
 - GitHub Actions 会分别验证 Python、打包教师端，并构建 x86 原生程序后上传构建产物。
 
