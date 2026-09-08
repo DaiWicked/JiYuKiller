@@ -66,18 +66,9 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           New-Item -ItemType Directory -Force -Path ci-logs | Out-Null
-          $projects = @(
-            'JiYuTrainerHooks/JiYuTrainerHooks.vcxproj',
-            'JiYuTrainerUI/JiYuTrainerUI.vcxproj',
-            'JiYuTrainerUpdater/JiYuTrainerUpdater.vcxproj',
-            'JiYuTrainer/JiYuTrainer.vcxproj'
-          )
-          foreach ($project in $projects) {
-            $name = [IO.Path]::GetFileNameWithoutExtension($project)
-            & msbuild $project /m /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0 2>&1 |
-              Tee-Object -FilePath "ci-logs/$name.log"
-            if ($LASTEXITCODE -ne 0) { throw "MSBuild failed for $project. See ci-logs/$name.log." }
-          }
+          & msbuild JiYuTrainer.sln /m /t:JiYuTrainer /p:Configuration=Release /p:Platform=x86 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0.19041.0 2>&1 |
+            Tee-Object -FilePath 'ci-logs/JiYuTrainer.log'
+          if ($LASTEXITCODE -ne 0) { throw 'MSBuild failed for JiYuTrainer. See ci-logs/JiYuTrainer.log.' }
 
       - name: Upload native build logs
         if: always()

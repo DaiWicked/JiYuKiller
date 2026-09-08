@@ -104,7 +104,7 @@
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;_USING_V110_SDK71_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)JiYuTrainerUI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\JiYuTrainerUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -144,7 +144,7 @@
       </ModuleDefinitionFile>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)JiYuTrainerUI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\JiYuTrainerUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
